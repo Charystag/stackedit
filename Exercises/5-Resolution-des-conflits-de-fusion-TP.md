@@ -59,9 +59,9 @@ Vous travaillez sur un projet de développement logiciel avec plusieurs collabor
 	 	<header>
 			<h2>Notre nouveau site web</h2>
 		</header>
-         <h1>Bienvenue sur grand site web!</h1>
+         <h1>Bienvenue sur ce grand site web!</h1>
          <footer>
-             <p>Notre site web Web</p>
+             <p>© 2023 Notre Site Web</p>
          </footer>
      </body>
      </html>
