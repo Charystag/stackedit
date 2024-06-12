@@ -40,7 +40,7 @@ Vous travaillez sur un projet de développement logiciel avec plusieurs collabor
          <header>
              <h1>Notre Nouveau Site Web</h1>
          </header>
-         <h1>Bienvenue sur ce super site web!</h1>
+         <h1>Bienvenue sur ce supernotre site web!</h1>
      </body>
      </html>
      ```
@@ -59,7 +59,7 @@ Vous travaillez sur un projet de développement logiciel avec plusieurs collabor
 	 	<header>
 			<h2>Notre nouveau site web</h2>
 		</header>
-         <h1>Bienvenue sur ce grand site web!</h1>
+         <h1>Bienvenue sur ce grandnotre site web!</h1>
          <footer>
              <p>© 2023 Notre Site Web</p>
          </footer>
@@ -122,3 +122,6 @@ Vous travaillez sur un projet de développement logiciel avec plusieurs collabor
 - Si vous rencontrez des difficultés, consultez la documentation officielle de Git ou des ressources en ligne pour des conseils supplémentaires.
 
 Bonne chance et bon travail sur ce TP !
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTc1NzQ3ODI5MV19
+-->
