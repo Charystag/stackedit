@@ -173,9 +173,14 @@
 **Objectif :** Gérer des branches distantes et locales.
 
 **Étapes :**
-1. Poussez votre branche locale `main` vers le dépôt distant.
+1.	Création du repo distant
+	```sh
+	git init --bare /tmp/remote-branch-guided.git
+	```
+
+2. Poussez votre branche locale `main` vers le dépôt distant.
     ```sh
-    git remote add origin <url_du_dépôt_distant>
+    git remote add origin /tmp/remote-branch-guided.git
     git push -u origin main
     ```
 2. Créez une branche distante `feature-4` et poussez-la.
