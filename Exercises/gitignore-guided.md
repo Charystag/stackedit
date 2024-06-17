@@ -75,8 +75,8 @@
 
 1. Modifiez `.gitignore` pour ignorer tous les fichiers `.config`, mais inclure `important.config`.
     ```sh
-    echo "*.config" >> .gitignore
-    echo "!important.config" >> .gitignore
+    echo '*.config' >> .gitignore
+    echo '!important.config' >> .gitignore
     ```
 2. Créez les fichiers `app.config` et `important.config`. Vérifiez que seul `important.config` est pris en compte par Git.
     ```sh
