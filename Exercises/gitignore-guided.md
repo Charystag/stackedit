@@ -245,9 +245,7 @@
     ```
 2. Créez des fichiers `.cfg` dans `config` et vérifiez qu'ils ne sont pas pris en compte par Git.
     ```sh
-    touch
-
- config/settings.cfg
+    touch config/settings.cfg
     touch config/database.cfg
     git status
     ```
