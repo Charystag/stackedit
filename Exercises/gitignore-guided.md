@@ -163,7 +163,7 @@
 1. Ajoutez une règle pour ignorer tous les fichiers commençant par `temp` mais incluant ceux se terminant par `.keep`.
     ```sh
     echo "temp*" >> .gitignore
-    echo "!temp*.keep" >> .gitignore
+    echo '!temp*.keep' >> .gitignore
     ```
 2. Créez des fichiers `temp1`, `temp2.keep`, et `temp3.keep`. Vérifiez que seuls les fichiers `.keep` sont pris en compte par Git.
     ```sh
@@ -257,7 +257,7 @@
 1. Ajoutez des règles pour ignorer tous les fichiers `.env` sauf `.env.example`.
     ```sh
     echo ".env" >> .gitignore
-    echo "!.env.example" >> .gitignore
+    echo '!.env.example' >> .gitignore
     ```
 2. Créez les fichiers correspondants et vérifiez le comportement de Git.
     ```sh
