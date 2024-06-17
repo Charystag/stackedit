@@ -25,7 +25,7 @@ Vous pouvez automatiser des tâches courantes telles que l'exécution de tests, 
 
 1. Ajoutez le contenu suivant dans le fichier `main.yml` :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -38,7 +38,7 @@ Vous pouvez automatiser des tâches courantes telles que l'exécution de tests, 
         - uses: actions/checkout@v2
         - name: Run a one-line script
           run: echo Hello, world!
-        ```
+```
 
 2. Poussez les modifications sur GitHub et vérifiez que l'action s'exécute correctement.
 
@@ -54,7 +54,7 @@ Vous pouvez utiliser cette connaissance pour automatiser des tâches simples, co
 
 1. Modifiez le fichier `main.yml` pour inclure un script multi-lignes :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -69,7 +69,7 @@ Vous pouvez utiliser cette connaissance pour automatiser des tâches simples, co
           run: |
             echo Add other actions to build,
             echo test, and deploy your project.
-        ```
+```
 
 2. Poussez les modifications sur GitHub et vérifiez que l'action s'exécute correctement.
 
@@ -85,7 +85,7 @@ Automatiser l'installation d'un environnement de développement, exécuter des t
 
 1. Modifiez le fichier `main.yml` pour utiliser l'action `actions/setup-node` de la marketplace :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -102,7 +102,7 @@ Automatiser l'installation d'un environnement de développement, exécuter des t
             node-version: '14'
         - name: Run a one-line script
           run: node -v
-        ```
+```
 
 2. Poussez les modifications sur GitHub et vérifiez que l'action s'exécute correctement.
 
@@ -119,7 +119,7 @@ Vous pouvez utiliser des actions pour configurer automatiquement Node.js, déplo
 1. Ajoutez un secret nommé `MY_SECRET` dans les paramètres du dépôt GitHub.
 2. Modifiez le fichier `main.yml` pour utiliser le secret :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -132,7 +132,7 @@ Vous pouvez utiliser des actions pour configurer automatiquement Node.js, déplo
         - uses: actions/checkout@v2
         - name: Use a secret
           run: echo ${{ secrets.MY_SECRET }}
-        ```
+```
 
 3. Poussez les modifications sur GitHub et vérifiez que l'action s'exécute correctement.
 
@@ -148,7 +148,7 @@ Vous pouvez utiliser des secrets pour stocker les informations d'identification 
 
 1. Modifiez le fichier `main.yml` pour utiliser une matrice avec différentes versions de Node.js :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -169,7 +169,7 @@ Vous pouvez utiliser des secrets pour stocker les informations d'identification 
             node-version: ${{ matrix.node-version }}
         - name: Run a one-line script
           run: node -v
-        ```
+```
 
 2. Poussez les modifications sur GitHub et vérifiez que l'action s'exécute correctement.
 
@@ -190,7 +190,7 @@ Tester une application Node.js sur plusieurs versions de Node.js pour garantir q
 1. Créez un projet Node.js avec des tests unitaires.
 2. Modifiez le fichier `main.yml` pour exécuter les tests :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -209,7 +209,7 @@ Tester une application Node.js sur plusieurs versions de Node.js pour garantir q
           run: npm install
         - name: Run tests
           run: npm test
-        ```
+```
 
 3. Poussez les modifications sur GitHub et vérifiez que les tests s'exécutent correctement.
 
@@ -226,7 +226,7 @@ Automatiser les tests unitaires garantit que chaque modification de code est tes
 1. Créez un site statique dans le dépôt.
 2. Modifiez le fichier `main.yml` pour déployer le site sur GitHub Pages :
 
-    ```yaml
+```yaml
     name: Deploy to GitHub Pages
 
     on:
@@ -249,7 +249,7 @@ Automatiser les tests unitaires garantit que chaque modification de code est tes
             git add -f build
             git commit -m 'Deploy'
             git push origin `git subtree split --prefix build main`:gh-pages --force
-        ```
+```
 
 3. Poussez les modifications sur GitHub et vérifiez que le site est déployé sur GitHub Pages.
 
@@ -265,7 +265,7 @@ Déployer automatiquement un site de documentation ou un site web statique chaqu
 
 1. Modifiez le fichier `main.yml` pour inclure plusieurs jobs :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -293,7 +293,7 @@ Déployer automatiquement un site de documentation ou un site web statique chaqu
         - uses: actions/checkout@v2
         - name: Deploy
           run: echo Deploying...
-        ```
+```
 
 2. Poussez les modifications sur GitHub et vérifiez que les jobs s'exécutent dans le bon ordre.
 
@@ -309,7 +309,7 @@ Exécuter des tests unitaires, effectuer des analyses de code statique et déplo
 
 1. Modifiez le fichier `main.yml` pour sauvegarder et restaurer des artefacts :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -338,7 +338,7 @@ Exécuter des tests unitaires, effectuer des analyses de code statique et déplo
             name: example-artifact
         - name: Use artifact
           run: cat artifact.txt
-        ```
+```
 
 2. Poussez les modifications sur GitHub et vérifiez que les artefacts sont correctement sauvegardés et restaurés.
 
@@ -359,7 +359,7 @@ Générer des rapports de test ou des builds de votre application dans un job et
 1. Créez un répertoire `my-action` dans le dépôt.
 2. Dans ce répertoire, créez un fichier `action.yml` avec le contenu suivant :
 
-    ```yaml
+```yaml
     name: "My Action"
     description: "A custom GitHub Action"
     inputs:
@@ -369,11 +369,11 @@ Générer des rapports de test ou des builds de votre application dans un job et
     runs:
       using: "node12"
       main: "index.js"
-    ```
+```
 
 3. Créez un fichier `index.js` dans le répertoire `my-action` :
 
-    ```js
+```js
     const core = require('@actions/core');
 
     async function run() {
@@ -386,13 +386,13 @@ Générer des rapports de test ou des builds de votre application dans un job et
     }
 
     run();
-    ```
+```
 
 4. Modifiez le fichier `main.yml` pour utiliser l
 
 'action personnalisée :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -406,7 +406,7 @@ Générer des rapports de test ou des builds de votre application dans un job et
           uses: ./my-action
           with:
             my-input: "Hello, custom action!"
-        ```
+```
 
 5. Poussez les modifications sur GitHub et vérifiez que l'action personnalisée s'exécute correctement.
 
@@ -422,7 +422,7 @@ Développer une action qui envoie des notifications Slack formatées de manière
 
 1. Modifiez le fichier `main.yml` pour ajouter des conditions :
 
-    ```yaml
+```yaml
     name: CI
 
     on: [push]
@@ -435,7 +435,7 @@ Développer une action qui envoie des notifications Slack formatées de manière
         - name: Conditional step
           if: github.ref == 'refs/heads/main'
           run: echo "This runs only on the main branch"
-        ```
+```
 
 2. Poussez les modifications sur GitHub et vérifiez que l'étape conditionnelle s'exécute correctement.
 
@@ -452,7 +452,7 @@ Exécuter des étapes de déploiement seulement si le commit est effectué sur l
 1. Ajoutez des secrets nommés `AWS_ACCESS_KEY_ID` et `AWS_SECRET_ACCESS_KEY` dans les paramètres du dépôt GitHub.
 2. Modifiez le fichier `main.yml` pour utiliser les secrets lors du déploiement :
 
-    ```yaml
+```yaml
     name: Deploy to AWS
 
     on: [push]
@@ -470,7 +470,7 @@ Exécuter des étapes de déploiement seulement si le commit est effectué sur l
             aws-region: us-east-1
         - name: Deploy
           run: echo "Deploying to AWS"
-        ```
+```
 
 3. Poussez les modifications sur GitHub et vérifiez que le déploiement s'exécute correctement.
 
@@ -486,7 +486,7 @@ Stocker des clés API et des informations d'identification pour déployer des ap
 
 1. Modifiez le fichier `main.yml` pour ajouter un déclencheur manuel :
 
-    ```yaml
+```yaml
     name: Manual Trigger
 
     on:
@@ -499,7 +499,7 @@ Stocker des clés API et des informations d'identification pour déployer des ap
         - uses: actions/checkout@v2
         - name: Run a one-line script
           run: echo "This is a manually triggered workflow"
-        ```
+```
 
 2. Poussez les modifications sur GitHub.
 3. Allez dans l'onglet "Actions" de votre dépôt GitHub et déclenchez le workflow manuellement.
@@ -517,7 +517,7 @@ Déclencher manuellement un workflow pour déployer une version spécifique de v
 1. Créez deux fichiers de workflow : `build.yml` et `deploy.yml`.
 2. Dans `build.yml`, ajoutez le contenu suivant :
 
-    ```yaml
+```yaml
     name: Build
 
     on: [push]
@@ -534,11 +534,11 @@ Déclencher manuellement un workflow pour déployer une version spécifique de v
           with:
             name: build-artifact
             path: ./build
-        ```
+```
 
 3. Dans `deploy.yml`, ajoutez le contenu suivant :
 
-    ```yaml
+```yaml
     name: Deploy
 
     on:
@@ -558,7 +558,7 @@ Déclencher manuellement un workflow pour déployer une version spécifique de v
             name: build-artifact
         - name: Deploy project
           run: echo "Deploying project"
-        ```
+```
 
 4. Poussez les modifications sur GitHub et vérifiez que le workflow de déploiement s'exécute après le workflow de build.
 
@@ -574,7 +574,7 @@ Diviser un pipeline de CI/CD en plusieurs workflows où un workflow de build dé
 
 1. Créez un fichier `reusable.yml` dans le répertoire `.github/workflows` avec le contenu suivant :
 
-    ```yaml
+```yaml
     name: Reusable Workflow
 
     on:
@@ -590,11 +590,11 @@ Diviser un pipeline de CI/CD en plusieurs workflows où un workflow de build dé
         steps:
         - name: Run with input
           run: echo ${{ inputs.run-message }}
-        ```
+```
 
 2. Créez un autre fichier `main.yml` pour appeler le workflow réutilisable :
 
-    ```yaml
+```yaml
     name: Use Reusable Workflow
 
     on: [push]
@@ -604,7 +604,7 @@ Diviser un pipeline de CI/CD en plusieurs workflows où un workflow de build dé
         uses: ./.github/workflows/reusable.yml
         with:
           run-message: "Running reusable workflow"
-        ```
+```
 
 3. Poussez les modifications sur GitHub et vérifiez que le workflow réutilisable s'exécute correctement.
 
