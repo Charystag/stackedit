@@ -1,4 +1,4 @@
-### Exercice Complet : Intégration de Tests Unitaires, Documentation avec Doxygen et GitHub Actions
+## Exercice Complet : Intégration de Tests Unitaires, Documentation avec Doxygen et GitHub Actions
 
 Le repository se nommera : `projet-ci`
 
@@ -39,7 +39,7 @@ projet_integration_complete/
 Faites en sorte d'écrire plusieurs tests pour chaque fonction en testant les potentiels edge cases.
 
 **Configuration de Doxygen :**
-- Initialisez un fichier `Doxyfile` pour générer la documentation à partir des fichiers Python dans `src/`.
+- Initialisez un fichier `Doxyfile` pour générer la documentation à partir du fichier Python `geometry.py`
 Voici des prérequis supplémentaires pour le Doxyfile:
 	-	Vous devez afficher un message lorsqu'un paramètre ne correspond pas à sa description
 	-	Les avertissements devront être écrits dans le fichier : `warnings.log`
