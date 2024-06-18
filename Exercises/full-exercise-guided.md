@@ -122,17 +122,12 @@
          with:
            python-version: '3.x'
 
-       - name: Install dependencies
-         run: |
-           python -m pip install --upgrade pip
-           pip install unittest
-
        - name: Run unit tests
          run: |
-           python -m unittest discover
+           python -m test_calculator.py -v
 
        - name: Install Doxygen
-         run: sudo apt-get install -y doxygen graphviz
+         run: sudo apt-get install -y doxygen 
 
        - name: Generate documentation
          run: doxygen Doxyfile
