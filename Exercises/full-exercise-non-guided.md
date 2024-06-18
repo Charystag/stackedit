@@ -2,6 +2,8 @@
 
 **Objectif :** Mettre en place un projet Python avec des tests unitaires, générer automatiquement la documentation avec Doxygen, et configurer GitHub Actions pour exécuter les tests et pousser la documentation mise à jour à chaque push sur la branche `main`.
 
+> :bulb: Pensez à tester vos commandes (tests unitaires et génération de la documentation) avant l'exécution de la Github Action
+
 #### Instructions
 
 **Structure du projet :**
@@ -9,7 +11,6 @@
 projet_integration_complete/
 ├── src/
 │   ├── geometry.py
-│   ├── __init__.py
 ├── tests/
 │   ├── test_geometry.py
 ├── docs/
@@ -17,9 +18,9 @@ projet_integration_complete/
 │   ├── workflows/
 │       ├── main.yml
 ├── mainpage.md
+├── .gitignore
 ├── Doxyfile
-├── README.md
-└── requirements.txt
+└── README.md
 ```
 
 **Implémentation du module `geometry.py` :**
@@ -42,6 +43,7 @@ Faites en sorte d'écrire plusieurs tests pour chaque fonction en testant les po
 Voici des prérequis supplémentaires pour le Doxyfile:
 	-	Vous devez afficher un message lorsqu'un paramètre ne correspond pas à sa description
 	-	Les avertissements devront être écrits dans le fichier : `warnings.log`
+	-	Les logs de Doxygen ne doivent **jamais** apparaitre sur le repo distant
 	-	Le nom du projet est "Pythagore"
 
 **Page principale de la documentation :**
@@ -55,17 +57,21 @@ Voici des prérequis supplémentaires pour le Doxyfile:
   - Génère la documentation avec Doxygen.
   - Pousse la documentation générée dans le répertoire `docs/` du dépôt à chaque push sur `main`.
 
+> :warning: Le dossier docs doit être créé lors de l'exécution de la commande `doxygen Doxyfile` et ce même s'il n'existe pas auparavant.
+
 **Mise à jour du README :**
 - Ajoutez une section dans `README.md` pour expliquer comment configurer et exécuter le projet localement, ainsi que comment consulter la documentation générée.
 
-**Fichier `requirements.txt` :**
-- Listez les dépendances nécessaires pour le projet (par exemple, `unittest`).
+> :warning: Attention, pour que le bot puisse mettre automatiquement à jour la documentation, vous devez lui en donner la permission dans les paramètres du
+> repository
 
 ### Utilisation de git dans le projet
 
 Faites attention à bien créer des nouvelles branches pour vos fonctionnalités. 3 branches (au minimum) seront attendues:
 -	La branche `develop` sur laquelle vous allez fusionner tout le développement
 -	La branche `feature/geometry` pour l'implémentation de vos fonctions
+-	La branche `tests` pour l'implémentation des tests unitaires.
+-	La branche master, sur laquelle vous allez fusionner les modifications finales
 
 ### Résultat attendu
 
@@ -73,6 +79,8 @@ Faites attention à bien créer des nouvelles branches pour vos fonctionnalités
   - Les tests unitaires sont exécutés.
   - La documentation est générée et mise à jour dans le répertoire `docs/`.
   - La documentation est automatiquement poussée sur le dépôt GitHub.
+- 4 branches, à des stades d'évolution différents sur lesquelles seront implémentées les fonctionnalités correspondantes à leur noms
+- Un fichier Gitignore, contenant (au moins) le répertoire `__pycache__` généré lors de l'exécution des tests unitaires.
 
 ### Conclusion
 
