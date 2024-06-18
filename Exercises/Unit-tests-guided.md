@@ -1,5 +1,3 @@
-Voici une série d'exercices guidés simples pour vous familiariser avec les tests unitaires. Nous utiliserons Python et le framework de test `unittest` pour ces exercices.
-
 ### Exercice 1 : Installation et configuration de `unittest`
 
 **Objectif :** Configurer un environnement de test unitaire avec `unittest`.
