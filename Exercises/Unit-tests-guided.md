@@ -322,58 +322,7 @@ Voici une série d'exercices guidés simples pour vous familiariser avec les tes
 
    - Vérifiez que tous les tests passent.
 
-### Exercice 8 : Utilisation des mocks
-
-**Objectif :** Utiliser les mocks pour tester des fonctions dépendant de ressources externes.
-
-1. **Créez un fichier Python nommé `external_service.py` :**
-   - Ajoutez le code suivant pour définir une fonction qui appelle un service externe :
-
-     ```python
-     import requests
-
-     def get_data_from_service(url):
-         response = requests.get(url)
-         if response.status_code == 200:
-             return response.json()
-         else:
-             return None
-     ```
-
-2. **Créez un fichier de test nommé `test_external_service.py` :**
-   - Ajoutez le code suivant pour définir des tests unitaires pour la fonction `get_data_from_service` en utilisant des mocks :
-
-     ```python
-     import unittest
-     from unittest.mock import patch
-     from external_service import get_data_from_service
-
-     class TestExternalService(unittest.TestCase):
-         @patch('external_service.requests.get')
-         def test_get_data_from_service_success(self, mock_get):
-             mock_get.return_value.status_code = 200
-             mock_get.return_value.json.return_value = {'key': 'value'}
-             self.assertEqual(get_data_from_service('http://fakeurl.com'), {'key': 'value'})
-
-         @patch('external_service.requests.get')
-         def test_get_data_from_service_failure(self, mock_get):
-             mock_get.return_value.status_code = 404
-             self.assertEqual(get_data_from_service('http://fakeurl.com'), None)
-
-     if __name__ == '__main__':
-         unittest.main()
-     ```
-
-3. **Exécutez les tests :**
-   - Ouvrez un terminal et exécutez la commande :
-
-     ```bash
-     python test_external_service.py
-     ```
-
-   - Vérifiez que tous les tests passent.
-
-### Exercice 9 : Création de tests de performance
+### Exercice 8 : Création de tests de performance
 
 **Objectif :** Écrire des tests unitaires pour mesurer les performances d'une fonction.
 
