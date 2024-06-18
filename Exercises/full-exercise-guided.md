@@ -124,7 +124,7 @@
 
        - name: Run unit tests
          run: |
-           python -m test_calculator.py -v
+           python test_calculator.py -v
 
        - name: Install Doxygen
          run: sudo apt-get install -y doxygen 
