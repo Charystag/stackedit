@@ -1,6 +1,8 @@
 ### Exercice Complet : Intégration de Tests Unitaires, Documentation avec Doxygen et GitHub Actions
 
-**Objectif :** Mettre en place un projet Python avec des tests unitaires, générer automatiquement la documentation avec Doxygen, et configurer GitHub Actions pour exécuter les tests et pousser la documentation mise à jour à chaque push sur la branche `main`.
+Le repository se nommera : `projet-ci`
+
+**Objectif :** Mettre en place un projet Python avec des tests unitaires, générer automatiquement la documentation avec Doxygen, et configurer GitHub Actions pour exécuter les tests et pousser la documentation mise à jour à chaque push sur la branche `master`.
 
 > :bulb: Pensez à tester vos commandes (tests unitaires et génération de la documentation) avant l'exécution de la Github Action
 
@@ -9,10 +11,8 @@
 **Structure du projet :**
 ```css
 projet_integration_complete/
-├── src/
-│   ├── geometry.py
-├── tests/
-│   ├── test_geometry.py
+├── geometry.py
+├── test_geometry.py
 ├── docs/
 ├── .github/
 │   ├── workflows/
@@ -24,7 +24,7 @@ projet_integration_complete/
 ```
 
 **Implémentation du module `geometry.py` :**
-- Dans `src/geometry.py`, implémentez les fonctions suivantes :
+- Dans `geometry.py`, implémentez les fonctions suivantes :
   ```python
   rectangle_area(length, width)
   rectangle_perimeter(length, width)
@@ -35,7 +35,7 @@ projet_integration_complete/
 > N'oubliez pas de commenter votre code en suivant la syntaxe Doxygen.
 
 **Tests Unitaires :**
-- Dans `tests/test_geometry.py`, écrivez les tests unitaires pour les fonctions définies dans `src/geometry.py`. 
+- Dans `test_geometry.py`, écrivez les tests unitaires pour les fonctions définies dans `geometry.py`. 
 Faites en sorte d'écrire plusieurs tests pour chaque fonction en testant les potentiels edge cases.
 
 **Configuration de Doxygen :**
