@@ -24,13 +24,13 @@
 2. **Ajoutez des commentaires Doxygen à chaque fonction :**
 
      ```python
-     """
+     """!
      @file math_operations.py
      @brief This module provides basic arithmetic operations.
      """
 
      def add(a, b):
-         """
+         """!
          Adds two numbers.
 
          @param a First number
@@ -40,7 +40,7 @@
          return a + b
 
      def subtract(a, b):
-         """
+         """!
          Subtracts the second number from the first.
 
          @param a First number
@@ -50,7 +50,7 @@
          return a - b
 
      def multiply(a, b):
-         """
+         """!
          Multiplies two numbers.
 
          @param a First number
@@ -60,7 +60,7 @@
          return a * b
 
      def divide(a, b):
-         """
+         """!
          Divides the first number by the second.
 
          @param a First number
@@ -131,18 +131,18 @@
 2. **Ajoutez des commentaires Doxygen à la classe et ses méthodes :**
 
      ```python
-     """
+     """!
      @file calculator.py
      @brief This module defines a Calculator class for basic arithmetic operations.
      """
 
      class Calculator:
-         """
+         """!
          @brief Calculator class for basic arithmetic operations.
          """
 
          def add(self, a, b):
-             """
+             """!
              Adds two numbers.
 
              @param a First number
@@ -152,7 +152,7 @@
              return a + b
 
          def subtract(self, a, b):
-             """
+             """!
              Subtracts the second number from the first.
 
              @param a First number
@@ -162,7 +162,7 @@
              return a - b
 
          def multiply(self, a, b):
-             """
+             """!
              Multiplies two numbers.
 
              @param a First number
@@ -172,7 +172,7 @@
              return a * b
 
          def divide(self, a, b):
-             """
+             """!
              Divides the first number by the second.
 
              @param a First number
@@ -229,18 +229,18 @@
 2. **Ajoutez des commentaires Doxygen pour documenter le module, les classes et les fonctions :**
 
      ```python
-     """
+     """!
      @file math_module.py
      @brief This module provides classes and functions for arithmetic operations.
      """
 
      class Adder:
-         """
+         """!
          @brief Adder class for addition operations.
          """
 
          def add(self, a, b):
-             """
+             """!
              Adds two numbers.
 
              @param a First number
@@ -250,12 +250,12 @@
              return a + b
 
      class Subtractor:
-         """
+         """!
          @brief Subtractor class for subtraction operations.
          """
 
          def subtract(self, a, b):
-             """
+             """!
              Subtracts the second number from the first.
 
              @param a First number
@@ -265,7 +265,7 @@
              return a - b
 
      def multiply(a, b):
-         """
+         """!
          Multiplies two numbers.
 
          @param a First number
@@ -275,7 +275,7 @@
          return a * b
 
      def divide(a, b):
-         """
+         """!
          Divides the first number by the second.
 
          @param a First number
@@ -312,7 +312,7 @@
    - Ajoutez le code suivant :
 
      ```python
-     """
+     """!
      @file grouped_operations.py
      @brief This module provides grouped arithmetic operations.
      """
