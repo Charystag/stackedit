@@ -1,6 +1,6 @@
-### Série d'exercices guidés sur la génération de documentation avec CMake et Doxygen
+# Série d'exercices guidés sur la génération de documentation avec CMake et Doxygen
 
-#### Exercice 1 : Configuration de base avec Doxygen
+## Exercice 1 : Configuration de base avec Doxygen
 
 **Objectif :** Configurer un projet CMake simple et générer la documentation avec Doxygen.
 
@@ -98,7 +98,7 @@
      ```
    - La documentation sera générée dans le répertoire `build/docs`.
 
-#### Exercice 2 : Génération de documentation avec des pages personnalisées
+## Exercice 2 : Génération de documentation avec des pages personnalisées
 
 **Objectif :** Ajouter des pages personnalisées à la documentation générée par Doxygen.
 
@@ -147,7 +147,7 @@
 5. **Explications :**
    - `USE_MDFILE_AS_MAINPAGE = @CMAKE_SOURCE_DIR@/docs/mainpage.md`: Utilise `mainpage.md` comme page principale de la documentation.
 
-#### Exercice 3 : Ajouter la documentation pour les fonctions
+## Exercice 3 : Ajouter la documentation pour les fonctions
 
 **Objectif :** Ajouter des commentaires de documentation aux fonctions et générer la documentation mise à jour.
 
@@ -191,7 +191,7 @@
    - Les commentaires de documentation utilisent la syntaxe Doxygen (par exemple, `/** ... */`).
    - La documentation des fonctions comprend des descriptions et des détails sur les paramètres et les valeurs de retour.
 
-#### Exercice 4 : Génération de documentation pour des classes
+## Exercice 4 : Génération de documentation pour des classes
 
 **Objectif :** Ajouter une classe au projet et générer la documentation pour cette classe.
 
