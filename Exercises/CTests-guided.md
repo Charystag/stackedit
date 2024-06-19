@@ -231,18 +231,20 @@
    my_project/
    ├── CMakeLists.txt
    ├── main.cpp
-   ├── src/
-   │   ├── add.cpp
+   ├── inc/
    │   ├── add.h
-   │   ├── subtract.cpp
    │   └── subtract.h
+   ├── src/
+   │   ├── CMakeLists.txt
+   │   ├── add.cpp
+   │   └── subtract.cpp
    └── tests/
        ├── CMakeLists.txt
        ├── test_add.cpp
        └── test_subtract.cpp
    ```
 
-2. **Contenu de `src/subtract.h` :**
+2. **Contenu de `inc/subtract.h` :**
    ```cpp
    #ifndef SUBTRACT_H
    #define SUBTRACT_H
@@ -312,13 +314,15 @@
    my_project/
    ├── CMakeLists.txt
    ├── main.cpp
-   ├── src/
-   │   ├── add.cpp
+   ├── inc/
    │   ├── add.h
-   │   ├── subtract.cpp
    │   ├── subtract.h
-   │   ├── multiply.cpp
    │   └── multiply.h
+   ├── src/
+   │   ├── CMakeLists.txt
+   │   ├── add.cpp
+   │   ├── subtract.cpp
+   │   └── multiply.cpp
    └── tests/
        ├── CMakeLists.txt
        ├── test_add.cpp
@@ -326,7 +330,7 @@
        └── test_multiply.cpp
    ```
 
-2. **Contenu de `src/multiply.h` :**
+2. **Contenu de `inc/multiply.h` :**
    ```cpp
    #ifndef MULTIPLY_H
    #define MULTIPLY_H
@@ -404,15 +408,17 @@
    my_project/
    ├── CMakeLists.txt
    ├── main.cpp
-   ├── src/
-   │   ├── add.cpp
+   ├── inc/
    │   ├── add.h
-   │   ├── subtract.cpp
    │   ├── subtract.h
-   │   ├── multiply.cpp
    │   ├── multiply.h
-   │   ├── divide.cpp
    │   └── divide.h
+   ├── src/
+   │   ├── CMakeLists.txt
+   │   ├── add.cpp
+   │   ├── subtract.cpp
+   │   ├── multiply.cpp
+   │   └── divide.cpp
    └── tests/
        ├── CMakeLists.txt
        ├── test_add.cpp
@@ -421,7 +427,7 @@
        └── test_divide.cpp
    ```
 
-2. **Contenu de `src/divide.h` :**
+2. **Contenu de `inc/divide.h` :**
    ```cpp
    #ifndef DIVIDE_H
    #define DIVIDE_H
@@ -434,6 +440,7 @@
 3. **Contenu de `src/divide.cpp` :**
    ```cpp
    #include "divide.h"
+   #include <exception>
 
    int divide(int a, int b) {
        if (b == 0) {
