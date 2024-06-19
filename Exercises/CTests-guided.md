@@ -190,7 +190,7 @@
 
    project(MyProject)
 
-	include_directories(inc)
+   include_directories(inc)
 
    add_executable(MyProject main.cpp)
 
