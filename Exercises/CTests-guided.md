@@ -142,15 +142,17 @@
    my_project/
    ├── CMakeLists.txt
    ├── main.cpp
-   ├── src/
-   │   ├── add.cpp
+   ├── inc/
    │   └── add.h
+   ├── src/
+       ├── CMakeLists.txt
+   │   └── add.cpp
    └── tests/
        ├── CMakeLists.txt
        └── test_add.cpp
    ```
 
-2. **Contenu de `src/add.h` :**
+2. **Contenu de `inc/add.h` :**
    ```cpp
    #ifndef ADD_H
    #define ADD_H
@@ -187,6 +189,8 @@
    cmake_minimum_required(VERSION 3.10)
 
    project(MyProject)
+
+	include_directories(inc)
 
    add_executable(MyProject main.cpp)
 
