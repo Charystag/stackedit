@@ -64,6 +64,20 @@ Voici une série de 15 exercices progressifs et guidés pour les débutants qui 
    - `cmake --build .`: Compile le projet en utilisant les fichiers de construction générés.
    - `./MyProject`: Exécute l'exécutable généré.
 
+<blockquote>
+
+Vous pouvez lancer la commande 
+```bash
+cmake -S . -B build
+```
+pour générer les fichiers de build depuis le répertoire courant puis 
+```bash
+cmake --build build
+```
+pour build le projet dans le répertoire build depuis le répertoire courant
+
+</blockquote>
+
 #### Exercice 3 : Spécification de la version minimale de CMake
 
 **Objectif :** Spécifier la version minimale requise de CMake.
