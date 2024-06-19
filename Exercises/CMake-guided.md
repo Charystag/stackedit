@@ -360,6 +360,9 @@ pour build le projet dans le répertoire build depuis le répertoire courant
    target_link_libraries(MyProject utils ${Boost_LIBRARIES})
    ```
 
+> You can install the Boost library on ubuntu with 
+> `sudo apt install libboost-all-dev`
+
 3. **Explications :**
    - `find_package(Boost 1.65.1 REQUIRED)`: Cherche la bibliothèque Boost version 1.65.1 ou plus récente.
    - `include_directories(include ${Boost_INCLUDE_DIRS})`: Ajoute les répertoires d'inclusion de Boost.
