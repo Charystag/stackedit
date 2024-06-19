@@ -551,7 +551,7 @@ pour build le projet dans le répertoire build depuis le répertoire courant
 
 5. **Instructions :**
    - Modifiez `CMakeLists.txt` et `src/CMakeLists.txt` pour ajouter des commandes d'installation.
-   - Recompilez le projet et exécutez la commande `cmake --install .` pour installer les fichiers dans le répertoire `install`.
+   - Recompilez le projet et exécutez la commande `cmake --install build --prefix "$PWD/install"` pour installer les fichiers dans le répertoire `install`.
 
 #### Exercice 14 : Ajout de tests unitaires avec CTest
 
