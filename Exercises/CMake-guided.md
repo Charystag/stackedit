@@ -360,7 +360,7 @@ pour build le projet dans le répertoire build depuis le répertoire courant
    target_link_libraries(MyProject utils ${Boost_LIBRARIES})
    ```
 
-> You can install the Boost library on ubuntu with 
+> Vous pouvez installer la librairie boost sur ubuntu avec: 
 > `sudo apt install libboost-all-dev`
 
 3. **Explications :**
