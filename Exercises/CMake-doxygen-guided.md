@@ -275,9 +275,7 @@
        print_hello();
        
        MyClass obj(10);
-       std::cout << "Value: " << obj
-
-.getValue() << std::endl;
+       std::cout << "Value: " << obj .getValue() << std::endl;
        obj.setValue(20);
        std::cout << "New Value: " << obj.getValue() << std::endl;
        
