@@ -365,9 +365,7 @@ add_executable(test_add test_add.cpp)
 target_link_libraries(test_add MyProject)
 add_test(NAME AddTest COMMAND test_add)
 
-add_executable(test_sub test
-
-_sub.cpp)
+add_executable(test_sub test_sub.cpp)
 target_link_libraries(test_sub MyProject)
 add_test(NAME SubTest COMMAND test_sub)
 
