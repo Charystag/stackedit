@@ -399,6 +399,7 @@ USE_MDFILE_AS_MAINPAGE = @CMAKE_SOURCE_DIR@/docs/mainpage.md
 name: CI
 
 on: [push, pull_request]
+  branches: main
 
 jobs:
   build:
@@ -411,7 +412,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake doxygen graphviz
+          sudo apt-get install -y cmake doxygen
 
       - name: Configure CMake
         run: cmake -B build
@@ -423,9 +424,11 @@ jobs:
         run: ctest --test-dir build --output-on-failure
 
       - name: Generate docs
+        if: ${{ success() }}
         run: cmake --build build --target doc_doxygen
 
       - name: Push generated docs to repository
+        if: ${{ success() }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -435,6 +438,22 @@ jobs:
           git commit -m "Update Doxygen documentation"
           git push origin main
 ```
+
+### Configuration des Règles de Protection de Branche
+
+Pour vous assurer que les modifications ne peuvent pas être fusionnées dans la branche `main` à moins que tous les tests passent :
+
+1. **Accédez aux paramètres du dépôt :**
+   - Naviguez vers votre dépôt sur GitHub.
+   - Cliquez sur `Settings`.
+   - Dans la barre latérale gauche, cliquez sur `Branches`.
+
+2. **Ajoutez une règle de protection de branche :**
+   - Cliquez sur `Add rule`.
+   - Dans le champ `Branch name pattern`, entrez `main`.
+   - Cochez `Require status checks to pass before merging`.
+   - Sélectionnez les vérifications pertinentes (par exemple, le nom de votre workflow CI).
+   - Optionnellement, cochez `Require pull request reviews before merging` pour ajouter une couche de révision humaine avant la fusion.
 
 ### Partie 3 : Création du README
 
@@ -451,19 +470,19 @@ mkdir build
 cd build
 cmake ..
 cmake --build .
-`` ` `` `` ` `` `` ` ``
+\```
 
 ## Running the tests
 
 ```sh
 ctest --test-dir build
-`` ` `` `` ` `` `` ` ``
+\```
 
 ## Generating the documentation
 
 ```sh
 cmake --build build --target doc_doxygen
-`` ` `` `` ` `` `` ` ``
+\```
 
 ## CI/CD
 
