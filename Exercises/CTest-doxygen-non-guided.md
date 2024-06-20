@@ -59,13 +59,13 @@ Voici une série d'exercices non guidés pour vous aider à pratiquer l'intégra
 
 ## Exercice 4 : Gestion des erreurs et documentation
 
-**Objectif :** Ajouter une gestion des erreurs à la fonction `div`, documenter cette fonction et écrire des tests unitaires.
+**Objectif :** Ajouter une gestion des erreurs à la fonction `divide`, documenter cette fonction et écrire des tests unitaires.
 
 1. **Tâches à réaliser :**
-   - Ajoutez les fichiers `div.h` et `div.cpp` dans les répertoires `include` et `src`.
-   - Implémentez la fonction `div` avec une gestion des erreurs (par exemple, division par zéro).
-   - Documentez la fonction `div` en incluant des informations sur la gestion des erreurs.
-   - Ajoutez des tests unitaires pour la fonction `div` dans `tests/test_div.cpp`.
+   - Ajoutez les fichiers `divide.h` et `divide.cpp` dans les répertoires `include` et `src`.
+   - Implémentez la fonction `divide` avec une gestion des erreurs (par exemple, divideision par zéro).
+   - Documentez la fonction `divide` en incluant des informations sur la gestion des erreurs.
+   - Ajoutez des tests unitaires pour la fonction `divide` dans `tests/test_divide.cpp`.
    - Mettez à jour les fichiers CMake pour inclure la nouvelle fonction et les tests associés.
 
 ---
@@ -83,19 +83,19 @@ Voici une série d'exercices non guidés pour vous aider à pratiquer l'intégra
    │   ├── add.h
    │   ├── sub.h
    │   ├── mul.h
-   │   └── div.h
+   │   └── divide.h
    ├── src/
    │   ├── CMakeLists.txt
    │   ├── add.cpp
    │   ├── sub.cpp
    │   ├── mul.cpp
-   │   └── div.cpp
+   │   └── divide.cpp
    ├── tests/
    │   ├── CMakeLists.txt
    │   ├── test_add.cpp
    │   ├── test_sub.cpp
    │   ├── test_mul.cpp
-   │   └── test_div.cpp
+   │   └── test_divide.cpp
    ├── docs/
    │   └── mainpage.md
    └── Doxyfile.in
