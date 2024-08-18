@@ -1,7 +1,3 @@
-Voici les quatre exercices en français, rédigés avec des étapes guidées et des explications pour chaque partie. J'ai également inclus des liens vers la documentation officielle de Qt pour vous aider à approfondir vos connaissances.
-
----
-
 ## **Exercice 1 : Introduction à QML (1h)**
 
 **Objectif** : Créer un fichier QML simple pour comprendre la syntaxe de base.
@@ -331,7 +327,3 @@ Voici les quatre exercices en français, rédigés avec des étapes guidées et 
    - Modifiez l'espacement entre les éléments, changez les alignements ou ajoutez d'autres éléments pour voir comment la disposition s'adapte.
    - Essayez d'utiliser d'autres types de layouts comme `GridLayout` ou `Flow` pour différentes options de disposition.
    - Pour en savoir plus, explorez la [documentation des différents types de Layouts](https://doc.qt.io/qt-6/qml-qtquick-layouts-gridlayout.html).
-
----
-
-Ces exercices devraient vous offrir une introduction complète à QML et à la façon dont il peut être utilisé en complément ou à la place des Qt Widgets. Ils sont conçus pour vous aider à comprendre les concepts de base ainsi que des concepts plus avancés de QML, tout en vous guidant dans la création d'interfaces utilisateur pratiques.
