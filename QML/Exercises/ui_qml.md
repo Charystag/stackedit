@@ -245,9 +245,7 @@ Apprendre à afficher et manipuler des images et des médias en QML.
 
 ---
 
-## **Exercice 5 : Création et Utilisation de Composants Personnalisés (1 heure
-
- 30 minutes)**
+## **Exercice 5 : Création et Utilisation de Composants Personnalisés (1 heure 30 minutes)**
 
 ### **Objectif** :
 Apprendre à créer des composants personnalisés en QML pour réutiliser du code et structurer votre interface.
@@ -334,44 +332,44 @@ Apprendre à créer des interfaces adaptatives en QML qui s'ajustent à différe
 
 1. **Utiliser des Layouts pour la Conception Responsive** :
    - Ajoutez ce code pour créer une interface responsive :
-     ```qml
-     import QtQuick 6.7
-     import QtQuick.Controls 6.7
-     import QtQuick.Layouts 6.7
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Layouts 6.7
 
-     Window {
-         visible: true
-         width: 400
-         height: 400
-         title: "Conception Responsive"
+Window {
+    visible: true
+    id: myWindow
+    width: 400
+    height: 400
+    title: "Conception Responsive"
 
-         ColumnLayout {
-             anchors.fill: parent
-             spacing: 10
-             padding: 20
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: 10
 
-             Rectangle {
-                 width: parent.width * 0.5
-                 height: 50
-                 color: "lightblue"
-                 Layout.alignment: Qt.AlignHCenter
-             }
+        Rectangle {
+            width: myWindow.width * 0.5
+            height: 50
+            color: "lightblue"
+            Layout.alignment: Qt.AlignHCenter
+        }
 
-             Rectangle {
-                 width: parent.width * 0.75
-                 height: 50
-                 color: "lightgreen"
-                 Layout.alignment: Qt.AlignHCenter
-             }
+        Rectangle {
+            width: myWindow.width * 0.75
+            height: 50
+            color: "lightgreen"
+            Layout.alignment: Qt.AlignHCenter
+        }
 
-             Rectangle {
-                 width: parent.width
-                 height: 50
-                 color: "coral"
-             }
-         }
-     }
-     ```
+        Rectangle {
+            width: myWindow.width
+            height: 50
+            color: "coral"
+        }
+    }
+}
+```
    - **Explication** : Les rectangles sont dimensionnés proportionnellement à la largeur de la fenêtre, et les marges sont ajustées pour une conception responsive.
 
 2. **Gérer les Changements d'Orientation** :
