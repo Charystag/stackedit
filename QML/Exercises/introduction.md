@@ -172,65 +172,64 @@
 
 2. **Définir le répertoire par défaut pour les images** :
    - Ouvrez `main.qml` et ajoutez le code suivant pour définir un répertoire par défaut pour les images et un chemin vers une image spécifique :
-     ```qml
-     import QtQuick 6.7
-     import QtQuick.Controls 6.7
+	```qml
+	import QtQuick 6.7
+	import QtQuick.Controls 6.7
 
-     Window {
-         visible: true
-         width: 400
-         height: 400
-         title: "Exploration des éléments de base"
+Window {
+    visible: true
+    width: 400
+    height: 400
+    title: "Exploration des éléments de base"
+    property string default_dir: "file:///Users/YourName/Pictures/"
+    property string img: default_dir + "picture.png"
 
-         // Définir le répertoire par défaut et le chemin de l'image
-         property string defaultDir: "file:///Users/YourName/Pictures/"
-         property string imagePath: defaultDir + "example_image.png"
+    Rectangle {
+        width: 400
+        height: 400
+        color: "lightblue"
 
-         Rectangle {
-             width: 400
-             height: 400
-             color: "lightblue"
+        Image {
+            source: img
+            id:img1
+            width:200
+            height:200
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 20
+        }
 
-             Image {
-                 source: imagePath
-                 anchors.horizontalCenter: parent.horizontalCenter
-                 anchors.top: parent.top
-                 anchors.topMargin: 20
-             }
+        Text {
+            text: "Phrase 1"
+            id:t1
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: img1.bottom
+            anchors.topMargin: 120
+        }
 
-             Text {
-                 text: "Phrase 1"
-                 anchors.horizontalCenter: parent.horizontalCenter
-                 anchors.top: image.bottom
-                 anchors.topMargin: 20
-             }
+        Text {
+            text: "Phrase 2"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 150
+        }
 
-             Text {
-                 text: "Phrase 2"
-                 anchors.horizontalCenter: parent.horizontalCenter
-                 anchors.top: prevText.bottom
-                 anchors.topMargin: 20
-             }
+        Text {
+            text: "Phrase 3"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 180
+        }
 
-             Text {
-                 text: "Phrase 3"
-                 anchors.horizontalCenter: parent.horizontalCenter
-                 anchors.top: prevText.bottom
-                 anchors.topMargin: 20
-             }
-
-             Button {
-                
-
- text: "Changer couleur"
-                 anchors.bottom: parent.bottom
-                 anchors.horizontalCenter: parent.horizontalCenter
-                 onClicked: parent.color = Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
-             }
-         }
-     }
-     ```
-
+        Button {
+            text: "Changer couleur"
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            onClicked: parent.color = Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
+        }
+    }
+}
+	```
 3. **Assurez-vous que le chemin de l'image est correct** :
    - Remplacez `"/Users/YourName/Pictures/"` par le chemin réel vers votre répertoire d'images sur votre système macOS.
    - Assurez-vous que `example_image.png` existe dans ce répertoire.
