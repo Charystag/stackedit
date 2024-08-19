@@ -258,7 +258,7 @@ Apprendre à créer des composants personnalisés en QML pour réutiliser du cod
 
 4. **Expérimenter** :
    - **Ajouter Plus de Propriétés** : Ajoutez des propriétés pour modifier la couleur, la taille, etc., depuis `main.qml`.
-   - **Documentation** : Consultez la [documentation sur les composants QML](https://doc.qt.io/qt-6/qml-documents-definetypes.html) pour explorer toutes les options.
+   - **Documentation** : Consultez la [documentation sur les composants QML](https://doc.qt.io/qt-6/qml-qtqml-component.html) pour explorer toutes les options.
 
 ---
 
