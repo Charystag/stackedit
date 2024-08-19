@@ -412,7 +412,7 @@ Window {
 ## **Exercice 6 : Gérer les Interactions Utilisateur (1 heure)**
 
 ### **Objectif** :
-Apprendre à gérer les interactions utilisateur en utilisant `MouseArea`, `TouchArea`, et autres éléments interactifs.
+Apprendre à gérer les interactions utilisateur en utilisant `MouseArea`.
 
 ### **Étapes Guidées** :
 
