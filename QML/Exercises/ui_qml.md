@@ -169,10 +169,11 @@ Apprendre à gérer et styliser le texte en QML, en utilisant les propriétés `
          width: 300
          wrapMode: Text.WordWrap
          horizontalAlignment: Text.AlignHCenter
-         anchors.centerIn: parent
+		 font.family: "Arial"
+         anchors.bottom: parent.bottom
      }
      ```
-   - **Explication** : Le texte est aligné au centre et le wrapping est activé pour gérer le texte long.
+   - **Explication** : Le texte est aligné en bas de la fenêtre et le wrapping est activé pour gérer le texte long.
 
 3. **Exécuter le Projet** :
    - Lancez le projet et observez le texte stylisé et aligné.
