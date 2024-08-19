@@ -260,9 +260,7 @@ Apprendre à organiser des éléments en utilisant les ancrages (`anchors`) et l
              anchors.margins: 10
          }
 
-         Rectangle
-
- {
+         Rectangle {
              width: 100
              height: 100
              color: "lightcoral"
