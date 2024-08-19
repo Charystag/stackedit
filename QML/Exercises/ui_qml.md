@@ -111,7 +111,7 @@ Comprendre comment utiliser les couleurs, les dégradés et les différentes fa�
      Rectangle {
          width: 200
          height: 200
-         anchors.centerIn: parent
+         anchors.right: parent.right
 
          gradient: Gradient {
              GradientStop { position: 0.0; color: "lightblue" }
