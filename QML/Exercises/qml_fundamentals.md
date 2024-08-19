@@ -1,4 +1,4 @@
-, et autres éléments interactifs.## **Exercice 1 : Comprendre la Syntaxe QML (30 minutes)**
+**Exercice 1 : Comprendre la Syntaxe QML (30 minutes)**
 
 ### **Objectif** :
 Apprendre les bases de la syntaxe QML, y compris la structure des fichiers et la déclaration des éléments.
