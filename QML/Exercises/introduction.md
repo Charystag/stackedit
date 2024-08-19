@@ -182,7 +182,7 @@ Window {
     height: 400
     title: "Exploration des éléments de base"
     property string default_dir: "file:///Users/YourName/Pictures/"
-    property string img: default_dir + "picture.png"
+    property string img: default_dir + "example_image.png"
 
     Rectangle {
         width: 400
@@ -234,11 +234,7 @@ Window {
    - Remplacez `"/Users/YourName/Pictures/"` par le chemin réel vers votre répertoire d'images sur votre système macOS.
    - Assurez-vous que `example_image.png` existe dans ce répertoire.
 
-4. **Exécuter le fichier QML** :
-   - Définissez `exploration.qml` comme fichier QML principal si ce n’est pas déjà le cas.
-   - Cliquez sur **Exécuter**. La fenêtre doit afficher une image en haut, suivie de trois lignes de texte et d'un bouton qui change la couleur de fond lorsqu'il est cliqué.
-
-5. **Expérimenter** :
+4. **Expérimenter** :
    - Essayez de changer les propriétés des textes (par exemple, la taille de la police, la couleur) ou d’utiliser différentes images.
    - Modifiez la disposition en ajustant les marges et les propriétés d’ancrage.
    - Pour plus d’informations sur les éléments utilisés, consultez la [documentation de Qt](https://doc.qt.io/qt-6/qml-qtquick-image.html) pour l'élément `Image` et la [documentation sur les propriétés](https://doc.qt.io/qt-6/qml-propertybinding.html).
