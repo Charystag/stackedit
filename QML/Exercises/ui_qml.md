@@ -72,7 +72,7 @@ Apprendre à positionner et dimensionner des éléments dans QML en utilisant le
 
 4. **Expérimenter** :
    - **Changer les Ancrages** : Essayez d’ancrer les rectangles à d'autres côtés (droite, bas) ou de les aligner les uns par rapport aux autres.
-   - **Documentation** : Consultez la [documentation sur les ancrages](https://doc.qt.io/qt-6/qtquick-positioning-anchor-layout.html) pour explorer plus d'options.
+   - **Documentation** : Consultez la [documentation sur les ancrages](https://doc.qt.io/qt-6/qtquick-positioning-anchors.html) pour explorer plus d'options.
 
 ---
 
