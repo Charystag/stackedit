@@ -375,46 +375,50 @@ Apprendre à créer des interfaces adaptatives en QML qui s'ajustent à différe
 
 2. **Gérer les Changements d'Orientation** :
    - Modifiez le code pour ajuster la mise en page en fonction de l'orientation :
-     ```qml
-     import QtQuick 6.7
-     import QtQuick.Controls 6.7
-     import QtQuick.Layouts 6.7
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Layouts 6.7
 
-     Window {
-         visible: true
-         width: 400
-         height: 400
-         title: "Conception Responsive"
+Window {
+    visible: true
+    width: 400
+    height: 400
+    id: myWindow
+    title: "Conception Responsive"
 
-         property bool isPortrait: width < height
+    property bool isPortrait: width < height
 
-         ColumnLayout {
-             anchors.fill: parent
-             spacing: isPortrait ? 10 : 20
-             padding: isPortrait ? 20 : 10
+    onIsPortraitChanged: {
+        console.log("Orientation changed: " + (isPortrait ? "Portrait" : "Landscape"))
+    }
 
-             Rectangle {
-                 width: isPortrait ? parent.width * 0.5 : parent.width * 0.25
-                 height: 50
-                 color: "lightblue"
-                 Layout.alignment: Qt.AlignHCenter
-             }
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: isPortrait ? 10 : 20  // Adjust spacing based on orientation
 
-             Rectangle {
-                 width: isPortrait ? parent.width * 0.75 : parent.width * 0.5
-                 height: 50
-                 color: "lightgreen"
-                 Layout.alignment: Qt.AlignHCenter
-             }
+        Rectangle {
+            width: isPortrait ? myWindow.width * 0.5 : myWindow.width * 0.25
+            height: 50
+            color: "lightblue"
+            Layout.alignment: Qt.AlignHCenter
+        }
 
-             Rectangle {
-                 width: parent.width
-                 height: 50
-                 color: "coral"
-             }
-         }
-     }
-     ```
+        Rectangle {
+            width: isPortrait ? myWindow.width * 0.75 : myWindow.width * 0.5
+            height: 50
+            color: "lightgreen"
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        Rectangle {
+            width: myWindow.width
+            height: 50
+            color: "coral"
+        }
+    }
+}
+```
    - **Explication** : La disposition et la taille des éléments changent selon l'orientation de l'écran.
 
 3. **Exécuter le Projet** :
