@@ -364,4 +364,4 @@ Window {
 
 4. **Expérimenter** :
    - **Ajouter Plus de Réactivité** : Essayez d'ajuster d'autres propriétés en fonction de la taille de l'écran, comme la taille du texte ou la visibilité des éléments.
-   - **Documentation** : Consultez la [documentation sur la conception responsive](https://doc.qt.io/qt-6/qtquick-responsive-design.html) pour en savoir plus.
+   - **Documentation** : Consultez la [documentation sur la conception responsive](https://doc.qt.io/qt-6/qtquicklayouts-responsive.html) pour en savoir plus.
