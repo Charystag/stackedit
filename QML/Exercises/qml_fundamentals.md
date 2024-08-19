@@ -447,40 +447,10 @@ Apprendre à gérer les interactions utilisateur en utilisant `MouseArea`, `Touc
      ```
    - Ce code change la couleur du rectangle et affiche un message dans la console lorsqu'il est cliqué.
 
-2. **Utiliser `TouchArea` pour Gérer les Interactions Tactiles** :
-   - `TouchArea` permet de gérer les interactions tactiles. Utilisez-le si vous ciblez des appareils tactiles :
-     ```qml
-     import QtQuick 6.7
-     import QtQuick.Controls 6.7
-
-     Window {
-         visible: true
-         width: 400
-         height: 400
-         title: "Interactions Utilisateur"
-
-         Rectangle {
-             width: 200
-             height: 200
-             color: "lightblue"
-             anchors.centerIn: parent
-
-             TouchArea {
-                 anchors.fill: parent
-                 onPressed: {
-                     console.log("Rectangle touché")
-                     parent.color = "lightcoral"
-                 }
-             }
-         }
-     }
-     ```
-   - Ce code change la couleur du rectangle et affiche un message lorsqu'il est touché.
-
 3. **Exécuter le Projet** :
-   - Lancez l'application et interagissez avec le rectangle. Testez à la fois avec la souris et, si possible, avec un appareil tactile.
+   - Lancez l'application et interagissez avec le rectangle. Testez avec la souris.
 
 4. **Expérimenter** :
-   - **Ajouter d'autres Interactions** : Ajoutez des éléments comme `SwipeArea` ou `PinchArea` pour des interactions plus complexes.
-   - **Documentation** : Consultez la [documentation sur `MouseArea`](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html) et [TouchArea](https://doc.qt.io/qt-6/qml-qtquick-toucharea.html) pour en savoir plus.
+   - **Utiliser d'autres signaux** : Consultez la [documentation sur `MouseArea`](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html) pour utiliser le signal `doubleClicked` avec 
+   cette MouseArea
 
