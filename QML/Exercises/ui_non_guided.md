@@ -28,6 +28,9 @@ Apprendre à positionner et dimensionner des éléments dans une application QML
 #### **Objectif :**
 Apprendre à utiliser les couleurs et les dégradés dans QML pour styliser les éléments de l'interface.
 
+> :bulb: Si le module `QtGraphicalEffects` n'est pas trouvé, il faut mettre l'import suivant en haut du fichier QML : 
+> `import Qt5Compat.GraphicalEffects`. C'est le [module de compatibilité](https://doc.qt.io/qt-6/qtgraphicaleffects5-index.html) de Qt5 vers Qt6
+
 #### **Tâches :**
 
 1. **Application de Couleurs :**
