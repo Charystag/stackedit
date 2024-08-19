@@ -184,68 +184,7 @@ Apprendre à gérer et styliser le texte en QML, en utilisant les propriétés `
 
 ---
 
-## **Exercice 4 : Images et Médias en QML (1 heure)**
-
-### **Objectif** :
-Apprendre à afficher et manipuler des images et des médias en QML.
-
-### **Étapes Guidées** :
-
-1. **Afficher une Image** :
-   - Ajoutez ce code pour afficher une image dans `main.qml` :
-     ```qml
-     import QtQuick 6.7
-     import QtQuick.Controls 6.7
-
-     Window {
-         visible: true
-         width: 400
-         height: 400
-         title: "Images et Médias"
-
-         Image {
-             source: "qrc:/images/logo.png"
-             width: 200
-             height: 200
-             anchors.centerIn: parent
-             fillMode: Image.PreserveAspectFit
-         }
-     }
-     ```
-   - **Explication** : L'image est chargée depuis les ressources et dimensionnée pour s'adapter tout en conservant son ratio d'aspect.
-
-2. **Travailler avec des Médias** :
-   - Ajoutez un lecteur vidéo :
-     ```qml
-     import QtQuick 6.7
-     import QtMultimedia 6.7
-
-     Window {
-         visible: true
-         width: 400
-         height: 400
-         title: "Lecture Vidéo"
-
-         Video {
-             source: "file:///chemin/vers/votre_video.mp4"
-             anchors.fill: parent
-             autoPlay: true
-             loops: MediaPlayer.Infinite
-         }
-     }
-     ```
-   - **Explication** : La vidéo est lue en boucle, en remplissant toute la fenêtre.
-
-3. **Exécuter le Projet** :
-   - Lancez le projet et observez l'affichage de l'image ou de la vidéo.
-
-4. **Expérimenter** :
-   - **Modifier l'Affichage des Images** : Essayez différents `fillMode` (`Image.Stretch`, `Image.Tile`, etc.) pour voir comment l'image s'ajuste.
-   - **Documentation** : Consultez la [documentation sur `Image`](https://doc.qt.io/qt-6/qml-qtquick-image.html) et [Video](https://doc.qt.io/qt-6/qml-qtmultimedia-video.html) pour explorer toutes les options.
-
----
-
-## **Exercice 5 : Création et Utilisation de Composants Personnalisés (1 heure 30 minutes)**
+## **Exercice 4 : Création et Utilisation de Composants Personnalisés (1 heure 30 minutes)**
 
 ### **Objectif** :
 Apprendre à créer des composants personnalisés en QML pour réutiliser du code et structurer votre interface.
@@ -323,7 +262,7 @@ Apprendre à créer des composants personnalisés en QML pour réutiliser du cod
 
 ---
 
-## **Exercice 6 : Conception Responsive en QML (1 heure 30 minutes)**
+## **Exercice 5 : Conception Responsive en QML (1 heure 30 minutes)**
 
 ### **Objectif** :
 Apprendre à créer des interfaces adaptatives en QML qui s'ajustent à différentes tailles d'écran et orientations.
