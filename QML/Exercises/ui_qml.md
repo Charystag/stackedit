@@ -251,6 +251,9 @@ Apprendre à créer des composants personnalisés en QML pour réutiliser du cod
          }
      }
      ```
+
+> :warning: Si vous compilez le projet avec qmake, pensez à ajouter MonBouton.qml aux ressources dans le `.pro`
+
    - **Explication** : `MonBouton` est un composant réutilisable qui émet un signal lorsqu'il est cliqué.
 
 3. **Exécuter le Projet** :
