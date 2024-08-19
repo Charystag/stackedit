@@ -33,7 +33,7 @@ Apprendre à utiliser les couleurs et les dégradés dans QML pour styliser les 
 1. **Application de Couleurs :**
    - Créez trois rectangles de tailles différentes et appliquez-leur des couleurs de fond spécifiques (par exemple, rouge, vert, bleu).
 
-   **Documentation** : [Propriétés de Couleur](https://doc.qt.io/qt-6/qml-qtquick-item.html#color-prop)
+   **Documentation** : [Propriétés de Couleur](https://doc.qt.io/qt-6/qml-color.html)
 
 2. **Ajout de Dégradés :**
    - Modifiez l'un des rectangles pour utiliser un dégradé linéaire comme couleur de fond. Expérimentez avec plusieurs couleurs pour le dégradé.
@@ -43,7 +43,7 @@ Apprendre à utiliser les couleurs et les dégradés dans QML pour styliser les 
 3. **Dégradé Radial :**
    - Créez un rectangle avec un dégradé radial, et placez-le au centre de la fenêtre. Ajustez le dégradé pour qu'il commence au centre et se diffuse vers les bords.
 
-   **Documentation** : [Dégradés Radiaux](https://doc.qt.io/qt-6/qml-qtquick-radialgradient.html)
+   **Documentation** : [Dégradés Radiaux](https://doc.qt.io/qt-5/qml-qtgraphicaleffects-radialgradient.html)
 
 ---
 
@@ -62,7 +62,7 @@ Apprendre à manipuler et styliser le texte dans QML.
 2. **Alignement et Style :**
    - Créez trois éléments `Text` alignés horizontalement avec différents styles de police (gras, italique, souligné). Placez-les en haut de la fenêtre.
 
-   **Documentation** : [Propriétés de Style de Police](https://doc.qt.io/qt-6/qml-qtquick-text.html#font-prop)
+   **Documentation** : [Propriétés de Style de Police](https://doc.qt.io/qt-6/qml-font.html)
 
 3. **Manipulation Dynamique :**
    - Ajoutez un champ de texte (`TextInput`) sous les éléments `Text`. Lorsque l'utilisateur saisit du texte, celui-ci doit apparaître en temps réel dans un autre élément `Text` situé en dessous.
@@ -79,17 +79,17 @@ Apprendre à créer et utiliser des composants personnalisés pour réutiliser d
 1. **Créer un Composant Personnalisé :**
    - Créez un composant `MonBouton.qml` qui représente un bouton stylisé avec du texte au centre. Le bouton doit changer de couleur lorsqu'il est cliqué.
 
-   **Documentation** : [Définir des Types en QML](https://doc.qt.io/qt-6/qml-documents-definetypes.html)
+   **Documentation** : [Définir des Types en QML](https://doc.qt.io/qt-6/qtqml-documents-definetypes.html)
 
 2. **Réutilisation du Composant :**
    - Utilisez ce composant `MonBouton` dans `main.qml` pour créer une interface avec trois boutons différents, chacun avec un texte différent.
 
-   **Documentation** : [Réutilisation de Composants](https://doc.qt.io/qt-6/qml-qtqml-components.html)
+   **Documentation** : [Réutilisation de Composants](https://doc.qt.io/qt-6/qml-qtqml-component.html)
 
 3. **Passer des Propriétés au Composant :**
    - Ajoutez une propriété `buttonText` à `MonBouton.qml` pour permettre de personnaliser le texte du bouton depuis `main.qml`.
 
-   **Documentation** : [Propriétés Personnalisées](https://doc.qt.io/qt-6/qml-qtqml-syntax-objectattributes.html)
+   **Documentation** : [Propriétés Personnalisées](https://doc.qt.io/qt-6/qtqml-syntax-objectattributes.html)
 
 ---
 
@@ -103,12 +103,12 @@ Apprendre à concevoir des interfaces qui s'adaptent dynamiquement aux différen
 1. **Disposition Réactive :**
    - Créez une interface avec un `Row` de trois rectangles. Faites en sorte que les rectangles se réorganisent verticalement (`Column`) lorsque la fenêtre est réduite en dessous d'une certaine largeur.
 
-   **Documentation** : [Layouts en QML](https://doc.qt.io/qt-6/qtquick-layouts-overview.html)
+   **Documentation** : [Layouts en QML](https://doc.qt.io/qt-6/qtquicklayouts-overview.html)
 
 2. **Adaptation des Polices :**
    - Ajustez dynamiquement la taille du texte dans un élément `Text` en fonction de la largeur de la fenêtre.
 
-   **Documentation** : [Binding de Propriétés](https://doc.qt.io/qt-6/qml-qtqml-propertybinding.html)
+   **Documentation** : [Binding de Propriétés](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
 
 3. **Cacher des Éléments sur Petits Écrans :**
    - Cachez certains éléments (par exemple, un panneau latéral) lorsque la fenêtre est redimensionnée en dessous d'une certaine largeur.
