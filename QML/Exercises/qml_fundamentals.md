@@ -365,32 +365,39 @@ Comprendre comment utiliser les signaux et slots en QML pour gérer les interact
 
 2. **Ajouter des Signaux Personnalisés** :
    - Ajoutez un signal personnalisé qui émet un message lorsqu'un bouton est cliqué :
-     ```qml
-     import QtQuick 6.7
-     import QtQuick.Controls 6.7
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
 
-     Window {
-         visible: true
-         width: 400
-         height: 400
-         title: "Signaux et Slots"
+Window {
+    id: mainWindow  // Assign an ID to the Window
+    visible: true
+    width: 400
+    height: 400
+    title: "Signaux et Slots"
 
-         signal buttonClicked(string message)
+    // Déclaration d'un signal
+    signal buttonClicked(string message)
 
-         Button {
-             text: "Cliquez-moi"
-             anchors.centerIn: parent
-             onClicked: {
-                 buttonClicked("Le bouton a été cliqué!")
-             }
-         }
+    Button {
+        text: "Cliquez-moi"
+        anchors.centerIn: parent
+        onClicked: {
+            // Émettre le signal avec un message
+            mainWindow.buttonClicked("Le bouton a été cliqué!")
+        }
+    }
 
-         Connections {
-             target: parent
-             onButtonClicked: console.log(message)
-         }
-     }
-     ```
+    Connections {
+        target: mainWindow  // Correctly target the Window using its ID
+
+        // Define the signal handler as an explicit function
+        function onButtonClicked(message) {
+            console.log(message)
+            // Vous pouvez ajouter d'autres actions ici
+        }
+    }
+```
    - Ici, un signal `buttonClicked` est émis avec un message lorsque le bouton est cliqué, et le message est affiché dans la console.
 
 3. **Exécuter le Projet** :
