@@ -165,12 +165,13 @@
 
 ### **Étapes Guidées** :
 
-1. **Créer un nouveau fichier QML** :
-   - Dans votre projet QML existant (`QMLApp`), vous pouvez ajouter un nouveau fichier QML en cliquant droit sur le dossier `QML` et en sélectionnant **Nouveau fichier** -> **Fichier QML**.
-   - Nommez le fichier `exploration.qml` et cliquez sur **Terminer**.
+1. **Créer un nouveau projet QML** :
+   - Allez dans **Fichier** -> **Nouveau fichier ou projet**.
+   - Choisissez **Qt Quick Application - Empty** et cliquez sur **Choisir**.
+   - Nommez ce projet `ExplorationQML`, placez-le dans le même répertoire que le projet précédent, et cliquez sur **Terminer**.
 
 2. **Définir le répertoire par défaut pour les images** :
-   - Ouvrez `exploration.qml` et ajoutez le code suivant pour définir un répertoire par défaut pour les images et un chemin vers une image spécifique :
+   - Ouvrez `main.qml` et ajoutez le code suivant pour définir un répertoire par défaut pour les images et un chemin vers une image spécifique :
      ```qml
      import QtQuick 6.7
      import QtQuick.Controls 6.7
@@ -251,11 +252,13 @@
 
 ### **Étapes Guidées** :
 
-1. **Créer un nouveau fichier QML** :
-   - Ajoutez un nouveau fichier QML dans le projet `QMLApp`, nommez-le `layouts.qml`.
+1. **Créer un nouveau projet QML** :
+   - Allez dans **Fichier** -> **Nouveau fichier ou projet**.
+   - Choisissez **Qt Quick Application - Empty** et cliquez sur **Choisir**.
+   - Nommez ce projet `LayoutsQML`, placez-le dans le même répertoire que le projet précédent, et cliquez sur **Terminer**.
 
 2. **Implémenter les Layouts** :
-   - Remplacez le contenu de `layouts.qml` par le code suivant :
+   - Remplacez le contenu de `main.qml` par le code suivant :
      ```qml
      import QtQuick 6.7
      import QtQuick.Controls 6.7
@@ -320,7 +323,7 @@
    - Consultez la [documentation sur les layouts](https://doc.qt.io/qt-6/qml-qtquick-layouts-columnlayout.html) pour approfondir.
 
 4. **Exécuter le fichier QML** :
-   - Définissez `layouts.qml` comme fichier QML principal.
+   - Définissez `main.qml` comme fichier QML principal.
    - Cliquez sur **Exécuter** et observez comment les éléments sont disposés dans la fenêtre.
 
 5. **Expérimenter** :
