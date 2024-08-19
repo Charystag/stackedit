@@ -1,4 +1,4 @@
-## **Exercice 1 : Comprendre la Syntaxe QML (30 minutes)**
+, et autres éléments interactifs.## **Exercice 1 : Comprendre la Syntaxe QML (30 minutes)**
 
 ### **Objectif** :
 Apprendre les bases de la syntaxe QML, y compris la structure des fichiers et la déclaration des éléments.
@@ -405,7 +405,7 @@ Window {
 
 4. **Expérimenter** :
    - **Ajouter plus de Signaux** : Créez d'autres signaux et slots pour des interactions plus complexes.
-   - **Documentation** : Consultez la [documentation sur les signaux et slots en QML](https://doc.qt.io/qt-6/qml-qtqml-signal.html) pour approfondir.
+   - **Documentation** : Consultez la [documentation sur les signaux et slots en QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html) pour approfondir.
 
 ---
 
