@@ -172,9 +172,9 @@
 
 2. **Définir le répertoire par défaut pour les images** :
    - Ouvrez `main.qml` et ajoutez le code suivant pour définir un répertoire par défaut pour les images et un chemin vers une image spécifique :
-	```qml
-	import QtQuick 6.7
-	import QtQuick.Controls 6.7
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
 
 Window {
     visible: true
@@ -229,7 +229,7 @@ Window {
         }
     }
 }
-	```
+```
 3. **Assurez-vous que le chemin de l'image est correct** :
    - Remplacez `"/Users/YourName/Pictures/"` par le chemin réel vers votre répertoire d'images sur votre système macOS.
    - Assurez-vous que `example_image.png` existe dans ce répertoire.
