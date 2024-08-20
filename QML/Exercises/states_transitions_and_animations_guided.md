@@ -254,7 +254,6 @@ ApplicationWindow {
         width: 100
         height: 100
         color: "lightblue"
-        anchors.centerIn: parent
 
 		SequentialAnimation {
             id: sequentialAnim
