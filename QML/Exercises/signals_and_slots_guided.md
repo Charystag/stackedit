@@ -53,12 +53,12 @@ Comprendre les concepts de base des signaux et slots en QML en créant un signal
    - Utilisez l'élément `Connections` pour écouter le signal `buttonClicked` et afficher le message dans la console.
 
    ```qml
-   Connections {
-       target: rect
-       onButtonClicked: {
-           console.log(message)
-       }
-   }
+	Connections {
+        target: rect
+        function onButtonClicked(message) {
+            console.log(message)
+        }
+    }
    ```
 
    **Documentation :** [Connections - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-connections.html)
@@ -95,6 +95,7 @@ Apprendre à transmettre des données entre des composants en utilisant des sign
    ```qml
    MouseArea {
        anchors.fill: parent
+	   hoverEnabled: true
        onPositionChanged: rect.coordinatesChanged(mouseX, mouseY)
    }
    ```
@@ -107,7 +108,7 @@ Apprendre à transmettre des données entre des composants en utilisant des sign
    ```qml
    Connections {
        target: rect
-       onCoordinatesChanged: {
+       function onCoordinatesChanged(x, y) {
            console.log("X: " + x + ", Y: " + y)
        }
    }
@@ -208,7 +209,7 @@ Comprendre comment synchroniser des composants entre eux en utilisant des signau
        width: 100
        height: 100
        color: "lightgray"
-       anchors.right: rect1.left
+       anchors.left: rect1.right
        anchors.verticalCenter: rect1.verticalCenter
    }
    ```
@@ -221,7 +222,9 @@ Comprendre comment synchroniser des composants entre eux en utilisant des signau
    ```qml
    Connections {
        target: rect1
-       onClicked: rect2.color = "yellow"
+       function onClicked() { 
+	   		rect2.color = "yellow"
+		}
    }
    ```
 
@@ -310,7 +313,7 @@ Apprendre à utiliser un signal global qui affecte plusieurs composants.
 
        Connections {
 	   		target: mainWindow
-           	onGlobalSignal: {
+           	function onGlobalSignal() {
                console.log("Rect1: " + message)
            }
        }
@@ -326,7 +329,7 @@ Apprendre à utiliser un signal global qui affecte plusieurs composants.
 
        Connections {
            target: mainWindow
-           onGlobalSignal: {
+           function onGlobalSignal() {
                console.log("Rect2: " + message)
            }
        }
