@@ -9,7 +9,7 @@ Créer un signal simple dans un composant QML et le connecter à un slot qui aff
 - Connectez ce signal à un slot qui affiche un message dans la console.
 
 **Documentation :**
-- [Signal - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-signal.html)
+- [Signal - Qt Documentation](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 - [MouseArea - Qt Documentation](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html)
 - [Connections - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-connections.html)
 
@@ -26,7 +26,7 @@ Apprendre à émettre des signaux avec des paramètres et les utiliser dans un s
 - Affichez les coordonnées dans la console en utilisant un slot.
 
 **Documentation :**
-- [Signal avec Paramètres - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-signal.html#signal-parameters)
+- [Signal avec Paramètres - Qt Documentation](https://doc.qt.io/qt-6/qtqml-syntax-signals.html#signal-parameters)
 - [onPositionChanged - Qt Documentation](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html#onPositionChanged-signal)
 
 ---
@@ -42,8 +42,8 @@ Créer un composant QML personnalisé qui émet un signal lorsqu'une action spé
 - Modifiez l'apparence du bouton lorsqu'il est cliqué.
 
 **Documentation :**
-- [Créer un Composant Personnalisé - Qt Documentation](https://doc.qt.io/qt-6/qmlapplications.html)
-- [Signal et Slot dans les Composants - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-signal.html)
+- [Créer un Composant Personnalisé - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-component.html)
+- [Signal et Slot dans les Composants - Qt Documentation](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 ---
 
@@ -59,7 +59,7 @@ Synchroniser plusieurs composants en utilisant des signaux pour coordonner leurs
 
 **Documentation :**
 - [Connections - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-connections.html)
-- [Signal - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-signal.html)
+- [Signal - Qt Documentation](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 ---
 
@@ -74,8 +74,7 @@ Créer un signal global dans l'application qui peut être écouté par plusieurs
 - Ajoutez un bouton qui émet ce signal global lorsqu'il est cliqué.
 
 **Documentation :**
-- [Signal dans l'élément racine - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-signal.html)
-- [Communiquer entre Composants - Qt Documentation](https://doc.qt.io/qt-6/qtqml-cppintegration-interactqmlfromcpp.html)
+- [Signal dans l'élément racine - Qt Documentation](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 ---
 
@@ -91,4 +90,4 @@ Utiliser des slots pour manipuler dynamiquement les propriétés d'un composant 
 
 **Documentation :**
 - [Fonctions JavaScript dans QML - Qt Documentation](https://doc.qt.io/qt-6/qtqml-javascript-topic.html)
-- [Modifier des Propriétés avec des Slots - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-signal.html#connecting-signals-and-slots)
+- [Modifier des Propriétés avec des Slots - Qt Documentation](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
