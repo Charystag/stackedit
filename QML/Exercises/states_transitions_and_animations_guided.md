@@ -207,11 +207,15 @@ ApplicationWindow {
         color: "lightblue"
         anchors.centerIn: parent
 
-        ParallelAnimation {
+		ParallelAnimation {
             id: parallelAnim
-            NumberAnimation { target: animRect; property: "x"; from: 0; to: parent.width - animRect.width; duration: 1000 }
-            NumberAnimation { target: animRect; property: "width"; from: 100; to: 200; duration: 1000 }
+            NumberAnimation { id: numberAnim1; target: animRect; property: "x"; from: 0; duration: 1000 }
+            NumberAnimation { id: numberAnim2; target: animRect; property: "width"; from: 100; to: 200; duration: 1000 }
             running: false
+        }
+
+        Component.onCompleted: {
+            numberAnim1.to = parent.width - numberAnim2.to
         }
 
         MouseArea {
@@ -252,11 +256,15 @@ ApplicationWindow {
         color: "lightblue"
         anchors.centerIn: parent
 
-        SequentialAnimation {
+		SequentialAnimation {
             id: sequentialAnim
-            NumberAnimation { target: animRect; property: "x"; from: 0; to: parent.width - animRect.width; duration: 1000 }
-            NumberAnimation { target: animRect; property: "width"; from: 100; to: 200; duration: 1000 }
+            NumberAnimation { id: anim1; target: animRect; property: "x"; from: 0; duration: 1000 }
+            NumberAnimation { id: anim2; target: animRect; property: "width"; from: 100; to: 200; duration: 1000 }
             running: false
+        }
+
+        Component.onCompleted: {
+            anim1.to = parent.width - anim2.to
         }
 
         MouseArea {
