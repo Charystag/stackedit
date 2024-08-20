@@ -70,3 +70,77 @@ Créer une application où un rectangle apparaît et disparaît en douceur lorsq
 - **Animer l'opacité avec `SequentialAnimation` :** Utilisez [SequentialAnimation](https://doc.qt.io/qt-6/qml-qtquick-sequentialanimation.html) pour animer la propriété [opacity](https://doc.qt.io/qt-6/qml-qtquick-item.html#opacity-prop).
 - **Ajouter un délai entre les animations :** Utilisez [PauseAnimation](https://doc.qt.io/qt-6/qml-qtquick-pauseanimation.html) pour insérer des délais entre les animations.
 - **Contrôler la visibilité avec `PropertyAction` :** Utilisez [PropertyAction](https://doc.qt.io/qt-6/qml-qtquick-propertyaction.html) pour synchroniser la visibilité du rectangle avec son opacité.
+
+Voici une extension de la série d'exercices non guidés pour inclure l'utilisation d'autres types d'animations en QML, en continuant à partir de l'exercice 7. Chaque exercice introduit un nouveau type d'animation et inclut des liens vers la documentation pour vous guider.
+
+---
+
+## **Exercice 7 : Utilisation de `RotationAnimation`**
+
+**Objectif :**
+Créer une animation qui fait pivoter un rectangle autour de son centre lorsqu'il est cliqué.
+
+**Tâches :**
+- **Configurer la rotation du rectangle :** Utilisez la propriété [rotation](https://doc.qt.io/qt-6/qml-qtquick-item.html#rotation-prop) pour faire pivoter le rectangle.
+- **Appliquer `RotationAnimation` :** Utilisez [RotationAnimation](https://doc.qt.io/qt-6/qml-qtquick-rotationanimation.html) pour animer la rotation du rectangle lorsqu'il est cliqué.
+- **Expérimenter avec différents angles et durées :** Testez différentes valeurs d'angle et de durée pour observer l'effet sur l'animation.
+
+---
+
+## **Exercice 8 : Utilisation de `ScaleAnimation`**
+
+**Objectif :**
+Créer une animation qui agrandit et réduit un rectangle en réponse à un clic.
+
+**Tâches :**
+- **Configurer les propriétés de mise à l'échelle :** Utilisez les propriétés [scale](https://doc.qt.io/qt-6/qml-qtquick-item.html#scale-prop) et [transformOrigin](https://doc.qt.io/qt-6/qml-qtquick-item.html#transformorigin-prop) pour définir le point de transformation.
+- **Appliquer `ScaleAnimation` :** Utilisez [ScaleAnimation](https://doc.qt.io/qt-6/qml-qtquick-scaleanimation.html) pour animer la mise à l'échelle du rectangle.
+- **Jouer avec différentes valeurs de `from` et `to` :** Essayez des valeurs de mise à l'échelle différentes pour créer des effets d'agrandissement et de réduction.
+
+---
+
+## **Exercice 9 : Utilisation de `Behavior` pour des transitions fluides**
+
+**Objectif :**
+Utiliser `Behavior` pour animer automatiquement les changements de propriétés d'un rectangle sans définir explicitement les animations.
+
+**Tâches :**
+- **Ajouter un `Behavior` à une propriété :** Utilisez [Behavior](https://doc.qt.io/qt-6/qml-qtquick-behavior.html) pour appliquer une animation automatique à une propriété comme `color` ou `width`.
+- **Changer la propriété pour déclencher l'animation :** Modifiez la propriété animée et observez comment `Behavior` applique l'animation automatiquement.
+- **Expérimenter avec différentes propriétés et animations :** Testez l'effet de `Behavior` sur d'autres propriétés comme `opacity`, `x`, ou `rotation`.
+
+---
+
+## **Exercice 10 : Utilisation de `SpringAnimation`**
+
+**Objectif :**
+Créer une animation qui simule un effet de ressort lorsqu'un rectangle est déplacé.
+
+**Tâches :**
+- **Configurer le mouvement de base :** Utilisez la propriété [x](https://doc.qt.io/qt-6/qml-qtquick-item.html#x-prop) pour déplacer le rectangle.
+- **Appliquer `SpringAnimation` :** Utilisez [SpringAnimation](https://doc.qt.io/qt-6/qml-qtquick-springanimation.html) pour ajouter un effet de ressort au mouvement du rectangle.
+- **Ajuster la rigidité et la masse :** Expérimentez avec les propriétés `spring` et `damping` pour contrôler l'effet de ressort.
+
+---
+
+## **Exercice 11 : Utilisation de `SmoothedAnimation`**
+
+**Objectif :**
+Appliquer une animation lissée pour créer des transitions douces entre les changements de valeurs.
+
+**Tâches :**
+- **Définir une animation lissée :** Utilisez [SmoothedAnimation](https://doc.qt.io/qt-6/qml-qtquick-smoothedanimation.html) pour créer des transitions douces pour les propriétés comme `x`, `y`, ou `opacity`.
+- **Changer les valeurs de la propriété pour observer l'animation :** Modifiez les valeurs de la propriété animée pour voir l'effet de l'animation lissée.
+- **Ajuster la vitesse et la durée :** Expérimentez avec les paramètres `velocity` et `duration` pour affiner le lissage.
+
+---
+
+## **Exercice 12 : Créer une animation personnalisée avec `Animation`**
+
+**Objectif :**
+Créer une animation personnalisée complexe en utilisant le type de base `Animation`.
+
+**Tâches :**
+- **Définir une animation personnalisée :** Utilisez [Animation](https://doc.qt.io/qt-6/qml-qtquick-animation.html) pour créer une animation qui combine plusieurs types d'animations de manière personnalisée.
+- **Contrôler manuellement le démarrage et l'arrêt de l'animation :** Utilisez des signaux et des propriétés pour démarrer et arrêter l'animation en réponse à des événements.
+- **Expérimenter avec des effets combinés :** Combinez différentes propriétés et animations pour créer un effet unique.
