@@ -142,10 +142,13 @@ ApplicationWindow {
             target: animRect
             property: "x"
             from: 0
-            to: parent.width - animRect.width
             duration: 1000
             running: false
         }
+
+		Component.onCompleted: {
+			moveAnim.to = parent.width - animRect.width
+		}
 
         MouseArea {
             anchors.fill: parent
@@ -156,6 +159,7 @@ ApplicationWindow {
 ```
 
 **Documentation :** [PropertyAnimation](https://doc.qt.io/qt-6/qml-qtquick-propertyanimation.html)
+**Documentation :** [Component .onCompleted](https://doc.qt.io/qt-6/qml-qtqml-component.html#completed-signal)
 
 #### **Étape 2 : Boucler l'animation**
 
@@ -167,12 +171,13 @@ PropertyAnimation {
     target: animRect
     property: "x"
     from: 0
-    to: parent.width - animRect.width
     duration: 1000
     loops: Animation.Infinite
     running: false
 }
 ```
+
+**Documentation :** [Animation](https://doc.qt.io/qt-6/qml-qtquick-animation.html)
 
 ---
 
