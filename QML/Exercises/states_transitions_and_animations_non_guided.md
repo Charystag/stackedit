@@ -71,8 +71,6 @@ Créer une application où un rectangle apparaît et disparaît en douceur lorsq
 - **Ajouter un délai entre les animations :** Utilisez [PauseAnimation](https://doc.qt.io/qt-6/qml-qtquick-pauseanimation.html) pour insérer des délais entre les animations.
 - **Contrôler la visibilité avec `PropertyAction` :** Utilisez [PropertyAction](https://doc.qt.io/qt-6/qml-qtquick-propertyaction.html) pour synchroniser la visibilité du rectangle avec son opacité.
 
-Voici une extension de la série d'exercices non guidés pour inclure l'utilisation d'autres types d'animations en QML, en continuant à partir de l'exercice 7. Chaque exercice introduit un nouveau type d'animation et inclut des liens vers la documentation pour vous guider.
-
 ---
 
 ## **Exercice 7 : Utilisation de `RotationAnimation`**
@@ -93,9 +91,11 @@ Créer une animation qui fait pivoter un rectangle autour de son centre lorsqu'i
 Créer une animation qui agrandit et réduit un rectangle en réponse à un clic.
 
 **Tâches :**
-- **Configurer les propriétés de mise à l'échelle :** Utilisez les propriétés [scale](https://doc.qt.io/qt-6/qml-qtquick-item.html#scale-prop) et [transformOrigin](https://doc.qt.io/qt-6/qml-qtquick-item.html#transformorigin-prop) pour définir le point de transformation.
-- **Appliquer `ScaleAnimation` :** Utilisez [ScaleAnimation](https://doc.qt.io/qt-6/qml-qtquick-scaleanimation.html) pour animer la mise à l'échelle du rectangle.
+- **Configurer les propriétés de mise à l'échelle :** Utilisez les propriétés [scale](https://doc.qt.io/qt-6/qml-qtquick-item.html#scale-prop) et [transformOrigin](https://doc.qt.io/qt-6/qml-qtquick-item.html#transformOrigin-prop) pour définir le point de transformation.
+- **Appliquer `ScaleAnimator` :** Utilisez [ScaleAnimator](https://doc.qt.io/qt-6/qml-qtquick-scaleanimator.html) pour animer la mise à l'échelle du rectangle.
 - **Jouer avec différentes valeurs de `from` et `to` :** Essayez des valeurs de mise à l'échelle différentes pour créer des effets d'agrandissement et de réduction.
+
+> :bulb: Vous pouvez aller voir [ici](https://doc.qt.io/qt-6/qml-qtquick-animator.html#details) la différence entre `Animator` et `Animation`
 
 ---
 
