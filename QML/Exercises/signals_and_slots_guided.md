@@ -31,7 +31,7 @@ Comprendre les concepts de base des signaux et slots en QML en créant un signal
    }
    ```
 
-   **Documentation :** [Signal - Qt Documentation](https://doc.qt.io/qt-6/qml-qtqml-signal.html)
+   **Documentation :** [Signal - Qt Documentation](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 #### **Étape 2 : Émettre le Signal**
 
@@ -309,10 +309,8 @@ Apprendre à utiliser un signal global qui affecte plusieurs composants.
        anchors.left: parent.left
 
        Connections {
-          
-
- target: mainWindow
-           onGlobalSignal: {
+	   		target: mainWindow
+           	onGlobalSignal: {
                console.log("Rect1: " + message)
            }
        }
