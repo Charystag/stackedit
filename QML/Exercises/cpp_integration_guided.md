@@ -292,3 +292,131 @@ ApplicationWindow {
 - [Text](https://doc.qt.io/qt-6/qml-qtquick-text.html)
 
 **Résultat Attendu :** Familiarité avec l'utilisation de `QML_ELEMENT` pour simplifier l'enregistrement des types C++ dans QML, ce qui réduit le code nécessaire dans `main.cpp` et simplifie le processus de développement.
+
+---
+
+## **Exercice 3 : Exposer des Fonctions C++ à QML**
+
+#### **Objectif :**
+Apprendre à exposer des méthodes d'une classe C++ à QML en utilisant `Q_INVOKABLE`.
+
+#### **Étape 1 : Ajouter une Méthode Simple à la Classe C++**
+
+1. **Modifiez le fichier `counter.h` pour ajouter une méthode `increment()` à la classe `Counter`.**
+
+```cpp
+#ifndef COUNTER_H
+#define COUNTER_H
+
+#include <QObject>
+#include <QtQml/qqml.h>
+
+class Counter : public QObject {
+    Q_OBJECT
+    QML_ELEMENT // Expose automatiquement cette classe à QML
+
+    // Propriété exposée à QML
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
+public:
+    explicit Counter(QObject *parent = nullptr);
+
+    int count() const;
+    void setCount(int value);
+
+    // Méthode exposée à QML pour incrémenter la valeur de count
+    Q_INVOKABLE void increment();
+
+signals:
+    void countChanged();
+
+private:
+    int m_count;
+};
+
+#endif // COUNTER_H
+```
+
+2. **Implémentez la méthode `increment()` dans le fichier `counter.cpp`.**
+
+```cpp
+#include "counter.h"
+
+Counter::Counter(QObject *parent) : QObject(parent), m_count(0) {
+    // Initialisation de 'm_count' à 0
+}
+
+int Counter::count() const {
+    return m_count;
+}
+
+void Counter::setCount(int value) {
+    if (m_count != value) {
+        m_count = value;
+        emit countChanged(); // Émet le signal lorsque 'count' change
+    }
+}
+
+void Counter::increment() {
+    setCount(m_count + 1); // Incrémente la valeur de 'count'
+}
+```
+
+**Explications :**
+- **`Q_INVOKABLE`** : Cette macro expose la méthode `increment()` à QML, ce qui permet de l'appeler directement depuis le code QML. Cette méthode permet d'incrémenter la valeur de `count` en l'augmentant de 1.
+
+**Documentation :**
+- [Q_INVOKABLE](https://doc.qt.io/qt-6/qtqml-cppintegration-exposecppattributes.html#q-invokable)
+- [QObject](https://doc.qt.io/qt-6/qobject.html)
+
+#### **Étape 2 : Appeler la Méthode depuis QML**
+
+1. **Modifiez le fichier `main.qml` pour appeler la méthode `increment()` lorsque l'utilisateur clique sur un bouton.**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Appel de Méthode C++ depuis QML"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Counter {
+            id: counter
+            count: 10 // Initialisation de la valeur
+        }
+
+        Slider {
+            from: 0
+            to: 100
+            value: counter.count
+            onValueChanged: counter.count = value
+        }
+
+        Text {
+            text: "Valeur actuelle : " + counter.count
+            font.pointSize: 20
+        }
+
+        Button {
+            text: "Incrémenter"
+            onClicked: counter.increment() // Appel de la méthode C++ incrémenter
+        }
+    }
+}
+```
+
+**Explications :**
+- **`onClicked: counter.increment()`** : Cette ligne de code QML appelle la méthode `increment()` de la classe C++ `Counter` lorsque l'utilisateur clique sur le bouton. Cela augmente la valeur de `count` de 1 à chaque clic, ce qui est ensuite automatiquement reflété dans l'interface utilisateur grâce à la liaison de données en QML.
+
+**Documentation :**
+- [Button](https://doc.qt.io/qt-6/qml-qtquick-controls-button.html)
+- [Signal Handlers in QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
+
+**Résultat Attendu :** Après cet exercice, vous devriez être capable d'appeler des méthodes C++ directement depuis QML, en utilisant `Q_INVOKABLE`. Cela vous permet de créer des interactions plus complexes entre l'interface utilisateur en QML et la logique d'affaires implémentée en C++.
