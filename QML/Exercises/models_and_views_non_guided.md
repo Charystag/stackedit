@@ -15,7 +15,7 @@ Créez une application QML qui utilise une `ListView` pour afficher une liste st
 
 **Documentation :**
 - [ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
-- [ListModel](https://doc.qt.io/qt-6/qml-qtquick-listmodel.html)
+- [ListModel](https://doc.qt.io/qt-6/qml-qtqml-models-listmodel.html)
 - [MouseArea](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html)
 
 ---
@@ -38,7 +38,7 @@ Créez une application QML qui affiche une grille d'images à l'aide de `GridVie
 **Documentation :**
 - [GridView](https://doc.qt.io/qt-6/qml-qtquick-gridview.html)
 - [Image](https://doc.qt.io/qt-6/qml-qtquick-image.html)
-- [ListModel](https://doc.qt.io/qt-6/qml-qtquick-listmodel.html)
+- [ListModel](https://doc.qt.io/qt-6/qml-qtqml-models-listmodel.html)
 
 ---
 
@@ -80,7 +80,7 @@ Créez une `ListView` qui affiche une liste d'éléments avec des noms et des de
 
 **Documentation :**
 - [ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
-- [ListModel](https://doc.qt.io/qt-6/qml-qtquick-listmodel.html)
+- [ListModel](https://doc.qt.io/qt-6/qml-qtqml-models-listmodel.html)
 - [Text](https://doc.qt.io/qt-6/qml-qtquick-text.html)
 
 ---
