@@ -548,3 +548,145 @@ ApplicationWindow {
 - [Signal Handlers in QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 **Résultat Attendu :** Vous devriez maintenant comprendre comment utiliser des slots comme des alternatives aux méthodes marquées avec `Q_INVOKABLE`. Cette approche vous permet de bénéficier de la puissance des signaux et slots de Qt tout en offrant une interaction fluide entre C++ et QML.
+
+---
+
+## **Exercice 5 : Gérer les Changements de Propriété avec des Signaux**
+
+#### **Objectif :**
+Implémenter des signaux pour notifier QML lorsque des propriétés changent en C++, afin de maintenir la synchronisation entre les deux.
+
+#### **Étape 1 : Ajouter un Signal pour les Changements de Propriété**
+
+1. **Modifiez le fichier `counter.h` pour vous assurer que le signal `countChanged` est correctement défini et associé à la propriété `count`.**
+
+```cpp
+#ifndef COUNTER_H
+#define COUNTER_H
+
+#include <QObject>
+#include <QtQml/qqml.h>
+
+class Counter : public QObject {
+    Q_OBJECT
+    QML_ELEMENT // Expose automatiquement cette classe à QML
+
+    // Propriété exposée à QML avec un signal pour notifier les changements
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
+public:
+    explicit Counter(QObject *parent = nullptr);
+
+    int count() const;
+    void setCount(int value);
+
+signals:
+    // Signal émis lorsque la propriété 'count' change
+    void countChanged();
+
+public slots:
+    void increment();
+
+private:
+    int m_count;
+};
+
+#endif // COUNTER_H
+```
+
+2. **Implémentez le setter dans le fichier `counter.cpp` pour qu'il émette le signal `countChanged` chaque fois que la valeur de `count` change.**
+
+```cpp
+#include "counter.h"
+
+Counter::Counter(QObject *parent) : QObject(parent), m_count(0) {
+    // Initialisation de 'm_count' à 0
+}
+
+int Counter::count() const {
+    return m_count;
+}
+
+void Counter::setCount(int value) {
+    if (m_count != value) {
+        m_count = value;
+        emit countChanged(); // Émet le signal lorsque 'count' change
+    }
+}
+
+void Counter::increment() {
+    setCount(m_count + 1); // Incrémente la valeur de 'count'
+}
+```
+
+**Explications :**
+- **Signal `countChanged`** : Ce signal est utilisé pour notifier QML que la propriété `count` a changé, ce qui déclenche une mise à jour de l'interface utilisateur si cette propriété est liée à un élément UI.
+
+**Documentation :**
+- [Q_PROPERTY](https://doc.qt.io/qt-6/properties.html)
+- [Signals and Slots](https://doc.qt.io/qt-6/signalsandslots.html)
+
+#### **Étape 2 : Utiliser le Mot-Clé `NOTIFY` dans `Q_PROPERTY`**
+
+1. **Le mot-clé `NOTIFY` dans `Q_PROPERTY` est déjà utilisé correctement dans la déclaration de la propriété `count` :**
+
+```cpp
+Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+```
+
+- **Explications** : Le mot-clé `NOTIFY` indique à QML quel signal doit être émis lorsque la propriété `count` change. Cela permet à QML de réagir automatiquement aux changements de la propriété.
+
+**Documentation :**
+- [NOTIFY in Q_PROPERTY](https://doc.qt.io/qt-6/properties.html#notifying-property-changes)
+
+#### **Étape 3 : Lier des Éléments UI à la Propriété dans QML**
+
+1. **Modifiez le fichier `main.qml` pour lier des éléments UI à la propriété `count` et observer les mises à jour automatiques.**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Mise à jour Automatique avec des Signaux"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Counter {
+            id: counter
+            count: 10 // Initialisation de la valeur
+        }
+
+        Slider {
+            from: 0
+            to: 100
+            value: counter.count
+            onValueChanged: counter.count = value
+        }
+
+        Text {
+            text: "Valeur actuelle : " + counter.count
+            font.pointSize: 20
+        }
+
+        Button {
+            text: "Incrémenter"
+            onClicked: counter.increment() // Appel du slot C++ incrémenter
+        }
+    }
+}
+```
+
+**Explications :**
+- **Liaison Dynamique** : Dans ce code, le texte de l'élément `Text` est automatiquement mis à jour lorsque la valeur de `count` change, grâce à la liaison dynamique entre la propriété `count` de `Counter` et l'élément UI.
+- **Mise à Jour Automatique** : Le signal `countChanged` déclenche une mise à jour automatique de tous les éléments liés à la propriété `count`, assurant ainsi que l'interface utilisateur reste en synchronisation avec la logique métier en C++.
+
+**Documentation :**
+- [Binding in QML](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
+
+**Résultat Attendu :** Après cet exercice, vous devriez comprendre comment utiliser des signaux pour notifier QML des changements de propriétés en C++. Cela permet de maintenir la synchronisation entre les données gérées en C++ et l'interface utilisateur en QML, assurant une mise à jour réactive et automatique de l'interface.
