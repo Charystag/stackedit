@@ -16,6 +16,8 @@
      7. Dans le champ **Working Directory**, spécifiez le répertoire de travail, qui est généralement le répertoire racine de votre projet.
      8. Cliquez sur **OK** pour enregistrer la configuration.
 
+> :bulb: Vous pouvez utiliser `%{ActiveProject:ProjectDirectory}` pour spécifier le répertoir de travail du projet.
+
 3. **Exécuter Doxygen depuis Qt Creator :**
    - Une fois la commande configurée, vous pouvez exécuter Doxygen directement depuis Qt Creator :
      1. Allez dans **Outils > External**.
