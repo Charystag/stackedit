@@ -34,7 +34,7 @@ Créer une interface qui permet de trier et de filtrer dynamiquement les éléme
 - Affichez un résumé des critères de tri et de filtrage actuellement appliqués en haut de la `ListView`.
 
 **Documentation :**
-- [ListModel](https://doc.qt.io/qt-6/qml-qtquick-listmodel.html)
+- [ListModel](https://doc.qt.io/qt-6/qml-qtqml-models-listmodel.html)
 - [ComboBox](https://doc.qt.io/qt-6/qml-qtquick-controls-combobox.html)
 - [JavaScript Array Sort](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 
@@ -77,7 +77,7 @@ Créer une `ListView` hiérarchique qui permet d'afficher des données structur�
 
 **Documentation :**
 - [ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
-- [ListModel](https://doc.qt.io/qt-6/qml-qtquick-listmodel.html)
+- [ListModel](https://doc.qt.io/qt-6/qml-qtqml-models-listmodel.html)
 - [JavaScript Array Methods](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 ---
@@ -120,5 +120,5 @@ Créer une interface utilisateur de type tableau en utilisant `TableView` pour a
 
 **Documentation :**
 - [TableView](https://doc.qt.io/qt-6/qml-qtquick-tableview.html)
-- [ListModel](https://doc.qt.io/qt-6/qml-qtquick-listmodel.html)
+- [ListModel](https://doc.qt.io/qt-6/qml-qtqml-models-listmodel.html)
 - [JavaScript Array Methods](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array)
