@@ -420,3 +420,131 @@ ApplicationWindow {
 - [Signal Handlers in QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 **Résultat Attendu :** Après cet exercice, vous devriez être capable d'appeler des méthodes C++ directement depuis QML, en utilisant `Q_INVOKABLE`. Cela vous permet de créer des interactions plus complexes entre l'interface utilisateur en QML et la logique d'affaires implémentée en C++.
+
+---
+
+## **Exercice 4 : Utiliser des Slots comme Fonctions QML**
+
+#### **Objectif :**
+Apprendre à exposer des slots C++ en tant que fonctions appelables depuis QML.
+
+#### **Étape 1 : Modifier la Méthode pour qu'elle Devienne un Slot Public**
+
+1. **Modifiez le fichier `counter.h` pour changer la méthode `increment()` de `Q_INVOKABLE` à un slot public.**
+
+```cpp
+#ifndef COUNTER_H
+#define COUNTER_H
+
+#include <QObject>
+#include <QtQml/qqml.h>
+
+class Counter : public QObject {
+    Q_OBJECT
+    QML_ELEMENT // Expose automatiquement cette classe à QML
+
+    // Propriété exposée à QML
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
+public:
+    explicit Counter(QObject *parent = nullptr);
+
+    int count() const;
+    void setCount(int value);
+
+public slots:
+    // Slot public exposé à QML
+    void increment();
+
+signals:
+    void countChanged();
+
+private:
+    int m_count;
+};
+
+#endif // COUNTER_H
+```
+
+2. **Le fichier d'implémentation `counter.cpp` reste inchangé car l'implémentation de la méthode ne change pas.**
+
+```cpp
+#include "counter.h"
+
+Counter::Counter(QObject *parent) : QObject(parent), m_count(0) {
+    // Initialisation de 'm_count' à 0
+}
+
+int Counter::count() const {
+    return m_count;
+}
+
+void Counter::setCount(int value) {
+    if (m_count != value) {
+        m_count = value;
+        emit countChanged(); // Émet le signal lorsque 'count' change
+    }
+}
+
+void Counter::increment() {
+    setCount(m_count + 1); // Incrémente la valeur de 'count'
+}
+```
+
+**Explications :**
+- **`public slots:`** : Le mot-clé `slots` dans une section publique de la classe expose la méthode `increment()` en tant que slot, ce qui permet de l'utiliser de manière similaire à une méthode marquée avec `Q_INVOKABLE`, mais avec l'avantage d'être connectable à d'autres signaux, y compris des signaux QML.
+
+**Documentation :**
+- [Slots](https://doc.qt.io/qt-6/signalsandslots.html#slots)
+
+#### **Étape 2 : Connecter le Slot aux Événements QML**
+
+1. **Modifiez le fichier `main.qml` pour connecter le slot `increment()` à un événement QML, comme un clic sur un bouton.**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Utilisation des Slots comme Fonctions QML"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Counter {
+            id: counter
+            count: 10 // Initialisation de la valeur
+        }
+
+        Slider {
+            from: 0
+            to: 100
+            value: counter.count
+            onValueChanged: counter.count = value
+        }
+
+        Text {
+            text: "Valeur actuelle : " + counter.count
+            font.pointSize: 20
+        }
+
+        Button {
+            text: "Incrémenter"
+            onClicked: counter.increment() // Appel du slot C++ incrémenter
+        }
+    }
+}
+```
+
+**Explications :**
+- **`onClicked: counter.increment()`** : Ce code QML appelle le slot `increment()` de la classe C++ `Counter` lorsque le bouton est cliqué. En transformant la méthode en un slot, vous avez non seulement la possibilité de l'appeler depuis QML, mais aussi de la connecter directement à d'autres signaux, offrant ainsi une plus grande flexibilité.
+
+**Documentation :**
+- [Button](https://doc.qt.io/qt-6/qml-qtquick-controls-button.html)
+- [Signal Handlers in QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
+
+**Résultat Attendu :** Vous devriez maintenant comprendre comment utiliser des slots comme des alternatives aux méthodes marquées avec `Q_INVOKABLE`. Cette approche vous permet de bénéficier de la puissance des signaux et slots de Qt tout en offrant une interaction fluide entre C++ et QML.
