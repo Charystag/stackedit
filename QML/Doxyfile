@@ -1,0 +1,11 @@
+PROJECT_NAME = "My Project"
+PROJECT_BRIEF = 
+OUTPUT_DIRECTORY =
+FILE_PATTERS = *.cpp *.h *.qml
+EXTENSION_MAPPING = qml=C++
+GENERATE_HTML = YES
+CREATE_SUBDIRS = YES
+# Leave the INPUT tag empty to search the current
+# directory
+INPUT =
+RECURSIVE = YES
