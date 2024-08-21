@@ -247,6 +247,9 @@ int main(int argc, char *argv[]) {
 
 1. **Maintenez le fichier `main.qml` de l'exercice précédent. La classe `Counter` devrait fonctionner sans problème.**
 
+> :bulb: Il est cependant nécessaire de retirer l'import du module MyApp vu que nous ne le définissons plus dans notre 
+> fichier `main.cpp`
+
 ```qml
 import QtQuick 6.7
 import QtQuick.Controls 6.7
