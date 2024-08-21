@@ -690,3 +690,97 @@ ApplicationWindow {
 - [Binding in QML](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
 
 **Résultat Attendu :** Après cet exercice, vous devriez comprendre comment utiliser des signaux pour notifier QML des changements de propriétés en C++. Cela permet de maintenir la synchronisation entre les données gérées en C++ et l'interface utilisateur en QML, assurant une mise à jour réactive et automatique de l'interface.
+
+---
+
+## **Exercice 6 : Travailler avec les Propriétés de Contexte**
+
+#### **Objectif :**
+Apprendre à exposer des objets C++ existants à QML en utilisant `setContextProperty()`.
+
+#### **Étape 1 : Créer et Initialiser un Objet C++ dans `main.cpp`**
+
+1. **Modifiez le fichier `main.cpp` pour créer et initialiser une instance de la classe `Counter`.**
+
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "counter.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+
+    // Créer une instance de la classe Counter
+    Counter myCounter;
+    myCounter.setCount(15);  // Initialiser la valeur de 'count' à 15
+
+    // Exposer l'instance 'myCounter' à QML
+    engine.rootContext()->setContextProperty("myCounter", &myCounter);
+
+    const QUrl url(u"qrc:/main.qml"_qs);
+    engine.load(url);
+
+    return app.exec();
+}
+```
+
+**Explications :**
+- **`Counter myCounter;`** : Ici, nous créons une instance de `Counter` directement dans `main.cpp`.
+- **`myCounter.setCount(15);`** : Cette ligne initialise la propriété `count` de `myCounter` à 15.
+- **`setContextProperty("myCounter", &myCounter);`** : Cette ligne expose l'objet `myCounter` à QML sous le nom `myCounter`, permettant ainsi d'accéder à cet objet et à ses propriétés directement dans le code QML.
+
+**Documentation :**
+- [QQmlContext::setContextProperty](https://doc.qt.io/qt-6/qqmlcontext.html#setContextProperty)
+- [QQmlApplicationEngine](https://doc.qt.io/qt-6/qqmlapplicationengine.html)
+
+#### **Étape 2 : Accéder aux Propriétés et Méthodes de l'Objet dans QML**
+
+1. **Créez ou modifiez le fichier `main.qml` pour accéder aux propriétés et méthodes de `myCounter`.**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Utilisation des Propriétés de Contexte"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Slider {
+            from: 0
+            to: 100
+            value: myCounter.count
+            onValueChanged: myCounter.count = value
+        }
+
+        Text {
+            text: "Valeur actuelle : " + myCounter.count
+            font.pointSize: 20
+        }
+
+        Button {
+            text: "Incrémenter"
+            onClicked: myCounter.increment() // Appel du slot 'increment()' de myCounter
+        }
+    }
+}
+```
+
+**Explications :**
+- **`myCounter.count`** : Vous pouvez accéder directement à la propriété `count` de `myCounter` depuis QML, grâce à l'exposition via `setContextProperty`.
+- **`myCounter.increment()`** : La méthode `increment()` de `myCounter` est également accessible et peut être appelée à partir d'un événement QML, comme un clic de bouton.
+
+**Documentation :**
+- [Binding in QML](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
+- [Signal Handlers in QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
+
+---
+
+**Résultat Attendu :** Après cet exercice, vous devriez être capable d'exposer des instances spécifiques d'objets C++ à QML en utilisant `setContextProperty()`. Cela vous permet de manipuler ces objets directement dans QML, offrant ainsi une flexibilité supplémentaire pour la gestion de l'état et l'interaction entre la logique C++ et l'interface utilisateur QML.
