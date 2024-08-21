@@ -125,83 +125,171 @@ Apprendre à exposer une classe C++ à QML pour pouvoir appeler ses méthodes et
 #### **Objectif :**
 Apprendre à exposer une propriété d'une classe C++ à QML et observer les changements de cette propriété en temps réel.
 
-#### **Étape 1 : Ajouter une Propriété à la Classe C++**
+### **Étape 1 : Créer la Classe C++ avec une Propriété**
 
-1. **Modifiez `MyClass` pour inclure une propriété `name` qui peut être lue et modifiée depuis QML.**
+1. **Créez un fichier d'en-tête (`myclass.h`) pour définir la classe `MyClass` qui hérite de `QObject`.**
 
-   ```cpp
-   // myclass.h
-   Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+```cpp
+#ifndef MYCLASS_H
+#define MYCLASS_H
 
-   QString name() const;
-   void setName(const QString &name);
+#include <QObject>
+#include <QString>
 
-   signals:
-       void nameChanged();
-   ```
+class MyClass : public QObject {
+    Q_OBJECT
 
-   ```cpp
-   // myclass.cpp
-   QString MyClass::name() const {
-       return m_name;
-   }
+    // La propriété 'name' est exposée publiquement via Q_PROPERTY
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 
-   void MyClass::setName(const QString &name) {
-       if (m_name != name) {
-           m_name = name;
-           emit nameChanged();
-       }
-   }
-   ```
+public:
+    explicit MyClass(QObject *parent = nullptr);
 
-   **Commentaires :**
-   - `Q_PROPERTY` expose la propriété `name` à QML.
-   - `NOTIFY` est utilisé pour signaler les changements de la propriété aux composants QML.
+    // Getter pour la propriété 'name'
+    QString name() const;
 
-   **Documentation :**
-   - [Q\_PROPERTY](https://doc.qt.io/qt-6/properties.html)
+    // Setter pour la propriété 'name'
+    void setName(const QString &name);
 
-#### **Étape 2 : Utiliser la Propriété dans QML**
+signals:
+    // Signal émis lorsque la propriété 'name' change
+    void nameChanged();
 
-2. **Modifiez `main.qml` pour accéder et modifier la propriété `name`.**
+private:
+    // Variable membre privée qui stocke la donnée réelle
+    QString m_name;
+};
 
-   ```qml
-   import QtQuick 6.7
-   import QtQuick.Controls 6.7
+#endif // MYCLASS_H
+```
 
-   ApplicationWindow {
-       visible: true
-       width: 400
-       height: 200
-       title: "Intégration C++ et QML - Propriétés"
+**Explications :**
 
-       Column {
-           anchors.centerIn: parent
-           spacing: 20
+- **Q_PROPERTY** : La macro `Q_PROPERTY` expose la propriété `name` à QML. Elle spécifie le getter (`READ name`), le setter (`WRITE setName`), et le signal de notification (`NOTIFY nameChanged`).
 
-           TextField {
-               id: nameInput
-               placeholderText: "Entrez un nom"
-               width: 200
-               onTextChanged: myClass.name = text
-           }
+- **Variable membre privée `m_name`** : Cette variable stocke la valeur réelle de la propriété `name`. Elle est privée pour encapsuler l'état interne de l'objet et permettre une gestion contrôlée via le getter et le setter.
 
-           Button {
-               text: "Afficher le Nom"
-               onClicked: {
-                   console.log("Nom : " + myClass.name)
-               }
-           }
-       }
-   }
-   ```
+- **Getter et Setter** : Les méthodes `name()` et `setName(const QString &name)` sont publiques et permettent de lire et de modifier la propriété `name`.
 
-   **Commentaires :**
-   - `onTextChanged` est utilisé pour mettre à jour la propriété `name` dans la classe C++ lorsque l'utilisateur saisit du texte.
-   - Le nom actuel est récupéré et affiché via `console.log`.
+- **Documentation :**
+  - [QObject](https://doc.qt.io/qt-6/qobject.html)
+  - [Q\_PROPERTY](https://doc.qt.io/qt-6/properties.html)
 
-   **Documentation :**
-   - [TextField](https://doc.qt.io/qt-6/qml-qtquick-controls-textfield.html)
+2. **Créez le fichier d'implémentation (`myclass.cpp`) pour définir les méthodes de `MyClass`.**
+
+```cpp
+#include "myclass.h"
+
+MyClass::MyClass(QObject *parent) : QObject(parent), m_name("") {
+    // Initialisation de la propriété 'name' à une chaîne vide
+}
+
+QString MyClass::name() const {
+    return m_name;
+}
+
+void MyClass::setName(const QString &name) {
+    if (m_name != name) {
+        m_name = name;
+        emit nameChanged(); // Émet le signal seulement si la valeur change
+    }
+}
+```
+
+**Explications :**
+
+- **Constructeur** : Le constructeur initialise `m_name` à une chaîne vide.
+
+- **Getter `name()`** : Cette méthode retourne la valeur de `m_name`.
+
+- **Setter `setName()`** : Cette méthode permet de modifier `m_name`. Si la nouvelle valeur est différente de l'ancienne, le signal `nameChanged()` est émis pour notifier les composants QML que la propriété a changé.
+
+- **Documentation :**
+  - [QString](https://doc.qt.io/qt-6/qstring.html)
+  - [Q\_OBJECT](https://doc.qt.io/qt-6/qobject.html#Q_OBJECT)
+
+### **Étape 2 : Exposer la Classe à QML**
+
+1. **Modifiez le fichier `main.cpp` pour exposer l'objet `MyClass` à QML.**
+
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "myclass.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+
+    QQmlApplicationEngine engine;
+
+    MyClass myClass;
+    engine.rootContext()->setContextProperty("myClass", &myClass);
+
+    const QUrl url(u"qrc:/main.qml"_qs);
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
+                     &app, []() { QCoreApplication::exit(-1); },
+                     Qt::QueuedConnection);
+    engine.load(url);
+
+    return app.exec();
+}
+```
+
+**Explications :**
+
+- **Exposition de `MyClass`** : L'objet `myClass` est exposé à QML en tant que propriété contextuelle via `setContextProperty`. Cela rend `myClass` accessible dans le fichier QML.
+
+- **rootContext()** : Retourne le contexte racine où l'on peut enregistrer des propriétés globales accessibles à l'ensemble des composants QML.
+
+- **Documentation :**
+  - [QQmlApplicationEngine](https://doc.qt.io/qt-6/qqmlapplicationengine.html)
+  - [QQmlContext](https://doc.qt.io/qt-6/qqmlcontext.html)
+
+### **Étape 3 : Utiliser la Propriété dans QML**
+
+1. **Créez un fichier `main.qml` pour accéder et modifier la propriété `name` exposée par `MyClass`.**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Intégration C++ et QML - Propriétés"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        TextField {
+            id: nameInput
+            placeholderText: "Entrez un nom"
+            width: 200
+            onTextChanged: myClass.name = text
+        }
+
+        Button {
+            text: "Afficher le Nom"
+            onClicked: {
+                console.log("Nom : " + myClass.name)
+            }
+        }
+    }
+}
+```
+
+**Explications :**
+
+- **TextField** : Le champ de texte permet à l'utilisateur de saisir un nom. Chaque fois que le texte change, la propriété `name` de l'objet `myClass` est mise à jour.
+
+- **Button** : Le bouton permet d'afficher le nom actuellement stocké dans `myClass` en utilisant `console.log`.
+
+- **Documentation :**
+  - [TextField](https://doc.qt.io/qt-6/qml-qtquick-controls-textfield.html)
+  - [Button](https://doc.qt.io/qt-6/qml-qtquick-controls-button.html)
 
 ---
 
