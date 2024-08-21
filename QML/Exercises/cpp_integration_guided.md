@@ -144,3 +144,148 @@ ApplicationWindow {
 **Documentation :**
 - [Slider](https://doc.qt.io/qt-6/qml-qtquick-controls-slider.html)
 - [Text](https://doc.qt.io/qt-6/qml-qtquick-text.html)
+
+---
+
+## **Exercice 2 : Utilisation de `QML_ELEMENT` pour Simplifier l'Enregistrement**
+
+#### **Objectif :**
+Apprendre à utiliser la macro `QML_ELEMENT` pour enregistrer une classe dans QML de manière simplifiée.
+
+#### **Étape 1 : Modifier la Classe pour Ajouter `QML_ELEMENT`**
+
+1. **Modifiez le fichier `counter.h` de l'exercice précédent pour inclure `QML_ELEMENT`.**
+
+```cpp
+#ifndef COUNTER_H
+#define COUNTER_H
+
+#include <QObject>
+#include <QtQml/qqml.h>  // Inclusion nécessaire pour utiliser QML_ELEMENT
+
+class Counter : public QObject {
+    Q_OBJECT
+    QML_ELEMENT // Expose automatiquement cette classe à QML
+
+    // Propriété exposée à QML
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
+public:
+    explicit Counter(QObject *parent = nullptr);
+
+    int count() const;
+    void setCount(int value);
+
+signals:
+    void countChanged();
+
+private:
+    int m_count;
+};
+
+#endif // COUNTER_H
+```
+
+2. **Modifiez le fichier d'implémentation `counter.cpp` pour rester conforme à l'exercice précédent.**
+
+```cpp
+#include "counter.h"
+
+Counter::Counter(QObject *parent) : QObject(parent), m_count(0) {
+    // Initialisation de 'm_count' à 0
+}
+
+int Counter::count() const {
+    return m_count;
+}
+
+void Counter::setCount(int value) {
+    if (m_count != value) {
+        m_count = value;
+        emit countChanged(); // Émet le signal lorsque 'count' change
+    }
+}
+```
+
+**Explications :**
+- **`QML_ELEMENT`** : Cette macro, ajoutée à la classe `Counter`, expose automatiquement cette classe à QML sans nécessiter d'enregistrement manuel via `qmlRegisterType`. Cela simplifie l'intégration entre C++ et QML, surtout pour les projets où de nombreuses classes doivent être exposées à QML.
+
+**Documentation :**
+- [QML_ELEMENT](https://doc.qt.io/qt-6/qtqml-cppintegration-exposecppattributes.html#qml-element)
+- [QObject](https://doc.qt.io/qt-6/qobject.html)
+
+#### **Étape 2 : Supprimer l'Appel à `qmlRegisterType()` dans `main.cpp`**
+
+1. **Modifiez le fichier `main.cpp` pour supprimer l'appel à `qmlRegisterType`.**
+
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include "counter.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+
+    // Plus besoin de qmlRegisterType<Counter>("MyApp", 1, 0, "Counter");
+    // grâce à l'utilisation de QML_ELEMENT
+
+    const QUrl url(u"qrc:/main.qml"_qs);
+    engine.load(url);
+
+    return app.exec();
+}
+```
+
+**Explications :**
+- **Suppression de `qmlRegisterType`** : Comme la classe `Counter` est maintenant automatiquement enregistrée grâce à `QML_ELEMENT`, l'appel manuel à `qmlRegisterType` devient superflu et peut être retiré.
+
+**Documentation :**
+- [QQmlApplicationEngine](https://doc.qt.io/qt-6/qqmlapplicationengine.html)
+
+#### **Étape 3 : Vérifier l'Utilisation de la Classe dans QML**
+
+1. **Maintenez le fichier `main.qml` de l'exercice précédent. La classe `Counter` devrait fonctionner sans problème.**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Exemple avec Counter et QML_ELEMENT"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Counter {
+            id: counter
+            count: 10 // Initialisation de la valeur
+        }
+
+        Slider {
+            from: 0
+            to: 100
+            value: counter.count
+            onValueChanged: counter.count = value
+        }
+
+        Text {
+            text: "Valeur actuelle : " + counter.count
+            font.pointSize: 20
+        }
+    }
+}
+```
+
+**Explications :**
+- **Vérification** : Si la classe `Counter` fonctionne correctement dans le fichier QML sans avoir besoin de `qmlRegisterType`, cela confirme que `QML_ELEMENT` a été utilisé avec succès pour simplifier l'enregistrement.
+
+**Documentation :**
+- [Slider](https://doc.qt.io/qt-6/qml-qtquick-controls-slider.html)
+- [Text](https://doc.qt.io/qt-6/qml-qtquick-text.html)
+
+**Résultat Attendu :** Familiarité avec l'utilisation de `QML_ELEMENT` pour simplifier l'enregistrement des types C++ dans QML, ce qui réduit le code nécessaire dans `main.cpp` et simplifie le processus de développement.
