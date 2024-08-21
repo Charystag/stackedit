@@ -103,7 +103,6 @@ Apprendre à utiliser des fichiers QML comme ressources pour appliquer des style
    ```
 
 #### **Documentation :**
-- [Ressources QML - Qt Documentation](https://doc.qt.io/qt-6/qtquick-resources.html)
 - [Ressources dans Qt - Qt Documentation](https://doc.qt.io/qt-6/resources.html)
 
 ---
@@ -266,7 +265,7 @@ Apprendre à intégrer et jouer des fichiers audio dans une application QML.
    ```
 
 #### **Documentation :**
-- [Audio - Qt Documentation](https://doc.qt.io/qt-6/qml-qtmultimedia-audio.html)
+- [Audio - Qt Documentation](https://doc.qt.io/qt-6/audiooverview.html)
 - [QtMultimedia - Qt Documentation](https://doc.qt.io/qt-6/qtmultimedia-module.html)
 
 ---
@@ -277,8 +276,6 @@ Apprendre à intégrer et jouer des fichiers audio dans une application QML.
 Apprendre à utiliser des versions multiples d'une image en fonction de l'échelle d'écran pour garantir un rendu optimal.
 
 #### **Étape
-
- 1 : Préparer les Images**
 
 1. **Créer des versions de l'image :**
    - Créez différentes versions de votre image, par exemple, `image@1x.png`, `image@2x.png`, et `image@3x.png`, et placez-les dans un dossier `images` de votre projet.
