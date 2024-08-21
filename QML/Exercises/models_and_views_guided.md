@@ -59,7 +59,7 @@ Apprendre à utiliser `ListView` pour afficher une liste simple d'éléments.
 
 #### **Documentation :**
 - [ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
-- [ListModel](https://doc.qt.io/qt-6/qml-qtquick-listmodel.html)
+- [ListModel](https://doc.qt.io/qt-6/qml-qtqml-models-listmodel.html)
 
 ---
 
@@ -282,7 +282,7 @@ Apprendre à lier des données entre différents éléments QML en utilisant des
    ```
 
 #### **Documentation :**
-- [Data Binding in QML](https://doc.qt.io/qt-6/qtquick-modelsdata.html)
+- [Data Binding in QML](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
 
 ---
 
