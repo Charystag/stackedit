@@ -648,3 +648,237 @@ Les modifications dans `data()` et `roleNames()` permettent de gérer les rôles
 3. **Utiliser les Rôles dans QML** : Utilisation de ces rôles dans un `ListView` QML pour afficher les informations sur chaque personne.
 
 **Résultat Attendu :** Vous devriez maintenant être capable d'étendre un modèle C++ pour gérer des rôles personnalisés et d'afficher ces données dans une vue QML. Ce type d'intégration est essentiel pour manipuler et afficher des données complexes dans les interfaces utilisateur QML tout en conservant une logique métier robuste en C++.
+
+---
+
+## **Exercice 5 : Trier et Filtrer un Modèle C++ dans QML**
+
+#### **Objectif :**
+Implémenter des fonctionnalités de tri et de filtrage dans un modèle C++ et les appliquer dans QML.
+
+
+### **Étape 1 : Implémenter le Tri dans le Modèle**
+
+1. **Sous-classez `QSortFilterProxyModel` pour créer un modèle avec des fonctionnalités de tri.**
+
+   **Créez un fichier d'en-tête (`sortfilterproxymodel.h`) pour définir la classe `SortFilterProxyModel`.**
+
+   **sortfilterproxymodel.h :**
+   ```cpp
+   #ifndef SORTFILTERPROXYMODEL_H
+   #define SORTFILTERPROXYMODEL_H
+
+   #include <QSortFilterProxyModel>
+   #include <QQuickItem>
+
+   class SortFilterProxyModel : public QSortFilterProxyModel {
+       Q_OBJECT
+       QML_ELEMENT
+
+   public:
+       explicit SortFilterProxyModel(QObject *parent = nullptr);
+
+       // Méthodes pour trier le modèle
+       Q_INVOKABLE void sortByName(bool ascending = true);
+       Q_INVOKABLE void sortByAge(bool ascending = true);
+
+       // Méthodes pour filtrer le modèle
+       Q_INVOKABLE void setNameFilter(const QString &name);
+       Q_INVOKABLE void setMinAgeFilter(int minAge);
+
+   protected:
+       // Méthode surchargée pour gérer le filtrage personnalisé
+       bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+
+   private:
+       int m_minAge = 0;  // Pour stocker la valeur du filtre d'âge minimum
+   };
+
+   #endif // SORTFILTERPROXYMODEL_H
+   ```
+
+2. **Implémentez la classe `SortFilterProxyModel` dans le fichier `sortfilterproxymodel.cpp`.**
+
+   **sortfilterproxymodel.cpp :**
+   ```cpp
+   #include "sortfilterproxymodel.h"
+   #include <QRegularExpression>
+
+   SortFilterProxyModel::SortFilterProxyModel(QObject *parent)
+       : QSortFilterProxyModel(parent) {
+   }
+
+   // Tri par nom
+   void SortFilterProxyModel::sortByName(bool ascending) {
+       setSortRole(Qt::UserRole + 1);  // NameRole
+       sort(0, ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
+   }
+
+   // Tri par âge
+   void SortFilterProxyModel::sortByAge(bool ascending) {
+       setSortRole(Qt::UserRole + 2);  // AgeRole
+       sort(0, ascending ? Qt::AscendingOrder : Qt::DescendingOrder);
+   }
+
+   // Filtrage par nom
+   void SortFilterProxyModel::setNameFilter(const QString &name) {
+       setFilterRole(Qt::UserRole + 1);  // NameRole
+       setFilterRegularExpression(QRegularExpression(name, QRegularExpression::CaseInsensitiveOption));
+       invalidateFilter();  // Refiltre le modèle avec les nouvelles conditions
+   }
+
+   // Filtrage par âge minimum
+   void SortFilterProxyModel::setMinAgeFilter(int minAge) {
+       m_minAge = minAge;
+       setFilterRole(Qt::UserRole + 2);  // AgeRole
+       invalidateFilter();  // Refiltre le modèle avec les nouvelles conditions
+   }
+
+   // Méthode pour accepter ou rejeter les lignes selon le filtre
+   bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
+       QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+
+       if (filterRole() == (Qt::UserRole + 1)) {  // NameRole
+           QString name = sourceModel()->data(index, Qt::UserRole + 1).toString();
+           return name.contains(filterRegularExpression());
+       } else if (filterRole() == (Qt::UserRole + 2)) {  // AgeRole
+           int age = sourceModel()->data(index, Qt::UserRole + 2).toInt();
+           return age >= m_minAge;
+       }
+
+       return true;
+   }
+   ```
+
+   **Explications des Points Clés :**
+
+   - **`QSortFilterProxyModel`** : Cette classe fournit une manière simple d'ajouter des fonctionnalités de tri et de filtrage à un modèle existant sans avoir à modifier le modèle lui-même.
+
+   - **`sort(0, ascending ? Qt::AscendingOrder : Qt::DescendingOrder)`** : Cette méthode trie les éléments du modèle selon le rôle spécifié (`NameRole` ou `AgeRole`). L'argument `0` indique qu'on trie sur la première (et unique) colonne du modèle.
+
+   - **`setFilterRegularExpression()`** : Utilisé pour filtrer les éléments selon une expression régulière. Ici, il permet de filtrer les noms avec une sensibilité à la casse.
+
+   - **`invalidateFilter()`** : Cette méthode force le modèle à réévaluer toutes les lignes en fonction des conditions de filtrage actuelles.
+
+
+### **Étape 2 : Ajouter le Modèle dans le Code Principal**
+
+1. **Modifiez `main.cpp` pour enregistrer `SortFilterProxyModel` et `MyModel`.**
+
+   **main.cpp :**
+   ```cpp
+   #include <QGuiApplication>
+   #include <QQmlApplicationEngine>
+   #include "mymodel.h"
+   #include "sortfilterproxymodel.h"
+
+   int main(int argc, char *argv[]) {
+       QGuiApplication app(argc, argv);
+       QQmlApplicationEngine engine;
+
+       // Enregistrer les modèles pour qu'ils soient utilisables dans QML
+       qmlRegisterType<MyModel>("CustomComponents", 1, 0, "MyModel");
+       qmlRegisterType<SortFilterProxyModel>("CustomComponents", 1, 0, "SortFilterProxyModel");
+
+       const QUrl url(u"qrc:/main.qml"_qs);
+       engine.load(url);
+
+       return app.exec();
+   }
+   ```
+
+   **Explications :**
+   - **`qmlRegisterType`** : Enregistre les classes C++ pour qu'elles puissent être instanciées directement dans QML.
+
+
+### **Étape 3 : Utiliser le Tri et le Filtrage dans QML**
+
+1. **Modifiez `main.qml` pour utiliser les fonctionnalités de tri et de filtrage.**
+
+   **main.qml :**
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+   import CustomComponents 1.0
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 300
+       title: "Tri et Filtrage dans QML"
+
+       Column {
+           anchors.centerIn: parent
+           spacing: 10
+
+           MyModel {
+               id: myModel
+           }
+
+           SortFilterProxyModel {
+               id: proxyModel
+               sourceModel: myModel
+           }
+
+           Row {
+               spacing: 10
+               Button {
+                   text: "Trier par nom"
+                   onClicked: proxyModel.sortByName(true)
+               }
+               Button {
+                   text: "Trier par âge"
+                   onClicked: proxyModel.sortByAge(true)
+               }
+           }
+
+           TextField {
+               placeholderText: "Filtrer par nom"
+               onTextChanged: proxyModel.setNameFilter(text)
+           }
+
+           TextField {
+               placeholderText: "Filtrer par âge minimum"
+               onTextChanged: proxyModel.setMinAgeFilter(parseInt(text, 10))
+           }
+
+           ListView {
+               width: 200
+               height: 150
+               model: proxyModel
+
+               delegate: Row {
+                   spacing: 10
+
+                   Text {
+                       text: model.name
+                       font.pointSize: 18
+                   }
+
+                   Text {
+                       text: model.age
+                       font.pointSize: 18
+                   }
+               }
+           }
+       }
+   }
+   ```
+
+   **Explications des Points Clés :**
+
+   - **`SortFilterProxyModel`** : Ce modèle intermédiaire est utilisé pour appliquer des opérations de tri et de filtrage sur le modèle de données sous-jacent.
+
+   - **`sortByName` et `sortByAge`** : Les boutons déclenchent le tri des éléments selon le nom ou l'âge.
+
+   - **`setNameFilter` et `setMinAgeFilter`** : Les champs de texte sont liés à ces méthodes pour appliquer dynamiquement les filtres en fonction des entrées de l'utilisateur.
+
+
+### **Résumé des Étapes :**
+
+1. **Implémenter le Tri** : Ajoutez des méthodes pour trier les éléments du modèle en fonction de rôles personnalisés.
+2. **Implémenter le Filtrage** : Ajoutez des méthodes pour filtrer les éléments selon des critères comme le nom ou l'âge.
+3. **Exposer à QML** : Enregistrez la classe pour permettre son utilisation directe dans QML.
+4. **Utiliser dans QML** : Intégrez les fonctionnalités de tri et de filtrage dans une interface utilisateur QML interactive.
+
+**Résultat Attendu :** Après cet exercice, vous devriez être capable de trier et de filtrer un modèle C++ depuis QML, permettant ainsi aux utilisateurs de contrôler dynamiquement l'affichage des données.
