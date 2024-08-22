@@ -882,3 +882,279 @@ Implémenter des fonctionnalités de tri et de filtrage dans un modèle C++ et l
 4. **Utiliser dans QML** : Intégrez les fonctionnalités de tri et de filtrage dans une interface utilisateur QML interactive.
 
 **Résultat Attendu :** Après cet exercice, vous devriez être capable de trier et de filtrer un modèle C++ depuis QML, permettant ainsi aux utilisateurs de contrôler dynamiquement l'affichage des données.
+
+---
+
+## **Exercice 6 : Intégration de SQLite avec un Modèle Exposé comme Propriété**
+
+#### **Objectif :**
+Apprendre à intégrer SQLite dans une application Qt/QML, à gérer une base de données avec du code C++, et à exposer un modèle sous forme de propriété à QML afin de mettre à jour automatiquement l'interface utilisateur lorsque la base de données change.
+
+### **Étape 1 : Configurer le Projet**
+
+1. **Assurez-vous que SQLite est inclus :**
+   - SQLite est généralement fourni avec Qt, donc il suffit d'inclure le module SQL dans votre projet.
+   - Ajoutez la ligne suivante dans votre fichier `CMakeLists.txt` pour inclure le module SQL :
+
+   ```cmake
+   find_package(Qt6 REQUIRED COMPONENTS Core Quick Sql)
+   ```
+
+   Vous devez aussi ajouter :
+   ```cmake
+	target_link_libraries(${PROJECT_NAME}
+    PRIVATE Qt6::Quick
+    PRIVATE Qt6::Core
+    PRIVATE Qt6::Sql
+	)
+   ```
+
+   Ou, si vous utilisez un fichier `.pro` :
+
+   ```pro
+   QT += sql
+   ```
+
+   Documentation : [Qt SQL Database](https://doc.qt.io/qt-6/qtsql-index.html)
+
+### **Étape 2 : Créer la Classe `DatabaseManager`**
+
+Nous allons créer une classe `DatabaseManager` qui gère les interactions avec la base de données et expose un modèle comme propriété à QML.
+
+**databasemanager.h :**
+
+```cpp
+#ifndef DATABASEMANAGER_H
+#define DATABASEMANAGER_H
+
+#include <QObject>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
+#include <QStringList>
+
+class DatabaseManager : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QStringList peopleModel READ peopleModel NOTIFY peopleModelChanged)
+
+public:
+    explicit DatabaseManager(QObject *parent = nullptr);
+    ~DatabaseManager();
+
+    Q_INVOKABLE bool createTable();
+    Q_INVOKABLE bool insertData(const QString &name, int age);
+    Q_INVOKABLE bool clearDatabase();
+
+    QStringList peopleModel();
+
+signals:
+    void peopleModelChanged();
+
+private:
+    void updateModel();
+    QSqlDatabase m_db;
+    QStringList m_peopleModel;
+};
+
+#endif // DATABASEMANAGER_H
+```
+
+**databasemanager.cpp :**
+
+```cpp
+#include "databasemanager.h"
+#include <QDebug>
+
+DatabaseManager::DatabaseManager(QObject *parent)
+    : QObject(parent) {
+    m_db = QSqlDatabase::addDatabase("QSQLITE");
+    m_db.setDatabaseName("people.db");
+
+    if (!m_db.open()) {
+        qWarning() << "Erreur lors de l'ouverture de la base de données:" << m_db.lastError().text();
+    } else {
+        qDebug() << "Base de données ouverte avec succès.";
+        updateModel();  // Initialiser le modèle lorsque la base de données est ouverte
+    }
+}
+
+DatabaseManager::~DatabaseManager() {
+    m_db.close();
+}
+
+bool DatabaseManager::createTable() {
+    QSqlQuery query;
+    QString createTable = "CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)";
+    if (!query.exec(createTable)) {
+        qWarning() << "Erreur lors de la création de la table:" << query.lastError().text();
+        return false;
+    } else {
+        qDebug() << "Table 'people' créée ou déjà existante.";
+    }
+    return true;
+}
+
+bool DatabaseManager::insertData(const QString &name, int age) {
+    QSqlQuery query;
+    query.prepare("INSERT INTO people (name, age) VALUES (:name, :age)");
+    query.bindValue(":name", name);
+    query.bindValue(":age", age);
+
+    if (!query.exec()) {
+        qWarning() << "Erreur lors de l'insertion des données:" << query.lastError().text();
+        return false;
+    } else {
+        qDebug() << "Données insérées avec succès:" << name << age;
+        updateModel();  // Mettre à jour le modèle après l'insertion des données
+    }
+
+    return true;
+}
+
+bool DatabaseManager::clearDatabase() {
+    QSqlQuery query;
+    QString clearTable = "DELETE FROM people";
+    if (!query.exec(clearTable)) {
+        qWarning() << "Erreur lors du vidage de la table:" << query.lastError().text();
+        return false;
+    } else {
+        qDebug() << "Table 'people' vidée avec succès.";
+        updateModel();  // Mettre à jour le modèle après avoir vidé la base de données
+    }
+    return true;
+}
+
+QStringList DatabaseManager::peopleModel() {
+    return m_peopleModel;
+}
+
+void DatabaseManager::updateModel() {
+    m_peopleModel.clear();
+    QSqlQuery query("SELECT name, age FROM people");
+    while (query.next()) {
+        QString person = query.value(0).toString() + " - " + QString::number(query.value(1).toInt()) + " ans";
+        m_peopleModel << person;
+    }
+    emit peopleModelChanged();  // Notifier QML que le modèle a changé
+}
+```
+
+**Explications :**
+- **`Q_PROPERTY(QStringList peopleModel READ peopleModel NOTIFY peopleModelChanged)`** : Cette propriété expose le modèle à QML et notifie QML chaque fois que le modèle change.
+- **`updateModel()`** : Cette fonction met à jour le modèle et émet le signal `peopleModelChanged` pour garantir que l'interface utilisateur est mise à jour chaque fois que les données changent.
+
+Documentation :
+- [QSqlDatabase](https://doc.qt.io/qt-6/qsqldatabase.html)
+- [QSqlQuery](https://doc.qt.io/qt-6/qsqlquery.html)
+
+### **Étape 3 : Modifier `main.cpp` pour Exposer la Classe à QML**
+
+Ensuite, nous allons modifier `main.cpp` pour enregistrer la classe `DatabaseManager` et l'exposer à QML.
+
+**main.cpp :**
+
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "databasemanager.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+
+    // Créer une instance de DatabaseManager
+    DatabaseManager dbManager;
+    dbManager.createTable();
+
+    // Exposer la classe à QML
+    engine.rootContext()->setContextProperty("dbManager", &dbManager);
+
+    const QUrl url(u"qrc:/main.qml"_qs);
+    engine.load(url);
+
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    return app.exec();
+}
+```
+
+**Explications :**
+- **`setContextProperty("dbManager", &dbManager);`** : Expose l'objet `dbManager` à QML, ce qui le rend accessible sous le nom `dbManager` dans les fichiers QML.
+
+Documentation :
+- [Integrating C++ with QML](https://doc.qt.io/qt-6/qtqml-cppintegration-topic.html)
+
+### **Étape 4 : Utiliser le Modèle dans QML**
+
+Enfin, nous allons créer un fichier `main.qml` pour afficher les données de la base de données dans une `ListView` et permettre à l'utilisateur d'ajouter ou de supprimer des enregistrements.
+
+**main.qml :**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Gestion de Base de Données avec SQLite"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 10
+
+        TextField {
+            id: nameInput
+            placeholderText: "Nom"
+        }
+
+        TextField {
+            id: ageInput
+            placeholderText: "Âge"
+            inputMethodHints: Qt.ImhDigitsOnly
+        }
+
+        Button {
+            text: "Ajouter à la base de données"
+            onClicked: {
+                if (nameInput.text !== "" && ageInput.text !== "") {
+                    dbManager.insertData(nameInput.text, ageInput.text.toInt())
+                } else {
+                    console.log("Veuillez entrer un nom et un âge valides.")
+                }
+            }
+        }
+
+        Button {
+            text: "Vider la base de données"
+            onClicked: {
+                dbManager.clearDatabase()
+            }
+        }
+
+        ListView {
+            width: parent.width
+            height: 150
+            model: dbManager.peopleModel  // Liaison directe avec la propriété exposée
+
+            delegate: Text {
+                text: modelData
+                font.pointSize: 16
+            }
+        }
+    }
+}
+```
+
+**Explications :**
+- **`model: dbManager.peopleModel`** : La `ListView` est directement liée à la propriété `peopleModel`, ce qui garantit que la vue est automatiquement mise à jour chaque fois que le modèle change.
+- **Bouton "Vider la base de données"** : Appelle la méthode `clearDatabase()` pour supprimer tous les enregistrements de la base de données et mettre à jour la vue.
+
+Documentation :
+- [QML ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
+- [QML TextField](https://doc.qt.io/qt-6/qml-qtquick-textfield.html)
+- [QML Button](https://doc.qt.io/qt-6/qml-qtquick-controls2-button.html)
