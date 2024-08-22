@@ -292,3 +292,180 @@ Apprendre à créer un élément visuel personnalisé en QML en sous-classant `Q
 
 
 **Résultat Attendu :** Après cet exercice, vous devriez être capable de gérer les événements de la souris dans un élément personnalisé en QML à l'aide de C++. Vous apprendrez à répondre aux interactions utilisateur et à modifier l'apparence de votre élément en fonction de ces interactions, ainsi qu'à exposer des propriétés à QML pour une manipulation facile dans l'interface utilisateur.
+
+---
+
+## **Exercice 3 : Implémenter un Modèle C++ pour un `ListView` QML**
+
+#### **Objectif :**
+Créer un modèle C++ et l'utiliser dans un `ListView` QML.
+
+
+#### **Étape 1 : Sous-Classez `QAbstractListModel`**
+
+1. **Créez un fichier d'en-tête (`mymodel.h`) pour définir une nouvelle classe `MyModel` qui hérite de `QAbstractListModel`.**
+
+   **mymodel.h :**
+   ```cpp
+   #ifndef MYMODEL_H
+   #define MYMODEL_H
+
+   #include <QAbstractListModel>
+   #include <QStringList>
+   #include <QQuickItem>
+
+   class MyModel : public QAbstractListModel {
+       Q_OBJECT
+       QML_ELEMENT  // Expose automatiquement ce modèle à QML
+
+   public:
+       explicit MyModel(QObject *parent = nullptr);
+
+       // Méthodes à implémenter pour le modèle
+       int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+       QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+       QHash<int, QByteArray> roleNames() const override;
+
+       // Méthode pour ajouter des données au modèle
+       Q_INVOKABLE void addItem(const QString &item);
+
+   private:
+       QStringList m_items;
+   };
+
+   #endif // MYMODEL_H
+   ```
+
+2. **Implémentez les méthodes nécessaires dans le fichier `mymodel.cpp`.**
+
+   **mymodel.cpp :**
+   ```cpp
+   #include "mymodel.h"
+
+   MyModel::MyModel(QObject *parent)
+       : QAbstractListModel(parent) {
+       // Exemple de données initiales
+       m_items << "Item 1" << "Item 2" << "Item 3";
+   }
+
+   int MyModel::rowCount(const QModelIndex &parent) const {
+       Q_UNUSED(parent);
+       return m_items.count();  // Retourne le nombre d'éléments dans le modèle
+   }
+
+   QVariant MyModel::data(const QModelIndex &index, int role) const {
+       if (!index.isValid() || index.row() >= m_items.size())
+           return QVariant();
+
+       if (role == Qt::DisplayRole) {
+           return m_items.at(index.row());  // Retourne l'élément à la ligne demandée
+       }
+
+       return QVariant();
+   }
+
+   QHash<int, QByteArray> MyModel::roleNames() const {
+       QHash<int, QByteArray> roles;
+       roles[Qt::DisplayRole] = "display";  // Associe le rôle DisplayRole avec la clé "display"
+       return roles;
+   }
+
+   void MyModel::addItem(const QString &item) {
+       beginInsertRows(QModelIndex(), rowCount(), rowCount());
+       m_items << item;
+       endInsertRows();
+   }
+   ```
+
+   **Explications :**
+   - **`rowCount()`** : Retourne le nombre d'éléments dans le modèle, utilisé par QML pour savoir combien d'éléments afficher.
+   - **`data()`** : Retourne les données pour chaque élément du modèle en fonction de l'index donné.
+   - **`roleNames()`** : Définit les rôles utilisés pour accéder aux données dans QML. Ici, `Qt::DisplayRole` est associé à la clé "display".
+   - **`addItem()`** : Ajoute un nouvel élément à la liste de données.
+
+   **Documentation :**
+   - [QAbstractListModel](https://doc.qt.io/qt-6/qabstractlistmodel.html)
+   - [QHash](https://doc.qt.io/qt-6/qhash.html)
+
+
+#### **Étape 2 : Ajouter des Données au Modèle**
+
+- Les données ont été ajoutées directement dans le constructeur du modèle (`m_items << "Item 1" << "Item 2" << "Item 3";`), mais vous pouvez ajouter plus d'éléments en utilisant la méthode `addItem()`.
+
+
+#### **Étape 3 : Enregistrer et Utiliser le Modèle dans QML**
+
+1. **Modifiez `main.cpp` pour enregistrer `MyModel` et l'exposer à QML.**
+
+   **main.cpp :**
+   ```cpp
+   #include <QGuiApplication>
+   #include <QQmlApplicationEngine>
+   #include "mymodel.h"
+
+   int main(int argc, char *argv[]) {
+       QGuiApplication app(argc, argv);
+       QQmlApplicationEngine engine;
+
+       // Option 1: Enregistrer le modèle pour l'utiliser comme type QML
+       qmlRegisterType<MyModel>("CustomComponents", 1, 0, "MyModel");
+
+       const QUrl url(u"qrc:/main.qml"_qs);
+       engine.load(url);
+
+       return app.exec();
+   }
+   ```
+
+   **Explications :**
+   - **`qmlRegisterType<MyModel>("CustomComponents", 1, 0, "MyModel")`** : Enregistre `MyModel` pour qu'il puisse être utilisé directement comme un type QML.
+
+2. **Créez ou modifiez le fichier `main.qml` pour utiliser le modèle dans un `ListView`.**
+
+   **main.qml :**
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+   import CustomComponents 1.0
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 300
+       title: "Modèle C++ pour ListView"
+
+       Column {
+           anchors.centerIn: parent
+           spacing: 20
+
+           ListView {
+               width: 200
+               height: 150
+               model: MyModel {id: customModel}  // Utilise le modèle personnalisé
+
+               delegate: Text {
+                   text: model.display  // Utilise le rôle "display" défini dans le modèle
+                   font.pointSize: 18
+                   padding: 10
+               }
+           }
+
+           Button {
+               text: "Ajouter un élément"
+               onClicked: customModel.addItem("Nouvel Item")  // Appelle la méthode addItem du modèle
+           }
+       }
+   }
+   ```
+
+   **Explications :**
+   - **`ListView`** : Utilise `MyModel` comme modèle de données. Chaque élément du modèle est affiché en utilisant le `delegate`.
+   - **`delegate`** : Définit comment chaque élément du modèle doit être rendu. Ici, un simple texte est affiché.
+   - **`model.display`** : Accède aux données via le rôle `display` défini dans `roleNames()`.
+
+   **Documentation :**
+   - [ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
+   - [Delegates in QML](https://doc.qt.io/qt-6/qml-qtquick-delegates.html)
+
+
+**Résultat Attendu :** Après cet exercice, vous devriez être capable de créer un modèle C++ en sous-classant `QAbstractListModel`, de le peupler avec des données, de l'enregistrer dans QML, et de l'utiliser dans un `ListView` QML pour afficher les données. Cela vous permettra d'intégrer des données dynamiques et complexes dans vos interfaces QML tout en utilisant la puissance de C++.
