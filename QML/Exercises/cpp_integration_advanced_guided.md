@@ -469,3 +469,182 @@ Créer un modèle C++ et l'utiliser dans un `ListView` QML.
 
 
 **Résultat Attendu :** Après cet exercice, vous devriez être capable de créer un modèle C++ en sous-classant `QAbstractListModel`, de le peupler avec des données, de l'enregistrer dans QML, et de l'utiliser dans un `ListView` QML pour afficher les données. Cela vous permettra d'intégrer des données dynamiques et complexes dans vos interfaces QML tout en utilisant la puissance de C++.
+
+---
+
+## **Exercice 4 : Gérer les Rôles de Données Personnalisés dans les Modèles C++**
+
+#### **Objectif :**
+Étendre un modèle C++ pour gérer des rôles de données personnalisés et les utiliser dans QML.
+
+
+#### **Étape 1 : Définir des Rôles Personnalisés**
+
+1. **Modifiez le fichier d'en-tête (`mymodel.h`) pour définir des rôles personnalisés tels que `NameRole` et `AgeRole`.**
+
+   **mymodel.h :**
+   ```cpp
+   #ifndef MYMODEL_H
+   #define MYMODEL_H
+
+   #include <QAbstractListModel>
+   #include <QStringList>
+   #include <QVector>
+   #include <QQuickItem>
+
+   struct Person {
+       QString name;
+       int age;
+   };
+
+   class MyModel : public QAbstractListModel {
+       Q_OBJECT
+       QML_ELEMENT  // Expose automatiquement ce modèle à QML
+
+   public:
+       explicit MyModel(QObject *parent = nullptr);
+
+       // Méthodes à implémenter pour le modèle
+       int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+       QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+       QHash<int, QByteArray> roleNames() const override;
+
+       // Méthode pour ajouter des données au modèle
+       Q_INVOKABLE void addPerson(const QString &name, int age);
+
+   private:
+       QVector<Person> m_people;  // Vecteur pour stocker des objets Person
+
+       // Enumération pour les rôles personnalisés
+       enum PersonRoles {
+           NameRole = Qt::UserRole + 1,
+           AgeRole
+       };
+   };
+
+   #endif // MYMODEL_H
+   ```
+
+2. **Implémentez les rôles personnalisés dans le fichier `mymodel.cpp`.**
+
+   **mymodel.cpp :**
+   ```cpp
+   #include "mymodel.h"
+
+   MyModel::MyModel(QObject *parent)
+       : QAbstractListModel(parent) {
+       // Exemple de données initiales
+       m_people.append({"Alice", 30});
+       m_people.append({"Bob", 25});
+       m_people.append({"Charlie", 22});
+   }
+
+   int MyModel::rowCount(const QModelIndex &parent) const {
+       Q_UNUSED(parent);
+       return m_people.count();  // Retourne le nombre d'éléments dans le modèle
+   }
+
+   QVariant MyModel::data(const QModelIndex &index, int role) const {
+       if (!index.isValid() || index.row() >= m_people.size())
+           return QVariant();
+
+       const Person &person = m_people.at(index.row());
+
+       if (role == NameRole)
+           return person.name;
+       else if (role == AgeRole)
+           return person.age;
+
+       return QVariant();
+   }
+
+   QHash<int, QByteArray> MyModel::roleNames() const {
+       QHash<int, QByteArray> roles;
+       roles[NameRole] = "name";
+       roles[AgeRole] = "age";
+       return roles;
+   }
+
+   void MyModel::addPerson(const QString &name, int age) {
+       beginInsertRows(QModelIndex(), rowCount(), rowCount());
+       m_people.append({name, age});
+       endInsertRows();
+   }
+   ```
+
+   **Explications :**
+   - **`PersonRoles`** : Enumération pour définir les rôles personnalisés tels que `NameRole` et `AgeRole`.
+   - **`roleNames()`** : Associe chaque rôle personnalisé à une clé utilisée dans QML (`"name"` pour `NameRole` et `"age"` pour `AgeRole`).
+   - **`data()`** : Retourne les données appropriées en fonction du rôle demandé (`NameRole` retourne le nom, `AgeRole` retourne l'âge).
+   - **`addPerson()`** : Ajoute une personne avec un nom et un âge au modèle.
+
+
+#### **Étape 2 : Retourner les Données pour les Rôles Personnalisés**
+
+Les modifications dans `data()` et `roleNames()` permettent de gérer les rôles personnalisés et de retourner les données correspondantes.
+
+
+#### **Étape 3 : Utiliser les Rôles Personnalisés dans QML**
+
+1. **Modifiez `main.qml` pour utiliser les rôles personnalisés dans un `ListView`.**
+
+   **main.qml :**
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+   import CustomComponents 1.0
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 300
+       title: "Modèle avec Rôles Personnalisés"
+
+       Column {
+           anchors.centerIn: parent
+           spacing: 20
+
+           MyModel {
+               id: myModel
+           }
+
+           ListView {
+               width: 200
+               height: 150
+               model: myModel  // Utilise le modèle personnalisé
+
+               delegate: Row {
+                   spacing: 10
+
+                   Text {
+                       text: model.name  // Affiche le nom à partir du rôle "name"
+                       font.pointSize: 18
+                   }
+
+                   Text {
+                       text: model.age  // Affiche l'âge à partir du rôle "age"
+                       font.pointSize: 18
+                   }
+               }
+           }
+
+           Button {
+               text: "Ajouter une personne"
+               onClicked: myModel.addPerson("Nouvelle Personne", 20)  // Appelle la méthode addPerson du modèle
+           }
+       }
+   }
+   ```
+
+   **Explications :**
+   - **`model.name` et `model.age`** : Accède aux données via les rôles `name` et `age` définis dans `roleNames()`.
+   - **`Row` dans le `delegate`** : Affiche le nom et l'âge de chaque personne dans une ligne séparée du `ListView`.
+
+
+### **Résumé des Étapes :**
+
+1. **Définir des Rôles Personnalisés** : Utilisation de `enum` pour définir des rôles comme `NameRole` et `AgeRole` dans `mymodel.h`.
+2. **Retourner les Données pour les Rôles Personnalisés** : Mise à jour de `data()` pour retourner les valeurs appropriées en fonction du rôle demandé.
+3. **Utiliser les Rôles dans QML** : Utilisation de ces rôles dans un `ListView` QML pour afficher les informations sur chaque personne.
+
+**Résultat Attendu :** Vous devriez maintenant être capable d'étendre un modèle C++ pour gérer des rôles personnalisés et d'afficher ces données dans une vue QML. Ce type d'intégration est essentiel pour manipuler et afficher des données complexes dans les interfaces utilisateur QML tout en conservant une logique métier robuste en C++.
