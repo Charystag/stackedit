@@ -1523,7 +1523,7 @@ ApplicationWindow {
             model: ["Option 1", "Option 2", "Option 3"]
 
             onCurrentIndexChanged: {
-                selectedText.text = "Vous avez sélectionné : " + comboBox.currentText
+				selectedText.text = "Vous avez sélectionné : " + comboBox.model[comboBox.currentIndex]
             }
         }
 
