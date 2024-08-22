@@ -383,3 +383,192 @@ Documentation :
 ### **Résultat Attendu :**
 
 À la fin de cet exercice, vous serez capable de capturer et de répondre aux événements clavier dans QML, y compris la gestion des touches spécifiques et des combinaisons de touches. Vous aurez également exploré la manière dont les événements de répétition des touches sont gérés lorsque l'utilisateur maintient une touche enfoncée. Votre application devrait réagir dynamiquement aux entrées clavier, par exemple en changeant la couleur d'un rectangle ou en affichant le texte de la touche pressée.
+
+---
+
+### **Exercice 3 : Interaction avec la Souris à l'aide de MouseArea**
+
+#### **Objectif :**
+Comprendre comment capturer et gérer les événements de la souris en utilisant `MouseArea` dans QML.
+
+### **Étape 1 : Créer une Zone Cliquable**
+
+1. **Configurer un Rectangle Cliquable :**
+   - Utilisez `MouseArea` à l'intérieur d'un `Rectangle` pour capturer les événements de clic. Affichez un élément `Text` qui montre la position du clic à l'intérieur du rectangle.
+
+**main.qml :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 3 : Interaction avec la Souris"
+
+    Rectangle {
+        width: 400
+        height: 300
+        color: "lightblue"
+
+        Text {
+            id: clickPosition
+            anchors.centerIn: parent
+            text: "Cliquez n'importe où"
+            font.pointSize: 16
+            color: "black"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: (mouse) => {
+                clickPosition.text = "Position du clic : (" + mouse.x + ", " + mouse.y + ")"
+            }
+        }
+    }
+}
+```
+
+**Explications :**
+- **MouseArea** : `MouseArea` est utilisé pour capturer les événements de souris dans le `Rectangle`. L'événement `onClicked` met à jour le texte avec la position du clic.
+- **mouse.x, mouse.y** : Ces propriétés donnent la position du clic de la souris dans la zone du `MouseArea`.
+
+Documentation :
+- [MouseArea](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html)
+
+### **Étape 2 : Gérer les Mouvements de la Souris**
+
+1. **Créer le fichier `logging.js` pour faciliter l'affichage dans la console :**
+	- Créez le fichier `logging.js` qui contient le code suivant :
+
+```js
+//logging.js
+function log(text) {
+    console.log(text)
+    return (text)
+}
+```
+
+2. **Ajouter des Gestionnaires pour les Mouvements de la Souris :**
+   - Implémentez des gestionnaires pour `onPressed`, `onReleased`, `onPositionChanged`, et `onClicked` pour réagir à différentes interactions de la souris.
+
+**Modification du `main.qml` :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+import "logging.js" as Logging
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 3 : Interaction avec la Souris"
+
+    Rectangle {
+        width: 400
+        height: 300
+        color: "lightblue"
+
+        Text {
+            id: clickPosition
+            anchors.centerIn: parent
+            text: "Cliquez ou déplacez la souris"
+            font.pointSize: 16
+            color: "black"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+
+            onPressed: {
+                            clickPosition.text = Logging.log("Souris pressée à : (" + mouse.x + ", " + mouse.y + ")")
+                        }
+
+                        onReleased: (mouse) => {
+                            clickPosition.text = Logging.log("Souris relâchée à : (" + mouse.x + ", " + mouse.y + ")")
+                        }
+
+                        onPositionChanged: (mouse) => {
+                            clickPosition.text = Logging.log("Position : (" + mouse.x + ", " + mouse.y + ")")
+                        }
+
+                        onClicked: (mouse) => {
+                            clickPosition.text = Logging.log("Clique détecté à : (" + mouse.x + ", " + mouse.y + ")")
+                        }
+        }
+    }
+}
+```
+
+**Explications :**
+- **onPressed** : Déclenché lorsque la souris est pressée (clic gauche enfoncé).
+- **onReleased** : Déclenché lorsque la souris est relâchée après avoir été pressée.
+- **onPositionChanged** : Déclenché chaque fois que la souris se déplace dans la zone du `MouseArea`.
+- **onClicked** : Déclenché lorsque l'utilisateur clique (presser et relâcher) à l'intérieur du `MouseArea`.
+- **log** : Nous permet d'affecter le texte à notre variable tout en nous assurant qu'il soit affiché dans la console
+- **hoverEnabled** : Nous permet de nous assurer que la position soit enregistrée même quand la souris n'est pas cliquée
+
+### **Étape 3 : Gérer le Glisser-Déposer avec MouseArea**
+
+1. **Implémenter une Fonctionnalité de Glisser-Déposer :**
+   - Utilisez `MouseArea` pour implémenter une fonctionnalité de glisser-déposer permettant de déplacer un élément à travers l'écran.
+
+**Ajoutez un élément Draggable à `main.qml` :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 3 : Interaction avec la Souris"
+
+    Rectangle {
+        width: 400
+        height: 300
+        color: "lightblue"
+
+        Rectangle {
+            id: draggable
+            width: 50
+            height: 50
+            color: "orange"
+            radius: 10
+            x: 175
+            y: 125
+
+            MouseArea {
+                id: dragArea
+                anchors.fill: parent
+                drag.target: draggable
+
+                onPressed: {
+                    draggable.color = "green"
+                }
+
+                onReleased: {
+                    draggable.color = "orange"
+                }
+            }
+        }
+    }
+}
+```
+
+**Explications :**
+- **drag.target** : Cette propriété est utilisée pour spécifier quel élément doit être déplacé. Ici, `draggable` est l'élément qui est déplacé lorsque la souris est utilisée pour le glisser.
+- **onPressed/onReleased** : Ces événements sont utilisés pour changer la couleur de l'élément lors de la saisie et du relâchement pendant le glisser-déposer, améliorant ainsi le retour visuel.
+
+Documentation :
+- [MouseArea Dragging](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html#drag-prop)
+
+
+### **Résultat Attendu :**
+
+À la fin de cet exercice, vous devriez être capable de gérer différents événements de souris dans QML, y compris les clics, les mouvements de la souris, et la fonctionnalité de glisser-déposer. Votre application devrait permettre à l'utilisateur d'interagir avec les éléments à l'écran en cliquant, en faisant glisser et en relâchant des objets. Cette compétence est essentielle pour créer des interfaces utilisateur interactives et dynamiques.
