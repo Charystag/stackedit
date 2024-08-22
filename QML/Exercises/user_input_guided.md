@@ -932,8 +932,401 @@ Documentation :
 - [Qt C++ and QML Integration](https://doc.qt.io/qt-6/qtqml-cppintegration-topic.html)
 - [Q_PROPERTY](https://doc.qt.io/qt-6/properties.html)
 
----
-
 ### **Résultat Attendu :**
 
 À la fin de cet exercice, vous devriez être capable d'utiliser et de styliser les composants `TextInput` et `TextArea`, de gérer les événements clavier pour valider les entrées utilisateur, et de lier les champs de texte à des propriétés backend en C++. Votre application devrait pouvoir capturer des entrées utilisateur, afficher des placeholders personnalisés pour des champs de texte vides, et synchroniser ces données avec la logique backend, tout en offrant un retour visuel clair et stylisé.
+
+---
+
+## **Exercice 5 : Utilisation des Boutons, Curseurs et Cases à Cocher**
+
+### **Objectif :**
+Créer des éléments d'interface utilisateur interactifs en utilisant `Button`, `Slider`, et `CheckBox`, et gérer leurs événements et états en les liant aux propriétés backend en C++.
+
+### **Étape 1 : Créer une Interface Simple avec Button, Slider, et CheckBox**
+
+1. **Configurer l'Interface Utilisateur :**
+   - Créez une interface simple avec un `Button` pour déclencher une action, un `Slider` pour ajuster une valeur, et un `CheckBox` pour activer ou désactiver un paramètre.
+
+**main.qml :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 5 : Boutons, Curseurs et Cases à Cocher"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Button {
+            text: "Cliquez-moi"
+            onClicked: {
+                console.log("Bouton cliqué")
+                // Action à exécuter lors du clic
+            }
+        }
+
+        Slider {
+            id: valueSlider
+            width: 300
+            from: 0
+            to: 100
+            value: 50
+        }
+
+        CheckBox {
+            id: toggleCheckBox
+            text: "Activer le paramètre"
+            checked: true
+        }
+    }
+}
+```
+
+**Explications :**
+- **Button** : Utilisé pour déclencher une action spécifique lorsqu'il est cliqué.
+- **Slider** : Permet à l'utilisateur d'ajuster une valeur dans une plage définie.
+- **CheckBox** : Utilisée pour activer ou désactiver une option (par exemple, un paramètre).
+
+Documentation :
+- [Button (Qt Quick Controls)](https://doc.qt.io/qt-6/qml-qtquick-controls-button.html)
+- [Slider (Qt Quick Controls)](https://doc.qt.io/qt-6/qml-qtquick-controls-slider.html)
+- [CheckBox (Qt Quick Controls)](https://doc.qt.io/qt-6/qml-qtquick-controls-checkbox.html)
+
+
+### **Étape 2 : Gérer les Clics de Bouton**
+
+1. **Implémenter le Gestionnaire `onClicked` :**
+   - Implémentez le gestionnaire `onClicked` pour le bouton afin de réaliser une action comme afficher une alerte ou mettre à jour un texte.
+
+**Modification du `main.qml` :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Dialogs 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 5 : Boutons, Curseurs et Cases à Cocher"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Button {
+            text: "Cliquez-moi"
+            onClicked: {
+                messageDialog.title = "Bouton Cliqué"
+                messageDialog.text = "Vous avez cliqué sur le bouton !"
+                messageDialog.open()
+            }
+        }
+
+        Slider {
+            id: valueSlider
+            width: 300
+            from: 0
+            to: 100
+            value: 50
+        }
+
+        CheckBox {
+            id: toggleCheckBox
+            text: "Activer le paramètre"
+            checked: true
+        }
+
+        MessageDialog {
+            id: messageDialog
+        }
+    }
+}
+```
+
+**Explications :**
+- **MessageDialog** : Un `MessageDialog` est utilisé pour afficher une alerte lorsque le bouton est cliqué. Le texte de l'alerte et son titre sont définis lors du clic.
+
+Documentation :
+- [MessageDialog](https://doc.qt.io/qt-6/qml-qtquick-dialogs-messagedialog.html)
+
+
+### **Étape 3 : Lier la Valeur du Slider à une Propriété C++**
+
+1. **Exposer une Propriété C++ et la Lier à Slider :**
+   - Exposez une propriété C++ à QML en utilisant `setContextProperty()` ou `Q_PROPERTY`, puis liez la valeur du slider à cette propriété pour que la modification du curseur mette à jour les données backend.
+
+**backend.h :**
+```cpp
+#ifndef BACKEND_H
+#define BACKEND_H
+
+#include <QObject>
+
+class Backend : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(int sliderValue READ sliderValue WRITE setSliderValue NOTIFY sliderValueChanged)
+
+public:
+    explicit Backend(QObject *parent = nullptr);
+
+    int sliderValue() const;
+    void setSliderValue(int value);
+
+signals:
+    void sliderValueChanged();
+
+private:
+    int m_sliderValue;
+};
+
+#endif // BACKEND_H
+```
+
+**backend.cpp :**
+```cpp
+#include "backend.h"
+
+Backend::Backend(QObject *parent) : QObject(parent), m_sliderValue(50) {}
+
+int Backend::sliderValue() const {
+    return m_sliderValue;
+}
+
+void Backend::setSliderValue(int value) {
+    if (m_sliderValue != value) {
+        m_sliderValue = value;
+        emit sliderValueChanged();
+    }
+}
+```
+
+**main.cpp :**
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "backend.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+
+    QQmlApplicationEngine engine;
+    Backend backend;
+
+    engine.rootContext()->setContextProperty("backend", &backend);
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    return app.exec();
+}
+```
+
+**main.qml :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Dialogs 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 5 : Boutons, Curseurs et Cases à Cocher"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Button {
+            text: "Cliquez-moi"
+            onClicked: {
+                messageDialog.title = "Bouton Cliqué"
+                messageDialog.text = "Vous avez cliqué sur le bouton !"
+                messageDialog.open()
+            }
+        }
+
+        Slider {
+            id: valueSlider
+            width: 300
+            from: 0
+            to: 100
+            value: backend.sliderValue  // Lier la valeur du slider à la propriété C++
+            onValueChanged: backend.sliderValue = value  // Mettre à jour la propriété backend
+        }
+
+        CheckBox {
+            id: toggleCheckBox
+            text: "Activer le paramètre"
+            checked: true
+        }
+
+        MessageDialog {
+            id: messageDialog
+        }
+    }
+}
+```
+
+**Explications :**
+- **Q_PROPERTY** : Utilisé pour exposer une propriété C++ à QML. Ici, `sliderValue` est lié à la valeur du `Slider`.
+- **onValueChanged** : Le gestionnaire met à jour la propriété backend à chaque modification de la valeur du slider, synchronisant ainsi l'interface utilisateur avec la logique backend.
+
+Documentation :
+- [Q_PROPERTY](https://doc.qt.io/qt-6/properties.html)
+
+### **Étape 4 : Gérer les États de CheckBox**
+
+1. **Implémenter des Gestionnaires pour CheckBox et lier à une Propriété C++ :**
+   - Gérez l'état coché/décoché de la `CheckBox` et liez cet état à une propriété booléenne en C++.
+
+**backend.h :**
+```cpp
+#ifndef BACKEND_H
+#define BACKEND_H
+
+#include <QObject>
+
+class Backend : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(int sliderValue READ sliderValue WRITE setSliderValue NOTIFY sliderValueChanged)
+    Q_PROPERTY(bool settingEnabled READ settingEnabled WRITE setSettingEnabled NOTIFY settingEnabledChanged)
+
+public:
+    explicit Backend(QObject *parent = nullptr);
+
+    int sliderValue() const;
+    void setSliderValue(int value);
+    bool settingEnabled() const;
+    void setSettingEnabled(bool enabled);
+
+signals:
+    void sliderValueChanged();
+    void settingEnabledChanged();
+
+private:
+    int 	m_sliderValue;
+    bool	m_settingEnabled;
+};
+
+#endif // BACKEND_H
+```
+
+**backend.cpp :**
+```cpp
+#include "backend.h"
+#include <iostream>
+
+Backend::Backend(QObject *parent) : QObject(parent), m_sliderValue(50), \
+m_settingEnabled(true){}
+
+int Backend::sliderValue() const {
+    return m_sliderValue;
+}
+
+void Backend::setSliderValue(int value) {
+    if (m_sliderValue != value) {
+        m_sliderValue = value;
+        emit sliderValueChanged();
+    }
+}
+
+bool Backend::settingEnabled() const {
+    return m_settingEnabled;
+}
+
+void Backend::setSettingEnabled(bool enabled) {
+    if (m_settingEnabled != enabled){
+        m_settingEnabled = enabled;
+        emit settingEnabledChanged();
+    }
+}
+```
+
+**main.qml :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Dialogs 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 5 : Boutons, Curseurs et Cases à Cocher"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Button {
+            text: "Cliquez-moi"
+            onClicked: {
+                messageDialog.title = "Bouton Cliqué"
+                messageDialog.text = "Vous avez cliqué sur le bouton !"
+                messageDialog.open()
+            }
+        }
+
+        Slider {
+            id: valueSlider
+            width: 300
+            from: 0
+            to: 100
+            value: backend.sliderValue  // Lier la valeur du slider à la propriété C++
+            onValueChanged: backend.sliderValue = value  // Mettre à jour la propriété backend
+        }
+
+        CheckBox {
+            id: toggleCheckBox
+            text: "Activer le paramètre"
+            checked: backend.settingEnabled  // Lier l'état de la CheckBox à la propriété C++
+            onCheckedChanged: {
+
+                console.log("Checked changed")
+                backend.settingEnabled = checked  // Mettre à jour la propriété backend
+            }
+        }
+
+        Button {
+            text: "Print the backend values in the console"
+            onClicked: {
+                console.log("Slider value: ", backend.sliderValue)
+                console.log("Checked Enabled: ", backend.settingEnabled)
+            }
+        }
+
+        MessageDialog {
+            id: messageDialog
+        }
+    }
+}
+```
+
+**Explications :**
+- **CheckBox** : L'état coché/décoché de la `CheckBox` est lié à la propriété `settingEnabled` du backend en C++.
+- **onCheckedChanged** : Le gestionnaire met à jour l'état du paramètre dans le backend à chaque changement de l'état de la `CheckBox`.
+
+Documentation :
+- [Q_PROPERTY](https://doc.qt.io/qt-6/properties.html)
+
+
+### **Résultat Attendu :**
+
+À la fin de cet exercice, vous devriez être capable de :
+- Créer et utiliser des éléments d'interface utilisateur interactifs comme les boutons, curseurs, et cases à cocher.
+- Gérer leurs événements comme les clics de bouton, les changements de valeur du curseur, et les changements d'état de la case à cocher.
+- Lier ces éléments d'interface à des propriétés backend en C++ pour synchroniser l'état de l'interface avec la logique de votre application.
