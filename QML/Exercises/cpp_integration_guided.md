@@ -781,6 +781,224 @@ ApplicationWindow {
 - [Binding in QML](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
 - [Signal Handlers in QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
+**Résultat Attendu :** Après cet exercice, vous devriez être capable d'exposer des instances spécifiques d'objets C++ à QML en utilisant `setContextProperty()`. Cela vous permet de manipuler ces objets directement dans QML, offrant ainsi une flexibilité supplémentaire pour la gestion de l'état et l'interaction entre la logique C++ et l'interface utilisateur QML.
+
 ---
 
-**Résultat Attendu :** Après cet exercice, vous devriez être capable d'exposer des instances spécifiques d'objets C++ à QML en utilisant `setContextProperty()`. Cela vous permet de manipuler ces objets directement dans QML, offrant ainsi une flexibilité supplémentaire pour la gestion de l'état et l'interaction entre la logique C++ et l'interface utilisateur QML.
+## **Exercice 7 : Création et Utilisation d'Objets Singletons**
+
+#### **Objectif :**
+Implémenter un singleton en C++ et l'utiliser globalement dans QML.
+
+#### **Étape 1 : Créer une Classe Singleton C++ avec `QML_SINGLETON` et `QML_ELEMENT`**
+
+1. **Créez un fichier d'en-tête (`singletoncounter.h`) pour définir la classe `SingletonCounter` en tant que singleton.**
+
+```cpp
+#ifndef SINGLETONCOUNTER_H
+#define SINGLETONCOUNTER_H
+
+#include <QObject>
+#include <QtQml/qqml.h>
+
+class SingletonCounter : public QObject {
+    Q_OBJECT
+    QML_SINGLETON // Indique que cette classe est un singleton
+    QML_ELEMENT   // Expose automatiquement cette classe à QML
+
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
+public:
+    explicit SingletonCounter(QObject *parent = nullptr);
+
+    // Méthode statique pour accéder au singleton
+    static SingletonCounter* create(QQmlEngine*, QJSEngine*) {
+        static SingletonCounter instance;
+        return &instance;
+    }
+
+    int count() const;
+    void setCount(int value);
+
+public slots:
+    void increment();
+
+signals:
+    void countChanged();
+
+private:
+    int m_count;
+};
+
+#endif // SINGLETONCOUNTER_H
+```
+
+2. **Créez le fichier d'implémentation (`singletoncounter.cpp`) pour définir les méthodes de `SingletonCounter`.**
+
+```cpp
+#include "singletoncounter.h"
+
+SingletonCounter::SingletonCounter(QObject *parent) : QObject(parent), m_count(0) {
+    // Initialisation de 'm_count' à 0
+}
+
+int SingletonCounter::count() const {
+    return m_count;
+}
+
+void SingletonCounter::setCount(int value) {
+    if (m_count != value) {
+        m_count = value;
+        emit countChanged(); // Émet le signal lorsque 'count' change
+    }
+}
+
+void SingletonCounter::increment() {
+    setCount(m_count + 1); // Incrémente la valeur de 'count'
+}
+```
+
+**Explications :**
+- **`QML_SINGLETON`** : Cette macro indique que `SingletonCounter` est un singleton, ce qui signifie qu'il n'y aura qu'une seule instance de cette classe accessible globalement en QML.
+- **`QML_ELEMENT`** : Cette macro expose la classe à QML sans nécessiter d'enregistrement explicite dans le code C++.
+- **Méthode `create`** : Cette méthode statique assure que la classe est bien utilisée en tant que singleton en renvoyant toujours la même instance.
+
+**Documentation :**
+- [QML_SINGLETON](https://doc.qt.io/qt-6/qtqml-cppintegration-exposecppattributes.html#qml-singleton)
+- [Singleton Pattern](https://en.wikipedia.org/wiki/Singleton_pattern)
+
+#### **Étape 2 : Enregistrer la Classe Singleton (Si nécessaire)**
+
+1. **Si vous n'utilisez pas `QML_ELEMENT`, vous devriez enregistrer manuellement la classe singleton dans `main.cpp`. Cependant, avec `QML_ELEMENT`, cette étape n'est pas nécessaire.**
+
+**Exemple sans `QML_ELEMENT` :**
+
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "singletoncounter.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+
+    // Enregistrement du singleton
+    qmlRegisterSingletonType<SingletonCounter>("MyApp", 1, 0, "SingletonCounter", SingletonCounter::create);
+
+    const QUrl url(u"qrc:/main.qml"_qs);
+    engine.load(url);
+
+    return app.exec();
+}
+```
+
+**Explications :**
+- **`qmlRegisterSingletonType`** : Utilisé pour enregistrer le type singleton si `QML_ELEMENT` n'est pas utilisé. Il faut fournir une fonction pour créer le singleton, ici `SingletonCounter::create`.
+
+**Documentation :**
+- [qmlRegisterSingletonType](https://doc.qt.io/qt-6/qqmlengine.html#qmlRegisterSingletonType)
+
+#### **Étape 3 : Accéder et Utiliser le Singleton depuis Différents Fichiers QML**
+
+1. **Créez un fichier `main.qml` pour accéder au singleton `SingletonCounter` et interagir avec lui.**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import "."
+/*
+Si le singleton a été inclus avec qmlRegisterSingletonType on rajoute la 
+ligne suivante :
+import MyApp 1.0
+*/
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Utilisation du Singleton"
+
+    StackView {
+        id: stackView
+        initialItem: mainPage
+        anchors.fill: parent
+    }
+
+    Component {
+        id: mainPage
+        Page {
+            Column {
+                anchors.centerIn: parent
+                spacing: 20
+
+                Text {
+                    text: "Valeur actuelle : " + SingletonCounter.count
+                    font.pointSize: 20
+                }
+
+                Slider {
+                    from: 0
+                    to: 100
+                    value: SingletonCounter.count
+                    onValueChanged: SingletonCounter.count = value
+                }
+
+                Button {
+                    text: "Incrémenter"
+                    onClicked: SingletonCounter.increment()
+                }
+
+                Button {
+                    text: "Naviguer vers l'autre page"
+                    onClicked: stackView.push(otherPage)
+                }
+            }
+        }
+    }
+
+    Component {
+        id: otherPage
+        OtherPage {}
+    }
+}
+```
+
+**Explications :**
+- **StackView** : Utilisé pour gérer la navigation entre différentes pages QML. Le initialItem définit la page de démarrage.
+- **Component** : Les composants sont utilisés pour définir les pages que le StackView peut naviguer entre.
+- **SingletonCounter** : Accès au singleton exposé à QML sans avoir besoin d'importer un module spécifique.
+
+2. **Créez un autre fichier QML (`OtherPage.qml`) pour montrer l'accès global au singleton :**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+Page {
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Text {
+            text: "Valeur dans SingletonCounter : " + SingletonCounter.count
+            font.pointSize: 20
+        }
+
+        Button {
+            text: "Incrémenter dans l'autre page"
+            onClicked: SingletonCounter.increment()
+        }
+    }
+}
+```
+
+**Explications :**
+- **Accès Global** : Le singleton `SingletonCounter` peut être accédé depuis n'importe quel fichier QML, assurant une cohérence des données à travers l'application. Il est accessible sans besoin de le réimporter explicitement grâce à QML_SINGLETON et QML_ELEMENT. 
+- **Réutilisation** : En utilisant le singleton, vous pouvez partager et gérer des états globaux, comme un compteur, à travers différentes parties de l'application.
+- **Interaction** : L'interface utilisateur dans OtherPage.qml peut interagir avec le singleton de la même manière que dans main.qml.
+
+**Documentation :**
+- [Singleton in QML](https://doc.qt.io/qt-6/qtqml-cppintegration-definetypes.html#singleton-types)
+
+**Résultat Attendu :** Après cet exercice, vous devriez comprendre comment créer et utiliser des singletons en C++ et les exposer globalement à QML. Cela permet de gérer des états partagés et des ressources uniques de manière centralisée dans votre application Qt.
