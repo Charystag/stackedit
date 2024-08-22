@@ -1,9 +1,7 @@
-### **Exercice 1 : Créer un Élément QML Personnalisé avec `QQuickItem`**
+## **Exercice 1 : Créer un Élément QML Personnalisé avec `QQuickItem`**
 
 #### **Objectif :**
 Apprendre à créer un élément visuel personnalisé en QML en sous-classant `QQuickItem`.
-
----
 
 #### **Étape 1 : Sous-Classez `QQuickItem`**
 
@@ -71,7 +69,6 @@ Apprendre à créer un élément visuel personnalisé en QML en sous-classant `Q
    - [QSGNode](https://doc.qt.io/qt-6/qsgnode.html)
    - [QSGSimpleRectNode](https://doc.qt.io/qt-6/qsgsimplerectnode.html)
 
----
 
 #### **Étape 2 : Enregistrer l'Élément Personnalisé avec `qmlRegisterType()` dans `main.cpp`**
 
@@ -103,7 +100,6 @@ Apprendre à créer un élément visuel personnalisé en QML en sous-classant `Q
    **Documentation :**
    - [qmlRegisterType](https://doc.qt.io/qt-6/qqmlengine.html#qmlRegisterType)
 
----
 
 #### **Étape 3 : Utiliser l'Élément Personnalisé dans QML**
 
