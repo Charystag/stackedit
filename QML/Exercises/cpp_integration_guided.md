@@ -1002,3 +1002,168 @@ Page {
 - [Singleton in QML](https://doc.qt.io/qt-6/qtqml-cppintegration-definetypes.html#singleton-types)
 
 **Résultat Attendu :** Après cet exercice, vous devriez comprendre comment créer et utiliser des singletons en C++ et les exposer globalement à QML. Cela permet de gérer des états partagés et des ressources uniques de manière centralisée dans votre application Qt.
+
+---
+
+## **Exercice 8 : Utilisation de `QQmlContext` pour Exposer des Données C++ à QML**
+
+#### **Objectif :**
+Apprendre à utiliser `QQmlContext` pour exposer un objet C++ existant à QML et permettre à l'interface utilisateur QML d'accéder aux données et méthodes de cet objet.
+
+
+### **Étape 1 : Créer une Classe C++ avec une Propriété**
+
+1. **Créez une nouvelle classe C++ nommée `MessageHandler`.**
+   - Cette classe contiendra une propriété `message` de type `QString`.
+
+   **messagehandler.h :**
+   ```cpp
+   #ifndef MESSAGEHANDLER_H
+   #define MESSAGEHANDLER_H
+
+   #include <QObject>
+   #include <QString>
+
+   class MessageHandler : public QObject {
+       Q_OBJECT
+       Q_PROPERTY(QString message READ message WRITE setMessage NOTIFY messageChanged)
+
+   public:
+       explicit MessageHandler(QObject *parent = nullptr);
+
+       QString message() const;
+       void setMessage(const QString &message);
+
+   signals:
+       void messageChanged();
+
+   private:
+       QString m_message;
+   };
+
+   #endif // MESSAGEHANDLER_H
+   ```
+
+   **Explications :**
+   - **`Q_PROPERTY`** : Cette macro expose la propriété `message` à QML. Elle permet de lire et d'écrire la valeur de `message` et d'émettre un signal `messageChanged()` lorsqu'elle change.
+   - **`QString m_message;`** : Stocke la valeur de la propriété `message`.
+
+2. **Implémentez les méthodes `message` et `setMessage` dans le fichier source.**
+
+   **messagehandler.cpp :**
+   ```cpp
+   #include "messagehandler.h"
+
+   MessageHandler::MessageHandler(QObject *parent)
+       : QObject(parent), m_message("Hello from C++!") {
+   }
+
+   QString MessageHandler::message() const {
+       return m_message;
+   }
+
+   void MessageHandler::setMessage(const QString &message) {
+       if (m_message != message) {
+           m_message = message;
+           emit messageChanged();
+       }
+   }
+   ```
+
+   **Explications :**
+   - **`message()`** : Retourne la valeur actuelle de `m_message`.
+   - **`setMessage()`** : Modifie la valeur de `m_message` et émet le signal `messageChanged()` si la nouvelle valeur est différente de l'ancienne.
+
+
+### **Étape 2 : Exposer l'Objet C++ à QML avec `QQmlContext`**
+
+1. **Modifiez le fichier `main.cpp` pour exposer l'objet `MessageHandler` à QML.**
+
+   **main.cpp :**
+   ```cpp
+   #include <QGuiApplication>
+   #include <QQmlApplicationEngine>
+   #include <QQmlContext>
+   #include "messagehandler.h"
+
+   int main(int argc, char *argv[]) {
+       QGuiApplication app(argc, argv);
+
+       // Créer une instance de MessageHandler
+       MessageHandler messageHandler;
+
+       QQmlApplicationEngine engine;
+
+
+       // Exposer l'objet MessageHandler à QML via le contexte
+       engine.rootContext()->setContextProperty("messageHandler", &messageHandler);
+
+       // Charger le fichier QML principal
+       const QUrl url(u"qrc:/main.qml"_qs);
+       engine.load(url);
+
+       if (engine.rootObjects().isEmpty())
+           return -1;
+
+       return app.exec();
+   }
+   ```
+
+   **Explications :**
+   - **`setContextProperty("messageHandler", &messageHandler);`** : Expose l'instance `messageHandler` à QML sous le nom de `messageHandler`, rendant ses propriétés et méthodes accessibles dans le code QML.
+
+> :warning: Attention à bien allouer l'objet sur la stack avant d'instancier l'engine pour que celui-ci ne soit pas écrasé lorsque du dépilement de la stack.
+> Ceci préviendra l'accès à des propriétés d'un objet supprimé du fait du binding de propriété
+
+
+### **Étape 3 : Utiliser l'Objet C++ Exposé dans QML**
+
+1. **Créez un fichier QML (`main.qml`) pour utiliser la propriété `message` de l'objet `MessageHandler` exposé.**
+
+   **main.qml :**
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 300
+       title: "Exposition de C++ à QML"
+
+       Column {
+           anchors.centerIn: parent
+           spacing: 20
+
+           Text {
+               text: messageHandler.message
+               font.pointSize: 20
+               color: "blue"
+           }
+
+           TextField {
+               id: messageInput
+               placeholderText: "Entrez un nouveau message"
+           }
+
+           Button {
+               text: "Mettre à jour le message"
+               onClicked: messageHandler.message = messageInput.text
+           }
+       }
+   }
+   ```
+
+   **Explications :**
+   - **`messageHandler.message`** : Accède à la propriété `message` exposée par l'objet `MessageHandler` en C++.
+   - **`onClicked: messageHandler.message = messageInput.text`** : Permet de mettre à jour la propriété `message` en C++ depuis l'interface utilisateur QML lorsque l'utilisateur clique sur le bouton.
+
+
+### **Étape 4 : Test et Validation**
+
+1. **Compilez et exécutez le projet.**
+   - Vous devriez voir le texte "Hello from C++!" s'afficher dans l'interface utilisateur QML.
+   - Entrez un nouveau message dans le champ de texte et cliquez sur le bouton pour mettre à jour le message affiché.
+
+**Résultat attendu :**
+Le texte affiché dans l'interface QML doit correspondre à la valeur de la propriété `message` de l'objet `MessageHandler`. Lorsque l'utilisateur modifie le texte dans le champ de texte et clique sur le bouton, le message affiché doit se mettre à jour pour refléter la nouvelle valeur.
