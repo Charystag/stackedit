@@ -1330,3 +1330,225 @@ Documentation :
 - Créer et utiliser des éléments d'interface utilisateur interactifs comme les boutons, curseurs, et cases à cocher.
 - Gérer leurs événements comme les clics de bouton, les changements de valeur du curseur, et les changements d'état de la case à cocher.
 - Lier ces éléments d'interface à des propriétés backend en C++ pour synchroniser l'état de l'interface avec la logique de votre application.
+
+---
+
+## **Exercice 6 : Gestion de ListView et ComboBox**
+
+#### **Objectif :**
+Apprendre à utiliser `ListView` et `ComboBox` pour afficher et interagir avec des listes de données.
+
+### **Étape 1 : Configurer un ListView avec un Modèle de Données**
+
+1. **Créer un Modèle de Données Simple en C++ :**
+   - Créez un modèle de données en C++ en utilisant `QAbstractListModel`, par exemple, une liste d'éléments.
+   - Exposez ce modèle à QML afin qu'il puisse être utilisé dans une `ListView`.
+
+**model.h :**
+```cpp
+#ifndef MODEL_H
+#define MODEL_H
+
+#include <QAbstractListModel>
+#include <QStringList>
+
+class Model : public QAbstractListModel {
+    Q_OBJECT
+
+public:
+    explicit Model(QObject *parent = nullptr);
+
+    enum Roles {
+        NameRole = Qt::UserRole + 1
+    };
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
+private:
+    QStringList m_items;
+};
+
+#endif // MODEL_H
+```
+
+**model.cpp :**
+```cpp
+#include "model.h"
+
+Model::Model(QObject *parent)
+    : QAbstractListModel(parent), m_items({"Item 1", "Item 2", "Item 3", "Item 4"}) {}
+
+int Model::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
+    return m_items.count();
+}
+
+QVariant Model::data(const QModelIndex &index, int role) const {
+    if (!index.isValid() || index.row() >= m_items.count())
+        return QVariant();
+
+    if (role == NameRole)
+        return m_items.at(index.row());
+
+    return QVariant();
+}
+
+QHash<int, QByteArray> Model::roleNames() const {
+    QHash<int, QByteArray> roles;
+    roles[NameRole] = "name";
+    return roles;
+}
+```
+
+**main.cpp :**
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "model.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+
+    QQmlApplicationEngine engine;
+    Model model;
+
+    engine.rootContext()->setContextProperty("myModel", &model);
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    return app.exec();
+}
+```
+
+**main.qml :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 6 : ListView et ComboBox"
+
+    ListView {
+        width: parent.width
+        height: 150
+        model: myModel
+
+        delegate: Item {
+            width: parent.width
+            height: 50
+
+            Rectangle {
+                width: parent.width
+                height: parent.height
+                color: "lightgray"
+                border.color: "black"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: model.name
+                }
+            }
+        }
+    }
+}
+```
+
+**Explications :**
+- **QAbstractListModel** : Utilisé pour créer un modèle de données en C++ qui peut être exposé à QML.
+- **ListView** : Le modèle de données `myModel` est lié à un `ListView` dans QML, où chaque élément est affiché à l'aide d'un délégué.
+- **Delegate** : Le délégué est responsable de l'affichage de chaque élément de la liste. Dans cet exemple, chaque élément est représenté par un `Rectangle` contenant du texte.
+
+Documentation :
+- [QAbstractListModel](https://doc.qt.io/qt-6/qabstractlistmodel.html)
+- [ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
+
+
+### **Étape 2 : Implémenter un ComboBox**
+
+1. **Créer un ComboBox dans QML et le Lier à une Liste d'Options :**
+   - Créez un `ComboBox` dans QML et liez-le à une liste d'options. Cette liste peut être définie directement en QML ou liée à une source de données en C++.
+   - Implémentez la logique pour gérer les changements de sélection et afficher l'élément sélectionné dans un élément `Text`.
+
+**Modification du `main.qml` :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Exercice 6 : ListView et ComboBox"
+
+    Column {
+        spacing: 20
+        anchors.centerIn: parent
+
+        ListView {
+            width: parent.width
+            height: 150
+            model: myModel
+
+            delegate: Item {
+                width: parent.width
+                height: 50
+
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "lightgray"
+                    border.color: "black"
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: model.name
+                    }
+                }
+            }
+        }
+
+        ComboBox {
+            id: comboBox
+            width: 200
+            model: ["Option 1", "Option 2", "Option 3"]
+
+            onCurrentIndexChanged: {
+                selectedText.text = "Vous avez sélectionné : " + comboBox.currentText
+            }
+        }
+
+        Text {
+            id: selectedText
+            text: "Sélectionnez une option"
+            font.pointSize: 16
+        }
+    }
+}
+```
+
+**Explications :**
+- **ComboBox** : Le `ComboBox` est lié à une liste d'options définie directement dans le modèle. Lorsque l'utilisateur sélectionne une option, le texte sélectionné est affiché dans l'élément `Text`.
+- **onCurrentIndexChanged** : Ce gestionnaire est utilisé pour capturer les changements de sélection et mettre à jour l'affichage du texte en conséquence.
+
+Documentation :
+- [ComboBox](https://doc.qt.io/qt-6/qml-qtquick-controls-combobox.html)
+
+
+### **Résultat Attendu :**
+
+À la fin de cet exercice, vous devriez être capable de :
+- Utiliser `ListView` pour afficher une liste de données à partir d'un modèle C++.
+- Utiliser `ComboBox` pour permettre aux utilisateurs de sélectionner une option parmi une liste.
+- Gérer les événements de sélection et afficher les éléments sélectionnés dans l'interface utilisateur.
+
+Votre application devrait afficher une liste d'éléments dans un `ListView` et permettre aux utilisateurs de sélectionner une option dans un `ComboBox`, avec la sélection actuelle affichée dans un `Text`.
