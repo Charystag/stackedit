@@ -572,3 +572,368 @@ Documentation :
 ### **Résultat Attendu :**
 
 À la fin de cet exercice, vous devriez être capable de gérer différents événements de souris dans QML, y compris les clics, les mouvements de la souris, et la fonctionnalité de glisser-déposer. Votre application devrait permettre à l'utilisateur d'interagir avec les éléments à l'écran en cliquant, en faisant glisser et en relâchant des objets. Cette compétence est essentielle pour créer des interfaces utilisateur interactives et dynamiques.
+
+---
+
+## **Exercice 4 : Utilisation des Composants TextInput et TextArea**
+
+#### **Objectif :**
+Apprendre à créer et gérer des champs de saisie de texte, valider les entrées utilisateur, styliser les composants de texte, et lier ces champs à des propriétés backend en C++.
+
+
+### **Étape 1 : Créer et Styliser TextInput et TextArea**
+
+> :bulb: Avant de passer à la première étape, veillez à bien lire la note sur les [styles](https://github.com/Charystag/Formation/blob/master/QML/Courses/styling.md) en QML.
+> Vous pourrez ainsi faire disparaître l'avertissement qui apparaît quand le code est exécuté
+
+1. **Créer un Formulaire avec TextInput et TextArea :**
+   - Configurez un formulaire simple avec des composants `TextInput` et `TextArea`. Appliquez un style de base en modifiant la taille de la police, la couleur du texte, et le fond.
+   - Implémentez un texte indicatif ("placeholder") personnalisé pour `TextInput` en utilisant un élément `Text` superposé.
+
+**main.qml :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 400
+    title: "Exercice 4 : TextInput et TextArea"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Text {
+            text: "Formulaire de saisie"
+            font.pointSize: 20
+            color: "blue"
+        }
+
+        // TextInput avec placeholder personnalisé
+        Rectangle {
+            width: 300
+            height: 40
+            color: "lightyellow"
+            radius: 5
+
+            TextInput {
+                id: nameInput
+                width: parent.width
+                height: parent.height
+                font.pointSize: 16
+                color: "black"
+            }
+
+            Text {
+                id: placeholderText
+                text: "Entrez votre nom"
+                color: "grey"
+                font.pointSize: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: nameInput.text.length === 0  // Affiche le placeholder si le TextInput est vide
+            }
+        }
+
+        // TextArea
+        TextArea {
+            id: commentsInput
+            width: 300
+            height: 100
+            placeholderText: "Entrez vos commentaires"
+            font.pointSize: 16
+            color: "black"
+            background: Rectangle {
+                color: "lightcyan"
+                radius: 5
+            }
+        }
+
+        Button {
+            text: "Soumettre"
+            onClicked: {
+                console.log("Nom:", nameInput.text)
+                console.log("Commentaires:", commentsInput.text)
+            }
+        }
+    }
+}
+```
+
+**Explications :**
+- **Custom Placeholder** : Un `Rectangle` entoure le `TextInput` pour le style, avec un élément `Text` superposé qui agit comme un placeholder. Le placeholder est visible uniquement lorsque le champ est vide.
+- **TextArea** : Utilise la propriété `placeholderText` pour afficher un texte indicatif lorsque l'utilisateur n'a rien saisi.
+
+Documentation :
+- [TextInput (Qt Quick Controls)](https://doc.qt.io/qt-6/qml-qtquick-controls-textinput.html)
+- [TextArea (Qt Quick Controls)](https://doc.qt.io/qt-6/qml-qtquick-controls-textarea.html)
+
+---
+
+### **Étape 2 : Gérer les Événements Clavier dans TextInput**
+
+1. **Ajouter des Gestionnaires pour onTextChanged :**
+   - Implémentez un gestionnaire `onTextChanged` pour valider les entrées en temps réel. Par exemple, autorisez uniquement les entrées numériques.
+
+**Modification du `main.qml` :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Controls.Basic 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 400
+    title: "Exercice 4 : TextInput et TextArea"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Text {
+            text: "Formulaire de saisie"
+            font.pointSize: 20
+            color: "blue"
+        }
+
+        // TextInput avec validation de l'âge (entrées numériques seulement)
+        Rectangle {
+            width: 300
+            height: 40
+            color: "lightyellow"
+            radius: 5
+
+            TextInput {
+                id: ageInput
+                width: parent.width
+                height: parent.height
+                font.pointSize: 16
+                color: "black"
+
+                onTextChanged: {
+                    if (!text.match(/^\d*$/)) {  // Autoriser uniquement les chiffres
+                        text = text.replace(/[^\d]/g, "")
+                        console.log("Saisie non valide : seulement des chiffres sont autorisés")
+                    }
+                }
+            }
+
+            Text {
+                id: placeholderTextAge
+                text: "Entrez votre âge"
+                color: "grey"
+                font.pointSize: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: ageInput.text.length === 0  // Affiche le placeholder si le TextInput est vide
+            }
+        }
+
+        // TextArea
+        TextArea {
+            id: commentsInput
+            width: 300
+            height: 100
+            placeholderText: "Entrez vos commentaires"
+            font.pointSize: 16
+            color: "black"
+            background: Rectangle {
+                color: "lightcyan"
+                radius: 5
+            }
+        }
+
+        Button {
+            text: "Soumettre"
+            onClicked: {
+                console.log("Âge:", ageInput.text)
+                console.log("Commentaires:", commentsInput.text)
+            }
+        }
+    }
+}
+```
+
+**Explications :**
+- **onTextChanged** : Validation en temps réel des entrées utilisateur pour s'assurer que seules des valeurs numériques sont saisies dans le champ `TextInput` pour l'âge.
+
+Documentation :
+- [TextInput Signal Handlers](https://doc.qt.io/qt-6/qml-qtquick-controls-textinput.html#signal-handlers)
+
+---
+
+### **Étape 3 : Lier TextInput à une Propriété C++**
+
+1. **Créer une Propriété C++ et la Lier à TextInput :**
+   - Exposez une propriété C++ à QML en utilisant `setContextProperty()` ou `Q_PROPERTY`. Liez le texte de `TextInput` à cette propriété et affichez les données liées ailleurs dans l'interface.
+
+**backend.h :**
+```cpp
+#ifndef BACKEND_H
+#define BACKEND_H
+
+#include <QObject>
+
+class Backend : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
+
+public:
+    explicit Backend(QObject *parent = nullptr);
+
+    QString userName() const;
+    void setUserName(const QString &name);
+
+signals:
+    void userNameChanged();
+
+private:
+    QString m_userName;
+};
+
+#endif // BACKEND_H
+```
+
+**backend.cpp :**
+```cpp
+#include "backend.h"
+
+Backend::Backend(QObject *parent) : QObject(parent), m_userName("") {}
+
+QString Backend::userName() const {
+    return m_userName;
+}
+
+void Backend::setUserName(const QString &name) {
+    if (m_userName != name) {
+        m_userName = name;
+        emit userNameChanged();
+    }
+}
+```
+
+**main.cpp :**
+```cpp
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "backend.h"
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+
+    QQmlApplicationEngine engine;
+    Backend backend;
+
+    engine.rootContext()->setContextProperty("backend", &backend);
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    return app.exec();
+}
+```
+
+**main.qml :**
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 400
+    title: "Exercice 4 : TextInput et TextArea"
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Text {
+            text: "Formulaire de saisie"
+            font.pointSize: 20
+            color: "blue"
+        }
+
+        // TextInput lié à la propriété C++ userName
+        Rectangle {
+            width: 300
+            height: 40
+            color: "lightyellow"
+            radius: 5
+
+            TextInput {
+                id: nameInput
+                width: parent.width
+                height: parent.height
+                font.pointSize: 16
+                color: "black"
+                text: backend.userName  // Lier la propriété userName à TextInput
+                onTextChanged: backend.userName = text  // Mettre à jour la propriété backend
+            }
+
+            Text {
+                id: placeholderText
+                text: "Entrez votre nom"
+                color: "grey"
+                font.pointSize: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: nameInput.text.length === 0  // Affiche le placeholder si le TextInput est vide
+            }
+        }
+
+        // TextArea
+        TextArea {
+            id: commentsInput
+            width: 300
+            height: 100
+            placeholderText: "Entrez vos commentaires"
+            font.pointSize: 16
+            color: "black"
+            background: Rectangle {
+                color: "lightcyan"
+                radius: 5
+            }
+        }
+
+        Button {
+            text: "Soumettre"
+            onClicked: {
+                console.log("Nom:", backend.userName)  // Afficher la valeur liée
+
+
+                console.log("Commentaires:", commentsInput.text)
+            }
+        }
+
+        Text {
+            text: "Nom saisi : " + backend.userName  // Afficher la valeur de la propriété liée
+            font.pointSize: 16
+            color: "green"
+        }
+    }
+}
+```
+
+**Explications :**
+- **Q_PROPERTY** : Utilisé pour exposer une propriété C++ à QML. Ici, `userName` est lié à l'entrée du `TextInput`.
+- **setContextProperty()** : Cette méthode expose l'objet `Backend` à QML, permettant à `TextInput` de se lier à la propriété `userName`.
+- **Binding** : Le texte dans `TextInput` est lié à la propriété `userName` du backend, permettant une synchronisation en temps réel entre l'interface et la logique backend.
+
+Documentation :
+- [Qt C++ and QML Integration](https://doc.qt.io/qt-6/qtqml-cppintegration-topic.html)
+- [Q_PROPERTY](https://doc.qt.io/qt-6/properties.html)
+
+---
+
+### **Résultat Attendu :**
+
+À la fin de cet exercice, vous devriez être capable d'utiliser et de styliser les composants `TextInput` et `TextArea`, de gérer les événements clavier pour valider les entrées utilisateur, et de lier les champs de texte à des propriétés backend en C++. Votre application devrait pouvoir capturer des entrées utilisateur, afficher des placeholders personnalisés pour des champs de texte vides, et synchroniser ces données avec la logique backend, tout en offrant un retour visuel clair et stylisé.
