@@ -1122,7 +1122,7 @@ ApplicationWindow {
             text: "Ajouter à la base de données"
             onClicked: {
                 if (nameInput.text !== "" && ageInput.text !== "") {
-                    dbManager.insertData(nameInput.text, ageInput.text.toInt())
+                    dbManager.insertData(nameInput.text, parseInt(ageInput.text, 10))
                 } else {
                     console.log("Veuillez entrer un nom et un âge valides.")
                 }
