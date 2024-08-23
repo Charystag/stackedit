@@ -1868,3 +1868,274 @@ ApplicationWindow {
 - **Étape 3 :** Affichez un message de validation à l'aide d'un `Popup` lorsque le formulaire est soumis avec succès.
 
 Cet exercice vous permet de comprendre comment gérer la validation et la gestion des erreurs dans un formulaire QML, tout en fournissant un retour visuel clair aux utilisateurs.
+
+---
+
+## **Exercice 9 : Personnalisation des Composants de Saisie**
+
+#### **Objectif :**
+Apprendre à personnaliser l'apparence et le comportement des composants de saisie en utilisant des styles, des thèmes, des délégués, et à gérer le comportement au survol.
+
+### **Étape 1 : Personnaliser l'Apparence et le Comportement d'un Bouton**
+
+1. **Objectif:**
+   - Appliquer des styles personnalisés à un composant `Button`, tels que la couleur de fond, le rayon des bordures, et la couleur du texte. Gérer également le comportement au survol.
+
+2. **Détails:**
+   - Utilisez la propriété `palette` pour personnaliser la couleur du texte du bouton.
+   - Utilisez `MouseArea` pour détecter le survol et changer l'apparence du bouton lorsque la souris entre ou sort de la zone du bouton.
+   - Gérez les états (`states`) pour modifier l'apparence du bouton lorsqu'il est pressé.
+
+3. **Code:**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Layouts 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Personnalisation des Composants"
+
+    ColumnLayout {
+        anchors.centerIn: parent
+        spacing: 10
+
+        Button {
+            id: customButton
+            text: "Survole moi"
+            width: 200
+            height: 50
+
+            // Personnalisation de l'apparence du bouton
+            background: Rectangle {
+                id: buttonBackground
+                color: "blue"
+                radius: 10
+            }
+
+            // Utilisation de la palette pour styliser la couleur du texte
+            palette {
+                buttonText: "white"
+            }
+
+            font.pixelSize: 20
+            font.bold: true
+
+            // Détection du survol avec MouseArea
+            MouseArea {
+                id: hoverArea
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: true
+
+
+                Component.onCompleted: {
+                    hoverArea.clicked.connect(propagation)
+                    hoverArea.released.connect(propagation)
+                }
+
+                onPressed: (event) => {
+                    propagation(event)
+                }
+
+                function propagation(event) {
+                    event.accepted = false
+                }
+
+                onEntered: {
+                    buttonBackground.color = "lightblue"
+                    buttonBackground.radius = 15
+                }
+
+                onExited: {
+                    buttonBackground.color = "blue"
+                    buttonBackground.radius = 10
+                }
+            }
+
+            // Changer l'apparence en fonction de l'état (exemple : pressé)
+            states: State {
+                when: customButton.pressed
+                PropertyChanges { target: buttonBackground; color: "darkblue" }
+            }
+
+            onClicked: {
+                console.log("Bouton cliqué")
+            }
+        }
+    }
+}
+```
+
+**Documentation :**
+- [Button](https://doc.qt.io/qt-6/qml-qtquick-controls-button.html)
+- [Palette](https://doc.qt.io/qt-6/qml-qtquick-palette.html)
+- [MouseArea](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html)
+- [State](https://doc.qt.io/qt-6/qml-qtqml-state.html)
+
+**Commentaires :**
+- **Palette :** La propriété `palette` est utilisée pour définir la couleur du texte du bouton, ce qui est la méthode appropriée pour personnaliser les couleurs de texte.
+- **MouseArea :** Le `MouseArea` permet de détecter le survol et de modifier l'apparence du bouton en conséquence. C'est un moyen efficace de rendre le bouton interactif et réactif aux actions de l'utilisateur.
+- **État :** Les états (`states`) permettent de gérer les changements d'apparence du bouton, par exemple lorsqu'il est pressé.
+
+
+### **Étape 2 : Créer un Slider Personnalisé**
+
+1. **Objectif:**
+   - Personnaliser un composant `Slider` en remplaçant sa poignée (handle) et sa piste (track) par des images ou des graphiques personnalisés.
+
+2. **Détails:**
+   - Utilisez les propriétés `handle` et `background` pour appliquer des images personnalisées à la poignée et à la piste du slider.
+
+3. **Code:**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Layouts 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Slider Personnalisé"
+
+    ColumnLayout {
+        anchors.centerIn: parent
+        spacing: 10
+
+		Slider {
+            id: control
+            to: 100
+            stepSize: 1
+            width: 300
+            value: 50
+
+            background: Rectangle {
+                    x: control.leftPadding
+                    y: control.topPadding + control.availableHeight / 2 - height / 2
+                    implicitWidth: 200
+                    implicitHeight: 4
+                    width: control.availableWidth
+                    height: implicitHeight
+                    radius: 2
+                    color: "#bdbebf"
+
+                    Rectangle {
+                        width: control.visualPosition * parent.width
+                        height: parent.height
+                        color: "#21be2b"
+                        radius: 2
+                    }
+                }
+
+                handle: Rectangle {
+                    x: control.leftPadding + control.visualPosition * (control.availableWidth - width)
+                    y: control.topPadding + control.availableHeight / 2 - height / 2
+                 implicitWidth: 26
+                    implicitHeight: 26
+                    radius: 13
+                    color: control.pressed ? "#f0f0f0" : "#f6f6f6"
+                    border.color: "#bdbebf"
+                }
+
+            onValueChanged: {
+                console.log("Valeur du slider : " + control.value)
+            }
+        }
+    }
+}
+```
+
+**Documentation :**
+- [Slider](https://doc.qt.io/qt-6/qml-qtquick-controls-slider.html)
+- [Slider Customization](https://doc.qt.io/qt-6/qtquickcontrols-customize.html#customizing-slider)
+
+**Commentaires :**
+- **Personnalisation du slider** : Le track du slider est stylisé avec une couleur grise, et la poignée est représentée par un Rectangle circulaire. La partie remplie du track est en vert pour indiquer la progression.
+- **Visual Position** : visualPosition est une propriété qui représente la position du slider en fonction de sa valeur actuelle, ce qui permet de visualiser la progression.
+
+---
+
+### **Étape 3 : Utiliser les Délégués pour Personnaliser les Éléments d'un ListView**
+
+1. **Objectif:**
+   - Personnaliser l'apparence des éléments dans un `ListView` en utilisant un délégué. Ajouter des icônes, changer les styles de texte, ou implémenter un formatage conditionnel.
+
+2. **Détails:**
+   - Utilisez un `delegate` dans le `ListView` pour personnaliser chaque élément.
+   - Le délégué peut inclure des icônes, des textes personnalisés, et des styles conditionnels.
+
+3. **Code:**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Layouts 6.7
+import QtQuick.Window 6.7
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Personnalisation des Éléments du ListView"
+
+    ListView {
+        anchors.fill: parent
+        model: ListModel {
+            ListElement { name: "Item 1"; icon: "icon1.png" }
+            ListElement { name: "Item 2"; icon: "icon2.png" }
+            ListElement { name: "Item 3"; icon: "icon3.png" }
+        }
+
+        // Définition du délégué pour personnaliser les éléments du ListView
+        delegate: Row {
+            spacing: 10
+            Rectangle {
+                width: 40
+                height: 40
+                color: "lightblue"
+                Image {
+                    source: icon
+                    anchors.centerIn: parent
+                }
+            }
+
+            Text {
+                text: name
+                font.pixelSize: 20
+                color: "black"
+            }
+
+            // Exemple de formatage conditionnel
+            Component.onCompleted: {
+                if (name === "Item 2") {
+                    color = "red"
+                }
+            }
+        }
+    }
+}
+```
+
+**Documentation :**
+- [ListView](https://doc.qt.io/qt-6/qml-qtquick-listview.html)
+- [Delegate](https://doc.qt.io/qt-6/qml-qtquick-listview.html#delegate-prop)
+
+**Commentaires :**
+- **Délégué personnalisé** : Chaque élément du `ListView` affiche une icône et un texte. L'apparence peut être modifiée de manière conditionnelle, comme changer la couleur du texte pour un élément spécifique.
+
+---
+
+### **Résumé des Étapes :**
+
+- **Étape 1 :** Personnalisation de l'apparence d'un bouton avec des styles, gestion du comportement au survol, et utilisation de la palette pour la couleur du texte.
+- **Étape 2 :** Création d'un slider personnalisé en remplaçant la piste et la poignée avec des éléments graphiques.
+- **Étape 3 :** Utilisation des délégués pour personnaliser les éléments d'un `ListView`, avec la possibilité d'ajouter des icônes et d'appliquer un formatage conditionnel.
+
+Ces améliorations permettent de maîtriser la personnalisation des composants d'entrée standard en QML, y compris la gestion dynamique des interactions utilisateur comme le survol, pour répondre aux exigences spécifiques de l'interface utilisateur.
