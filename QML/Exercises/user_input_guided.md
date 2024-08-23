@@ -61,7 +61,7 @@ ApplicationWindow {
 ```
 
 **Explications :**
-- **TextiField** : Permet à l'utilisateur de taper du texte. La propriété `placeholderText` fournit un texte indicatif lorsqu'il est vide.
+- **TextField** : Permet à l'utilisateur de taper du texte. La propriété `placeholderText` fournit un texte indicatif lorsqu'il est vide.
 - **Slider** : Composant permettant de sélectionner une valeur dans une plage définie. Les propriétés `from` et `to` déterminent la plage, tandis que `value` indique la valeur actuelle.
 - **Button** : Un bouton qui déclenche une action définie dans l'événement `onClicked`.
 
@@ -386,7 +386,7 @@ Documentation :
 
 ---
 
-### **Exercice 3 : Interaction avec la Souris à l'aide de MouseArea**
+## **Exercice 3 : Interaction avec la Souris à l'aide de MouseArea**
 
 #### **Objectif :**
 Comprendre comment capturer et gérer les événements de la souris en utilisant `MouseArea` dans QML.
@@ -1557,7 +1557,7 @@ Votre application devrait afficher une liste d'éléments dans un `ListView` et 
 
 Apologies for the oversight. Let's go through the entire exercise in French, with the corrected and complete steps. I will also include links to the relevant documentation and provide useful comments throughout.
 
-## **Exercice 8 : Validation et Gestion des Erreurs de Saisie Utilisateur**
+## **Exercice 7 : Validation et Gestion des Erreurs de Saisie Utilisateur**
 
 #### **Objectif :**
 Implémenter la validation des saisies utilisateur en temps réel, gérer les erreurs dans un formulaire QML, et afficher des messages de validation.
@@ -1871,7 +1871,7 @@ Cet exercice vous permet de comprendre comment gérer la validation et la gestio
 
 ---
 
-## **Exercice 9 : Personnalisation des Composants de Saisie**
+## **Exercice 8 : Personnalisation des Composants de Saisie**
 
 #### **Objectif :**
 Apprendre à personnaliser l'apparence et le comportement des composants de saisie en utilisant des styles, des thèmes, des délégués, et à gérer le comportement au survol.
