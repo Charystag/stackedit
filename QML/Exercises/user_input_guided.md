@@ -378,7 +378,7 @@ ApplicationWindow {
 - **Comportement Personnalisé** : Vous pouvez changer le comportement de l'application lorsqu'une touche est maintenue, comme en changeant la couleur ou en déclenchant d'autres actions.
 
 Documentation :
-- [Event Handling in QML](https://doc.qt.io/qt-6/qtquick-inputoverview.html)
+- [Event Handling in QML](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 ### **Résultat Attendu :**
 
