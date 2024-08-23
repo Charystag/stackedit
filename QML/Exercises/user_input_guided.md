@@ -2088,35 +2088,37 @@ ApplicationWindow {
     ListView {
         anchors.fill: parent
         model: ListModel {
-            ListElement { name: "Item 1"; icon: "icon1.png" }
-            ListElement { name: "Item 2"; icon: "icon2.png" }
-            ListElement { name: "Item 3"; icon: "icon3.png" }
+            ListElement { name: "Item 1"; icon: "qrc:/images/icon1.png" }
+            ListElement { name: "Item 2"; icon: "qrc:/images/icon2.png" }
+            ListElement { name: "Item 3"; icon: "qrc:/images/icon3.png" }
         }
 
         // Définition du délégué pour personnaliser les éléments du ListView
         delegate: Row {
             spacing: 10
             Rectangle {
-                width: 40
+                width: 80
                 height: 40
                 color: "lightblue"
                 Image {
+                    width: parent.width / 2
+                    height: parent.height
                     source: icon
                     anchors.centerIn: parent
                 }
+                // Exemple de formatage conditionnel
+                Component.onCompleted: {
+                if (name === "Item 2") {
+                    color = "red"
+                }
             }
 
+
+            }
             Text {
                 text: name
                 font.pixelSize: 20
                 color: "black"
-            }
-
-            // Exemple de formatage conditionnel
-            Component.onCompleted: {
-                if (name === "Item 2") {
-                    color = "red"
-                }
             }
         }
     }
@@ -2129,8 +2131,6 @@ ApplicationWindow {
 
 **Commentaires :**
 - **Délégué personnalisé** : Chaque élément du `ListView` affiche une icône et un texte. L'apparence peut être modifiée de manière conditionnelle, comme changer la couleur du texte pour un élément spécifique.
-
----
 
 ### **Résumé des Étapes :**
 
