@@ -1583,6 +1583,7 @@ function isValidEmail(email) {
 }
 ```
 
+**`Main.qml`**
 ```qml
 import QtQuick 6.7
 import QtQuick.Controls 6.7
