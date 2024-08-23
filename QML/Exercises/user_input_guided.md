@@ -2060,8 +2060,6 @@ ApplicationWindow {
 - **Personnalisation du slider** : Le track du slider est stylisé avec une couleur grise, et la poignée est représentée par un Rectangle circulaire. La partie remplie du track est en vert pour indiquer la progression.
 - **Visual Position** : visualPosition est une propriété qui représente la position du slider en fonction de sa valeur actuelle, ce qui permet de visualiser la progression.
 
----
-
 ### **Étape 3 : Utiliser les Délégués pour Personnaliser les Éléments d'un ListView**
 
 1. **Objectif:**
