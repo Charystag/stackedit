@@ -1552,3 +1552,318 @@ Documentation :
 - Gérer les événements de sélection et afficher les éléments sélectionnés dans l'interface utilisateur.
 
 Votre application devrait afficher une liste d'éléments dans un `ListView` et permettre aux utilisateurs de sélectionner une option dans un `ComboBox`, avec la sélection actuelle affichée dans un `Text`.
+
+---
+
+Apologies for the oversight. Let's go through the entire exercise in French, with the corrected and complete steps. I will also include links to the relevant documentation and provide useful comments throughout.
+
+## **Exercice 8 : Validation et Gestion des Erreurs de Saisie Utilisateur**
+
+#### **Objectif :**
+Implémenter la validation des saisies utilisateur en temps réel, gérer les erreurs dans un formulaire QML, et afficher des messages de validation.
+
+### **Étape 1 : Implémenter la Validation en Temps Réel**
+
+1. **Objectif:**
+   - Ajouter une validation en temps réel aux champs `TextInput`.
+
+2. **Détails:**
+   - Utilisez `IntValidator` pour la validation numérique.
+   - Implémentez la validation de l'email dans un fichier js séparé
+   - Implémentez `onTextChanged` pour vérifier la validité de la saisie.
+   - Changez la couleur de fond (`background`) en fonction de la validité de la saisie.
+
+3. **Code:**
+
+**`validation.js`**
+```js
+function isValidEmail(email) {
+    const email_regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+    return (email_regex.test(email))
+}
+```
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Controls.Material
+import QtQuick.Layouts 6.7
+import QtQuick.Window 6.7
+import "validation.js" as Validation
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Validation en Temps Réel"
+
+    ColumnLayout {
+        anchors.centerIn: parent
+        spacing: 10
+
+        TextField {
+            id: numberField
+            width: 300
+            placeholderText: "Entrez un numéro"
+            validator: IntValidator { bottom: 0; top: 100 }
+
+            background: Rectangle {
+                color: numberField.acceptableInput ? "white" : "red"
+            }
+
+            onTextChanged: {
+                errorText.text = numberField.acceptableInput
+                    ? ""
+                    : "Erreur : Veuillez entrer un nombre entre 0 et 100."
+            }
+        }
+
+        TextField {
+            id: emailField
+            width: 300
+            placeholderText: "Entrez votre e-mail"
+
+            background: Rectangle {
+                color: Validation.isValidEmail(emailField.text)
+                    ? "white"
+                    : "red"
+            }
+
+            onTextChanged: {
+                errorText.text = Validation.isValidEmail(emailField.text)
+                    ? ""
+                    : "Erreur : Adresse e-mail invalide."
+            }
+        }
+
+        Text {
+            id: errorText
+            color: "red"
+            font.pointSize: 14
+        }
+    }
+}
+```
+
+**Documentation :**
+- [TextField](https://doc.qt.io/qt-6/qml-qtquick-controls-textfield.html)
+- [IntValidator](https://doc.qt.io/qt-6/qml-qtquick-intvalidator.html)
+
+**Commentaires :**
+- **IntValidator** : Cette classe est utilisée pour restreindre les valeurs saisies dans le champ `TextInput` à une plage spécifique (ici entre 0 et 100).
+- **onTextChanged** : Cet événement est déclenché chaque fois que le texte dans le champ est modifié, ce qui permet de valider la saisie en temps réel.
+
+### **Étape 2 : Valider les Entrées lors de la Soumission du Formulaire**
+
+1. **Objectif:**
+   - Valider l'ensemble du formulaire lors du clic sur un bouton de soumission.
+
+2. **Détails:**
+   - Ajoutez un bouton de soumission.
+   - Validez tous les champs lors du clic sur le bouton.
+   - Affichez un message de succès ou une erreur si la validation échoue.
+
+3. **Code:**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Controls.Material
+import QtQuick.Layouts 6.7
+import QtQuick.Window 6.7
+import "validation.js" as Validation
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Validation en Temps Réel"
+
+    ColumnLayout {
+        anchors.centerIn: parent
+        spacing: 10
+
+        TextField {
+            id: numberField
+            width: 300
+            placeholderText: "Entrez un numéro"
+            validator: IntValidator { bottom: 0; top: 100 }
+
+            background: Rectangle {
+                color: numberField.acceptableInput ? "white" : "red"
+            }
+
+            onTextChanged: {
+                errorText.text = numberField.acceptableInput
+                    ? ""
+                    : "Erreur : Veuillez entrer un nombre entre 0 et 100."
+            }
+        }
+
+        TextField {
+            id: emailField
+            width: 300
+            placeholderText: "Entrez votre e-mail"
+
+            background: Rectangle {
+                color: Validation.isValidEmail(emailField.text)
+                    ? "white"
+                    : "red"
+            }
+
+            onTextChanged: {
+                errorText.text = Validation.isValidEmail(emailField.text)
+                    ? ""
+                    : "Erreur : Adresse e-mail invalide."
+            }
+        }
+
+        Button {
+            text: "Soumettre"
+            onClicked: {
+                // Validation du formulaire lors de la soumission
+                if (numberField.acceptableInput && Validation.isValidEmail(emailField.text)) {
+                    console.log("Formulaire soumis avec succès")
+                    errorText.text = ""
+                } else {
+                    errorText.text = "Erreur : Veuillez corriger les champs en rouge avant de soumettre."
+                }
+            }
+        }
+
+        Text {
+            id: errorText
+            color: "red"
+            font.pointSize: 14
+        }
+    }
+}
+```
+
+**Documentation :**
+- [Button](https://doc.qt.io/qt-6/qml-qtquick-controls-button.html)
+
+**Commentaires :**
+- **Button onClicked** : Lorsqu'on clique sur le bouton, le formulaire est validé globalement. Si tous les champs sont valides, un message de succès est affiché, sinon un message d'erreur est montré.
+
+### **Étape 3 : Afficher les Messages de Validation**
+
+1. **Objectif:**
+   - Afficher des messages de validation à l'utilisateur.
+
+2. **Détails:**
+   - Utilisez un `Popup` pour afficher un message de succès après la soumission du formulaire.
+   - Le `Popup` est affiché lorsque le formulaire est soumis avec succès.
+
+3. **Code:**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+import QtQuick.Controls.Material
+import QtQuick.Layouts 6.7
+import QtQuick.Window 6.7
+import "validation.js" as Validation
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 300
+    title: "Validation en Temps Réel"
+
+    ColumnLayout {
+        anchors.centerIn: parent
+        spacing: 10
+
+        TextField {
+            id: numberField
+            width: 300
+            placeholderText: "Entrez un numéro"
+            validator: IntValidator { bottom: 0; top: 100 }
+
+            background: Rectangle {
+                color: numberField.acceptableInput ? "white" : "red"
+            }
+
+            onTextChanged: {
+                errorText.text = numberField.acceptableInput
+                    ? ""
+                    : "Erreur : Veuillez entrer un nombre entre 0 et 100."
+            }
+        }
+
+        TextField {
+            id: emailField
+            width: 300
+            placeholderText: "Entrez votre e-mail"
+
+            background: Rectangle {
+                color: Validation.isValidEmail(emailField.text)
+                    ? "white"
+                    : "red"
+            }
+
+            onTextChanged: {
+                errorText.text = Validation.isValidEmail(emailField.text)
+                    ? ""
+                    : "Erreur : Adresse e-mail invalide."
+            }
+        }
+
+        Button {
+            text: "Soumettre"
+            onClicked: {
+                // Validation du formulaire lors de la soumission
+                if (numberField.acceptableInput && Validation.isValidEmail(emailField.text)) {
+                    console.log("Formulaire soumis avec succès")
+                    errorText.text = ""
+                    successPopup.open()  // Ouverture du popup de succès
+                } else {
+                    errorText.text = "Erreur : Veuillez corriger les champs en rouge avant de soumettre."
+                }
+            }
+        }
+
+        Text {
+            id: errorText
+            color: "red"
+            font.pointSize: 14
+        }
+    }
+
+    Popup {
+        id: successPopup
+        anchors.centerIn: parent
+        width: 200
+        height: 100
+        closePolicy: Popup.CloseOnEscape
+        modal: true
+        focus: true
+
+        Rectangle {
+            width: parent.width
+            height: parent.height
+            color: "lightgreen"
+
+            Text {
+                anchors.centerIn: parent
+                text: "Formulaire soumis avec succès!"
+            }
+        }
+    }
+}
+```
+
+**Documentation :**
+- [Popup](https://doc.qt.io/qt-6/qml-qtquick-controls-popup.html)
+
+**Commentaires :**
+- **Popup** : Ce composant est utilisé pour afficher un message de succès après la soumission réussie du formulaire. Il est centré et peut être fermé en appuyant sur Échap.
+
+### **Résumé des Étapes :**
+
+- **Étape 1 :** Ajoutez une validation en temps réel aux champs `TextInput` en utilisant `IntValidator` et des expressions régulières pour le format de l'e-mail.
+- **Étape 2 :** Validez l'ensemble du formulaire lors de la soumission, en vérifiant que toutes les entrées sont valides avant d'afficher un message de succès ou d'erreur.
+- **Étape 3 :** Affichez un message de validation à l'aide d'un `Popup` lorsque le formulaire est soumis avec succès.
+
+Cet exercice vous permet de comprendre comment gérer la validation et la gestion des erreurs dans un formulaire QML, tout en fournissant un retour visuel clair aux utilisateurs.
