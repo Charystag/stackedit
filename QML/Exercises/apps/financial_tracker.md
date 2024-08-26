@@ -1,14 +1,12 @@
-# Liste de sujets d'applications complètes en QML
+# **Exercice 1 : Application de Suivi des Finances Personnelles**
 
-## **Exercice 1 : Application de Suivi des Finances Personnelles**
-
-### **Thème :**
+## **Thème :**
 Créer une application pour suivre les finances personnelles, incluant les revenus et les dépenses.
 
-### **Objectif de l'exercice :**
+## **Objectif de l'exercice :**
 Développer une application qui permet aux utilisateurs de suivre leurs transactions financières (revenus et dépenses), d'afficher un historique des transactions, et de fournir des retours visuels lors de l'ajout ou de la suppression de transactions.
 
-### **Directives Générales :**
+## **Directives Générales :**
 
 1. **Configuration de l'application et structure de base :**
    - **Objectif :** Créez la structure de base de l'application avec une fenêtre principale (`ApplicationWindow`) et configurez le menu de navigation.
@@ -65,7 +63,7 @@ Développer une application qui permet aux utilisateurs de suivre leurs transact
    - **Conseils :**
      - Utilisez des signaux pour déclencher des actions dans l'interface utilisateur (comme l'ajout d'une transaction) et relier les changements de données en C++ aux vues QML.
 
-### **Conseils Généraux :**
+## **Conseils Généraux :**
 
 - **Modularité :** Divisez votre application en modules QML réutilisables (par exemple, un module pour le formulaire de transaction, un autre pour l'historique des transactions).
 - **Performance :** Utilisez des composants dynamiques comme `Loader` pour optimiser les performances de l'application et réduire la consommation de mémoire.
