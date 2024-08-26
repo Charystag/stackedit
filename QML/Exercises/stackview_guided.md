@@ -620,3 +620,145 @@ Item {
 
 ### **Résultat Attendu :**
 Comprendre comment utiliser `pop(null)` pour réinitialiser efficacement le `StackView` à son état initial sans devoir gérer manuellement la réintroduction de la page initiale. Après avoir cliqué sur le bouton de réinitialisation, le `StackView` devrait revenir à `Page1.qml`, et toutes les autres pages auront été effacées.
+
+---
+
+## **Exercice 6 : Utilisation de Pages Dynamiques avec StackView**
+
+### **Objectif :**
+Apprendre à créer et charger dynamiquement des pages dans un `StackView` en utilisant le composant `Loader`.
+
+
+### **Étapes :**
+
+1. **Créer un Chargeur de Pages Dynamiques :**
+
+   - **Objectif :** Utiliser un composant `Loader` pour charger dynamiquement différents fichiers QML dans le `StackView`.
+   - **Détails :**
+     - Le composant `Loader` permet de charger des composants QML dynamiquement, en fonction des besoins de l'application.
+     - Utiliser `Loader` est particulièrement utile pour optimiser la gestion de la mémoire et le temps de chargement dans les applications Qt.
+
+   - **Code : `main.qml`**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+   import QtQuick.Layouts 6.7
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 600
+       title: "Exercice StackView - Pages Dynamiques"
+
+       StackView {
+           id: stackView
+           anchors.fill: parent
+           initialItem: Page1 {}
+
+           // Gestionnaire d'événements pour gérer l'état vide du StackView
+           onEmpty: {
+               stackView.push(Qt.resolvedUrl("Page1.qml"))
+           }
+       }
+
+       // Loader pour charger dynamiquement des pages
+       Loader {
+           id: dynamicLoader
+           visible: false // Garde le Loader invisible car son contenu sera géré par StackView
+       }
+   }
+   ```
+
+   **Documentation :**
+   - [Loader](https://doc.qt.io/qt-6/qml-qtquick-loader.html)
+
+2. **Contrôler le Chargement des Pages :**
+
+   - **Objectif :** Implémenter une logique pour choisir quelle page charger dynamiquement en fonction de l'entrée de l'utilisateur ou de l'état de l'application.
+   - **Détails :**
+     - Utilisez `Loader.source` pour définir dynamiquement quel fichier QML doit être chargé.
+     - En fonction de l'entrée utilisateur, chargez `Page2.qml` ou `Page3.qml` via le `Loader`.
+
+   - **Code Modifié : `Page1.qml`**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+
+   Item {
+       width: 400
+       height: 600
+
+       Rectangle {
+           anchors.fill: parent
+           color: "lightblue"
+
+           ColumnLayout {
+               anchors.centerIn: parent
+               spacing: 20
+
+               Text {
+                   text: "Page 1"
+                   font.pixelSize: 30
+                   horizontalAlignment: Text.AlignHCenter
+               }
+
+               Button {
+                   text: "Charger dynamiquement Page 2"
+                   onClicked: {
+                       dynamicLoader.source = "Page2.qml"  // Définir la source du Loader dynamiquement
+                       stackView.push(dynamicLoader.item)  // Pousser l'élément chargé dynamiquement dans le StackView
+                   }
+               }
+
+               Button {
+                   text: "Charger dynamiquement Page 3"
+                   onClicked: {
+                       dynamicLoader.source = "Page3.qml"  // Définir la source du Loader dynamiquement
+                       stackView.push(dynamicLoader.item)  // Pousser l'élément chargé dynamiquement dans le StackView
+                   }
+               }
+           }
+       }
+   }
+   ```
+
+   **Documentation :**
+   - [Loader.source](https://doc.qt.io/qt-6/qml-qtquick-loader.html#source-prop)
+
+3. **Intégrer le Chargement Dynamique avec StackView :**
+
+   - **Objectif :** Utiliser `stackView.push(dynamicLoader.item)` pour naviguer vers des pages chargées dynamiquement.
+   - **Détails :**
+     - Après avoir défini la source du `Loader`, utilisez `stackView.push()` pour ajouter l'élément chargé dynamiquement au `StackView`.
+     - Assurez-vous que le `Loader` est prêt (`dynamicLoader.item` est non nul) avant d'appeler `push()`.
+
+   - **Code Complété : `Page1.qml` (continué)**
+
+   ```qml
+   // (Continué de l'étape précédente)
+
+   // Bouton de réinitialisation pour la pile
+   Button {
+       text: "Réinitialiser StackView"
+       onClicked: stackView.pop(null) // Utilisation de pop(null) pour vider la pile et réinitialiser
+   }
+   ```
+
+   **Commentaire :**
+   - **`pop(null)`** : Supprime toutes les pages de la pile et réinitialise `StackView` sans le laisser vide.
+
+   **Documentation :**
+   - [StackView push() Method](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html#push-method)
+   - [StackView pop() Method](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html#pop-method)
+
+4. **Tester le Chargement Dynamique :**
+
+   - **Objectif :** Vérifier que les pages sont chargées dynamiquement et affichées correctement dans le `StackView`.
+   - **Détails :**
+     - Utilisez les boutons sur `Page1.qml` pour charger et afficher dynamiquement `Page2.qml` et `Page3.qml`.
+     - Assurez-vous que la navigation est fluide et que le `StackView` gère les pages correctement.
+
+### **Résultat Attendu :**
+Comprendre comment créer et gérer des pages dynamiquement dans `StackView` pour une navigation plus flexible. Vous serez capable de charger des pages à la volée en fonction des besoins de l'application, ce qui est utile pour les interfaces utilisateur plus complexes et dynamiques.
