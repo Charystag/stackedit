@@ -367,48 +367,49 @@ Apprendre à passer des données entre les pages en utilisant `StackView` dans Q
    - **Code : `Page1.qml`**
 
    ```qml
-   import QtQuick 6.7
-   import QtQuick.Controls 6.7
+import QtQuick 6.7
+import QtQuick.Layouts 6.7
+import QtQuick.Controls 6.7
 
-   Item {
-       width: 400
-       height: 600
+Item {
+    width: 400
+    height: 600
 
-       Rectangle {
-           anchors.fill: parent
-           color: "lightblue"
+    Rectangle {
+        anchors.fill: parent
+        color: "lightblue"
 
-           ColumnLayout {
-               anchors.centerIn: parent
-               spacing: 20
+        ColumnLayout {
+            anchors.centerIn: parent
+            spacing: 20
 
-               Text {
-                   text: "Page 1"
-                   font.pixelSize: 30
-                   horizontalAlignment: Text.AlignHCenter
-               }
+            Text {
+                text: "Page 1"
+                font.pixelSize: 30
+                horizontalAlignment: Text.AlignHCenter
+            }
 
-               TextInput {
-                   id: userInput
-                   width: 200
-                   placeholderText: "Entrez votre texte ici"
-                   font.pixelSize: 18
-               }
+            TextField {
+                id: userInput
+                width: 200
+                placeholderText: "Entrez votre texte ici"
+                font.pixelSize: 18
+            }
 
-               Button {
-                   text: "Envoyer et Aller à la Page 2"
-                   onClicked: {
-                       // Utilisation de stackView.push() avec un objet properties pour passer les données
-                       stackView.push(Qt.resolvedUrl("Page2.qml"), { userText: userInput.text })
-                   }
-               }
-           }
-       }
-   }
+            Button {
+                text: "Envoyer et Aller à la Page 2"
+                onClicked: {
+                    // Utilisation de stackView.push() avec un objet properties pour passer les données
+                    stackView.push(Qt.resolvedUrl("Page2.qml"), { userText: userInput.text })
+                }
+            }
+        }
+    }
+}
    ```
 
    **Documentation :**
-   - [TextInput](https://doc.qt.io/qt-6/qml-qtquick-textinput.html)
+   - [TextField](https://doc.qt.io/qt-6/qml-qtquick-controls-textfield.html)
    - [StackView push() Method with Properties](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html#push-method)
 
 2. **Passer des Données à `Page2.qml` :**
@@ -427,44 +428,45 @@ Apprendre à passer des données entre les pages en utilisant `StackView` dans Q
    - **Code : `Page2.qml`**
 
    ```qml
-   import QtQuick 6.7
-   import QtQuick.Controls 6.7
+import QtQuick 6.7
+import QtQuick.Layouts 6.7
+import QtQuick.Controls 6.7
 
-   Item {
-       width: 400
-       height: 600
+Item {
+    width: 400
+    height: 600
 
-       // Déclarez une propriété pour recevoir les données
-       property string userText: ""
+    // Déclarez une propriété pour recevoir les données
+    property string userText: ""
 
-       Rectangle {
-           anchors.fill: parent
-           color: "lightgreen"
+    Rectangle {
+        anchors.fill: parent
+        color: "lightgreen"
 
-           ColumnLayout {
-               anchors.centerIn: parent
-               spacing: 20
+        ColumnLayout {
+            anchors.centerIn: parent
+            spacing: 20
 
-               Text {
-                   text: "Page 2"
-                   font.pixelSize: 30
-                   horizontalAlignment: Text.AlignHCenter
-               }
+            Text {
+                text: "Page 2"
+                font.pixelSize: 30
+                horizontalAlignment: Text.AlignHCenter
+            }
 
-               // Affichez les données transmises de Page1
-               Text {
-                   text: userText
-                   font.pixelSize: 24
-                   color: "black"
-               }
+            // Affichez les données transmises de Page1
+            Text {
+                text: userText
+                font.pixelSize: 24
+                color: "black"
+            }
 
-               Button {
-                   text: "Retour à la Page 1"
-                   onClicked: stackView.pop()
-               }
-           }
-       }
-   }
+            Button {
+                text: "Retour à la Page 1"
+                onClicked: stackView.pop()
+            }
+        }
+    }
+}
    ```
 
    **Documentation :**
