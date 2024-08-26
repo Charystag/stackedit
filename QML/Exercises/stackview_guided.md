@@ -408,6 +408,7 @@ Item {
 }
    ```
 
+
    **Documentation :**
    - [TextField](https://doc.qt.io/qt-6/qml-qtquick-controls-textfield.html)
    - [StackView push() Method with Properties](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html#push-method)
@@ -427,7 +428,7 @@ Item {
 
    - **Code : `Page2.qml`**
 
-   ```qml
+```qml
 import QtQuick 6.7
 import QtQuick.Layouts 6.7
 import QtQuick.Controls 6.7
@@ -467,10 +468,155 @@ Item {
         }
     }
 }
-   ```
+```
+
 
    **Documentation :**
    - [Property Binding in QML](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
 
 ### **Résultat Attendu :**
 Comprendre comment passer des données entre les pages dans `StackView` et utiliser ces données pour personnaliser le contenu ou le comportement des pages suivantes. Après avoir cliqué sur le bouton de `Page1.qml`, `Page2.qml` affichera le texte saisi par l'utilisateur.
+ 
+---
+
+## **Exercice 5 : Réinitialisation du StackView avec `pop(null)`**
+
+### **Objectif :**
+Apprendre à réinitialiser efficacement le `StackView` à son état initial en utilisant `stackView.pop(null)`.
+
+
+### **Étapes :**
+
+1. **Configurer un StackView Multi-Page :**
+
+   - **Objectif :** Utiliser la configuration des exercices précédents avec plusieurs pages (`Page1.qml`, `Page2.qml`, `Page3.qml`).
+   - **Détails :**
+     - Assurez-vous que les fichiers `Page1.qml`, `Page2.qml`, et `Page3.qml` sont disponibles et configurés pour la navigation comme dans les exercices précédents.
+
+   - **Code : `main.qml` (inchangé des exercices précédents)**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+   import QtQuick.Layouts 6.7
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 600
+       title: "Exercice StackView - Réinitialisation avec pop(null)"
+
+       StackView {
+           id: stackView
+           anchors.fill: parent
+           initialItem: Page1 {}
+
+           // Transitions personnalisées (optionnelles)
+           pushEnter: Transition {
+               NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 300 }
+               NumberAnimation { property: "x"; from: 400; to: 0; duration: 300 }
+           }
+           popExit: Transition {
+               NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 300 }
+               NumberAnimation { property: "x"; from: 0; to: -400; duration: 300 }
+           }
+       }
+   }
+   ```
+
+   **Documentation :**
+   - [StackView](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html)
+   - [StackView pop() Method](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html#pop-method)
+
+2. **Ajouter un Bouton de Réinitialisation avec `pop(null)`:**
+
+   - **Objectif :** Ajouter un bouton sur n'importe quelle page pour réinitialiser le `StackView` en utilisant `stackView.pop(null)`.
+   - **Détails :**
+     - Utilisez `stackView.pop(null)` pour vider la pile jusqu'à l'élément initial sans déclencher `onEmpty`.
+
+   - **Code Modifié : `Page2.qml` pour aller à la page 3**
+
+```qml
+import QtQuick 6.7
+import QtQuick.Layouts
+import QtQuick.Controls 6.7
+
+Item {
+    width: 400
+    height: 600
+
+    Rectangle {
+        anchors.fill: parent
+        color: "lightgreen"
+
+        ColumnLayout {
+            anchors.centerIn: parent
+            spacing: 20
+
+            Text {
+                text: "Page 2"
+                font.pixelSize: 30
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Button {
+                text: "Retour à la Page 1"
+                onClicked: stackView.pop()
+            }
+
+            Button {
+                text: "Aller à la Page 3"
+                onClicked: stackView.push(Qt.resolvedUrl("Page3.qml"))
+            }
+        }
+    }
+}
+```
+
+   - **`Page3.qml` pour reset la StackView **
+
+```qml
+import QtQuick 6.7
+import QtQuick.Controls 6.7
+
+Item {
+    width: 400
+    height: 600
+
+    Rectangle {
+        anchors.fill: parent
+        color: "lightcoral"  // Couleur de fond différente pour Page3
+
+        Text {
+            text: "Page 3"
+            anchors.centerIn: parent
+            font.pixelSize: 30
+        }
+
+        Button {
+            text: "Réinitialiser StackView"
+            onClicked: stackView.pop(null) // Réinitialisation du StackView
+        }
+
+        Button {
+            text: "Retour à la Page 2"
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.margins: 20
+            onClicked: stackView.pop()  // Retourner à la page précédente dans la pile
+        }
+    }
+}
+```
+
+   **Commentaire :**
+   - **`stackView.pop(null)`** : Cette méthode vide la pile jusqu'à ce que seule la page initiale définie par `initialItem` reste. C'est plus efficace que `clear()` car elle maintient l'état initial sans nécessiter d'ajout manuel de la page initiale.
+
+3. **Tester la Fonctionnalité de Réinitialisation :**
+
+   - **Objectif :** Vérifier que le `StackView` se réinitialise correctement à la page initiale après avoir utilisé `pop(null)`.
+   - **Détails :**
+     - Naviguez entre plusieurs pages (`Page1.qml`, `Page2.qml`, `Page3.qml`), puis cliquez sur le bouton de réinitialisation pour vérifier que le `StackView` revient à `Page1.qml` sans rester vide.
+
+### **Résultat Attendu :**
+Comprendre comment utiliser `pop(null)` pour réinitialiser efficacement le `StackView` à son état initial sans devoir gérer manuellement la réintroduction de la page initiale. Après avoir cliqué sur le bouton de réinitialisation, le `StackView` devrait revenir à `Page1.qml`, et toutes les autres pages auront été effacées.
