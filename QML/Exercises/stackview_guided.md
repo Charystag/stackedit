@@ -148,7 +148,7 @@ Comprendre les bases de la configuration et de la navigation entre les pages en 
 Apprendre à remplacer la page actuelle dans `StackView` sans modifier la profondeur de la pile.
 
 
-## **Étapes :**
+### **Étapes :**
 
 1. **Configurer la Page Initiale :**
 
@@ -263,3 +263,86 @@ Apprendre à remplacer la page actuelle dans `StackView` sans modifier la profon
 
 ## **Résultat Attendu :**
 Comprendre comment utiliser `replace()` pour changer la page actuelle sans affecter la profondeur de la pile. Après avoir cliqué sur le bouton de `Page2.qml`, la page sera remplacée par `Page3.qml`, mais l'utilisateur pourra toujours revenir en arrière dans la pile comme prévu.
+
+---
+
+## **Exercice 3 : Transitions Personnalisées dans StackView**
+
+### **Objectif :**
+Apprendre à personnaliser les transitions entre les pages dans un `StackView` pour améliorer l'expérience de navigation.
+
+### **Étapes :**
+
+1. **Configurer StackView avec Plusieurs Pages :**
+
+   - **Objectif :** Utiliser la configuration de l'Exercice 1 avec `Page1.qml`, `Page2.qml`, et `Page3.qml`.
+   - **Détails :**
+     - Assurez-vous que les fichiers `Page1.qml`, `Page2.qml`, et `Page3.qml` sont déjà en place comme dans les exercices précédents.
+
+   - **Code : `main.qml` (inchangé, similaire à l'Exercice 1)**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+   import QtQuick.Layouts 6.7
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 600
+       title: "Exercice StackView - Transitions Personnalisées"
+
+       StackView {
+           id: stackView
+           anchors.fill: parent
+           initialItem: Page1 {}
+
+           // Définition des transitions personnalisées
+           pushEnter: Transition {
+               NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 300 }
+               NumberAnimation { property: "x"; from: 400; to: 0; duration: 300 }
+           }
+           popExit: Transition {
+               NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 300 }
+               NumberAnimation { property: "x"; from: 0; to: -400; duration: 300 }
+           }
+       }
+   }
+   ```
+
+   **Documentation :**
+   - [StackView](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html)
+   - [Transition](https://doc.qt.io/qt-6/qml-qtquick-transition.html)
+   - [NumberAnimation](https://doc.qt.io/qt-6/qml-qtquick-numberanimation.html)
+
+2. **Définir des Transitions Personnalisées :**
+
+   - **Objectif :** Implémenter des transitions personnalisées `pushEnter` et `popExit` utilisant `NumberAnimation` pour les propriétés comme `x` ou `opacity`.
+   - **Détails :**
+     - **`pushEnter`** définit l'animation lorsqu'une nouvelle page est poussée dans la pile.
+     - **`popExit`** définit l'animation lorsqu'une page est retirée de la pile.
+
+   - **Explication du Code :**
+     - **`NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 300 }`** : Anime l'opacité d'une page, la faisant apparaître progressivement lorsqu'elle est ajoutée à la pile (`pushEnter`).
+     - **`NumberAnimation { property: "x"; from: 400; to: 0; duration: 300 }`** : Fait glisser la page depuis la droite vers le centre de l'écran lors de son apparition.
+     - **`popExit`** utilise des animations inversées pour faire disparaître la page vers la gauche et réduire son opacité progressivement.
+
+3. **Tester les Transitions :**
+
+   - **Objectif :** Naviguer entre les pages pour voir les transitions personnalisées en action.
+   - **Détails :**
+     - Utilisez les boutons de navigation des pages (`Page1.qml`, `Page2.qml`, `Page3.qml`) pour observer les animations de transition.
+
+   - **Code des Pages (inchangé, voir Exercice 1 et Exercice 2)**
+
+   ```qml
+   // Exemple: Code déjà fourni pour Page1.qml, Page2.qml, et Page3.qml
+   ```
+
+   **Documentation :**
+   - [Animations Examples in Qt Quick](https://doc.qt.io/qt-6/qtquick-animation-example.html)
+   - [Using Transitions in QML](https://doc.qt.io/qt-6/qtquick-statesanimations-animations.html)
+
+
+### **Résultat Attendu :**
+Vous comprendrez comment créer et appliquer des transitions personnalisées pour améliorer l'expérience de navigation dans `StackView`. Les transitions rendront la navigation entre les pages plus fluide et esthétiquement agréable.
