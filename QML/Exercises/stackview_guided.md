@@ -346,3 +346,129 @@ Apprendre à personnaliser les transitions entre les pages dans un `StackView` p
 
 ### **Résultat Attendu :**
 Vous comprendrez comment créer et appliquer des transitions personnalisées pour améliorer l'expérience de navigation dans `StackView`. Les transitions rendront la navigation entre les pages plus fluide et esthétiquement agréable.
+
+---
+
+## **Exercice 4 : Passer des Données Entre les Pages**
+
+#### **Objectif :**
+Apprendre à passer des données entre les pages en utilisant `StackView` dans QML.
+
+
+### **Étapes :**
+
+1. **Modifier `Page1.qml` pour Collecter des Entrées :**
+
+   - **Objectif :** Ajouter un `TextInput` et un bouton pour recueillir l'entrée de l'utilisateur.
+   - **Détails :**
+     - Utilisez un champ `TextInput` pour permettre à l'utilisateur de saisir du texte.
+     - Un bouton permettra de naviguer vers `Page2.qml` tout en passant les données saisies par l'utilisateur.
+
+   - **Code : `Page1.qml`**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+
+   Item {
+       width: 400
+       height: 600
+
+       Rectangle {
+           anchors.fill: parent
+           color: "lightblue"
+
+           ColumnLayout {
+               anchors.centerIn: parent
+               spacing: 20
+
+               Text {
+                   text: "Page 1"
+                   font.pixelSize: 30
+                   horizontalAlignment: Text.AlignHCenter
+               }
+
+               TextInput {
+                   id: userInput
+                   width: 200
+                   placeholderText: "Entrez votre texte ici"
+                   font.pixelSize: 18
+               }
+
+               Button {
+                   text: "Envoyer et Aller à la Page 2"
+                   onClicked: {
+                       // Utilisation de stackView.push() avec un objet properties pour passer les données
+                       stackView.push(Qt.resolvedUrl("Page2.qml"), { userText: userInput.text })
+                   }
+               }
+           }
+       }
+   }
+   ```
+
+   **Documentation :**
+   - [TextInput](https://doc.qt.io/qt-6/qml-qtquick-textinput.html)
+   - [StackView push() Method with Properties](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html#push-method)
+
+2. **Passer des Données à `Page2.qml` :**
+
+   - **Objectif :** Utiliser `stackView.push()` avec un objet `properties` pour passer les données saisies par l'utilisateur à `Page2.qml`.
+   - **Détails :**
+     - Lorsque l'utilisateur clique sur le bouton, les données saisies sont transmises à `Page2.qml`.
+
+3. **Afficher les Données sur `Page2.qml` :**
+
+   - **Objectif :** Récupérer et afficher les données transmises sur `Page2.qml`.
+   - **Détails :**
+     - Utilisez la propriété `property` dans `Page2.qml` pour recevoir les données passées par `Page1.qml`.
+     - Affichez les données reçues à l'aide d'un élément `Text`.
+
+   - **Code : `Page2.qml`**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+
+   Item {
+       width: 400
+       height: 600
+
+       // Déclarez une propriété pour recevoir les données
+       property string userText: ""
+
+       Rectangle {
+           anchors.fill: parent
+           color: "lightgreen"
+
+           ColumnLayout {
+               anchors.centerIn: parent
+               spacing: 20
+
+               Text {
+                   text: "Page 2"
+                   font.pixelSize: 30
+                   horizontalAlignment: Text.AlignHCenter
+               }
+
+               // Affichez les données transmises de Page1
+               Text {
+                   text: userText
+                   font.pixelSize: 24
+                   color: "black"
+               }
+
+               Button {
+                   text: "Retour à la Page 1"
+                   onClicked: stackView.pop()
+               }
+           }
+       }
+   }
+   ```
+
+   **Documentation :**
+   - [Property Binding in QML](https://doc.qt.io/qt-6/qtqml-syntax-propertybinding.html)
+
+### **Résultat Attendu :**
+Comprendre comment passer des données entre les pages dans `StackView` et utiliser ces données pour personnaliser le contenu ou le comportement des pages suivantes. Après avoir cliqué sur le bouton de `Page1.qml`, `Page2.qml` affichera le texte saisi par l'utilisateur.
