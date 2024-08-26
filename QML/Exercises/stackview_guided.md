@@ -139,3 +139,127 @@ Apprendre à configurer un `StackView` de base et à naviguer entre plusieurs pa
 
 ## **Résultat Attendu :**
 Comprendre les bases de la configuration et de la navigation entre les pages en utilisant `StackView` dans QML. Vous devriez être capable de naviguer d'une page à l'autre et de revenir en arrière en utilisant les boutons ajoutés.
+
+---
+
+## **Exercice 2 : Remplacer des Pages dans le StackView**
+
+### **Objectif :**
+Apprendre à remplacer la page actuelle dans `StackView` sans modifier la profondeur de la pile.
+
+
+## **Étapes :**
+
+1. **Configurer la Page Initiale :**
+
+   - **Objectif :** Démarrer avec `Page1.qml` comme page initiale dans `StackView`.
+   - **Détails :**
+     - `Page1.qml` est la première page affichée lorsque l'application est lancée. Elle est définie comme `initialItem` dans `StackView`.
+
+   - **Code : `main.qml`** (inchangé de l'Exercice 1)
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+   import QtQuick.Layouts 6.7
+
+   ApplicationWindow {
+       visible: true
+       width: 400
+       height: 600
+       title: "Exercice StackView"
+
+       StackView {
+           id: stackView
+           anchors.fill: parent
+           initialItem: Page1 {}
+       }
+   }
+   ```
+
+   **Documentation :**
+   - [StackView](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html)
+
+2. **Créer une Troisième Page (Page3.qml) :**
+
+   - **Objectif :** Concevoir une nouvelle page QML avec une couleur et un label différents.
+   - **Détails :**
+     - `Page3.qml` sera une nouvelle page avec un design différent pour démontrer le remplacement de page.
+
+   - **Code : `Page3.qml`**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+
+   Item {
+       width: 400
+       height: 600
+
+       Rectangle {
+           anchors.fill: parent
+           color: "lightcoral"  // Couleur de fond différente pour Page3
+
+           Text {
+               text: "Page 3"
+               anchors.centerIn: parent
+               font.pixelSize: 30
+           }
+
+           Button {
+               text: "Retour à la Page 1"
+               anchors.bottom: parent.bottom
+               anchors.horizontalCenter: parent.horizontalCenter
+               anchors.margins: 20
+               onClicked: stackView.pop()  // Retourner à la page précédente dans la pile
+           }
+       }
+   }
+   ```
+
+3. **Implémenter le Remplacement de Page :**
+
+   - **Objectif :** Ajouter un bouton sur `Page2.qml` pour la remplacer par `Page3.qml` en utilisant `stackView.replace()`.
+   - **Détails :**
+     - `replace()` permet de remplacer la page actuelle sans changer la profondeur de la pile. Cela signifie que `stackView` conserve la même structure de pile, mais remplace seulement l'élément supérieur.
+
+   - **Code Mis à Jour : `Page2.qml`**
+
+   ```qml
+   import QtQuick 6.7
+   import QtQuick.Controls 6.7
+
+   Item {
+       width: 400
+       height: 600
+
+       Rectangle {
+           anchors.fill: parent
+           color: "lightgreen"
+
+           Text {
+               text: "Page 2"
+               anchors.centerIn: parent
+               font.pixelSize: 30
+           }
+
+           Button {
+               text: "Remplacer par Page 3"
+               anchors.bottom: parent.bottom
+               anchors.horizontalCenter: parent.horizontalCenter
+               anchors.margins: 20
+               onClicked: stackView.replace(Qt.resolvedUrl("Page3.qml"))  // Utilisation de replace() pour remplacer la page actuelle
+           }
+       }
+   }
+   ```
+
+   **Commentaire :**
+   - **`stackView.replace(Qt.resolvedUrl("Page3.qml"))`** : Cette ligne remplace la page actuelle (`Page2.qml`) par `Page3.qml` dans le `StackView`. `replace()` ne modifie pas la profondeur de la pile, ce qui est utile lorsque vous souhaitez changer la vue sans modifier l'historique de navigation.
+
+   **Documentation :**
+   - [StackView replace() Method](https://doc.qt.io/qt-6/qml-qtquick-controls-stackview.html#replace-method)
+
+
+## **Résultat Attendu :**
+Comprendre comment utiliser `replace()` pour changer la page actuelle sans affecter la profondeur de la pile. Après avoir cliqué sur le bouton de `Page2.qml`, la page sera remplacée par `Page3.qml`, mais l'utilisateur pourra toujours revenir en arrière dans la pile comme prévu.
