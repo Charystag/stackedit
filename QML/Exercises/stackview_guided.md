@@ -279,7 +279,7 @@ Apprendre à personnaliser les transitions entre les pages dans un `StackView` p
    - **Détails :**
      - Assurez-vous que les fichiers `Page1.qml`, `Page2.qml`, et `Page3.qml` sont déjà en place comme dans les exercices précédents.
 
-   - **Code : `main.qml` (inchangé, similaire à l'Exercice 1)**
+   - **Code : `main.qml` **
 
    ```qml
    import QtQuick 6.7
