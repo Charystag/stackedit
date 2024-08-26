@@ -668,7 +668,7 @@ ApplicationWindow {
 - **TextArea** : Utilise la propriété `placeholderText` pour afficher un texte indicatif lorsque l'utilisateur n'a rien saisi.
 
 Documentation :
-- [TextInput (Qt Quick Controls)](https://doc.qt.io/qt-6/qml-qtquick-controls-textinput.html)
+- [TextInput](https://doc.qt.io/qt-6/qml-qtquick-textinput.html)
 - [TextArea (Qt Quick Controls)](https://doc.qt.io/qt-6/qml-qtquick-controls-textarea.html)
 
 ---
@@ -763,7 +763,7 @@ ApplicationWindow {
 - **onTextChanged** : Validation en temps réel des entrées utilisateur pour s'assurer que seules des valeurs numériques sont saisies dans le champ `TextInput` pour l'âge.
 
 Documentation :
-- [TextInput Signal Handlers](https://doc.qt.io/qt-6/qml-qtquick-controls-textinput.html#signal-handlers)
+- [Signal Handlers](https://doc.qt.io/qt-6/qtqml-syntax-signals.html)
 
 ---
 
@@ -929,7 +929,8 @@ ApplicationWindow {
 - **Binding** : Le texte dans `TextInput` est lié à la propriété `userName` du backend, permettant une synchronisation en temps réel entre l'interface et la logique backend.
 
 Documentation :
-- [Qt C++ and QML Integration](https://doc.qt.io/qt-6/qtqml-cppintegration-topic.html)
+- [Overview - QML and C++ Integration](https://doc.qt.io/qt-6/qtqml-cppintegration-overview.html)
+- [Qt C++ and QML Integration](https://doc.qt.io/qt-5/qtqml-cppintegration-topic.html)
 - [Q_PROPERTY](https://doc.qt.io/qt-6/properties.html)
 
 ### **Résultat Attendu :**
@@ -1975,7 +1976,7 @@ ApplicationWindow {
 - [Button](https://doc.qt.io/qt-6/qml-qtquick-controls-button.html)
 - [Palette](https://doc.qt.io/qt-6/qml-qtquick-palette.html)
 - [MouseArea](https://doc.qt.io/qt-6/qml-qtquick-mousearea.html)
-- [State](https://doc.qt.io/qt-6/qml-qtqml-state.html)
+- [State](https://doc.qt.io/qt-6/qml-qtquick-state.html)
 
 **Commentaires :**
 - **Palette :** La propriété `palette` est utilisée pour définir la couleur du texte du bouton, ce qui est la méthode appropriée pour personnaliser les couleurs de texte.
