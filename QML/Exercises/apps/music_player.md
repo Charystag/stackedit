@@ -20,11 +20,11 @@ Créer une application de lecteur de musique qui permet aux utilisateurs de joue
 
 2. **Intégration C++/JavaScript pour la gestion de l'audio :**
    - **Objectif :** Intégrer une classe C++ ou utiliser JavaScript pour gérer la lecture audio.
-   - **Composants à utiliser :** Classe C++ pour la gestion de l'audio ou JavaScript pour manipuler le composant `Audio`.
+   - **Composants à utiliser :** Classe C++ pour la gestion de l'audio ou JavaScript pour manipuler le composant `MediaPlayer`.
    - **Liens utiles :**
      - [Intégration de C++ avec QML](https://doc.qt.io/qt-6/qtqml-cppintegration-overview.html)
      - [Utilisation de JavaScript dans QML](https://doc.qt.io/qt-6/qtqml-javascript-functionlist.html)
-     - [Composant `Audio`](https://doc.qt.io/qt-5/qml-qtmultimedia-audio.html)
+     - [Composant `MediaPlayer`](https://doc.qt.io/qt-6/qml-qtmultimedia-mediaplayer.html)
    - **Conseils :**
      - Créez une classe C++ pour gérer les fonctions de lecture, pause, et navigation entre les chansons. Utilisez `QMediaPlayer` pour le contrôle de l'audio.
      - Alternativement, utilisez JavaScript pour manipuler le composant `Audio` directement dans QML pour les contrôles de base.
