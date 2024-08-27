@@ -573,7 +573,7 @@ Item {
 }
 ```
 
-   - **`Page3.qml` pour reset la StackView **
+   - **`Page3.qml` pour reset la StackView**
 
 ```qml
 import QtQuick 6.7
