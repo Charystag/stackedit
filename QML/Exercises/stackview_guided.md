@@ -366,7 +366,7 @@ Apprendre à passer des données entre les pages en utilisant `StackView` dans Q
 
    - **Code : `Page1.qml`**
 
-   ```qml
+```qml
 import QtQuick 6.7
 import QtQuick.Layouts 6.7
 import QtQuick.Controls 6.7
@@ -406,7 +406,7 @@ Item {
         }
     }
 }
-   ```
+```
 
 
    **Documentation :**
