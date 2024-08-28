@@ -533,47 +533,51 @@ Créons un fichier de test nommé `tst_simpleCalculator.qml` :
 
 ```qml
 import QtQuick 2.15
-import QtTest 1.2
-import ".."  // Importer le composant à tester
+import QtTest 1.0
+import ".."
 
-TestCase {
-    name: "SimpleCalculatorTest"
+Item {
 
     SimpleCalculator {
-        id: calculator
+        id: calculator;
     }
 
-    // Fournisseur de données pour le test d'addition
-    function add_data() {
-        return [
-            { a: 1, b: 1, expected: 2 },
-            { a: -1, b: 1, expected: 0 },
-            { a: 10, b: 5, expected: 15 },
-            { a: -5, b: -5, expected: -10 }
-        ]
+    TestCase {
+        name: "simpleCalculator"
+        function test_case1() {
+            compare(1 + 1, 2, "sanity check");
+            verify(true);
+        }
+
+        function test_add_data(){
+            return [
+                {tag: "2 + 2 = 4", a: 2, b: 2, answer: 4 },
+                {tag: "3 + 2 = 5", a: 3, b: 2, answer: 5 },
+                {tag: "10 + 5 = 15", a: 10, b: 5, answer: 15 },
+                {tag: "-5 + (-5) = -10", a: -5, b: -5, answer: -10 }
+            ]
+        }
+
+        function test_add(data){
+            var result = calculator.add(data.a, data.b);
+            compare(result, data.answer, "La fonction add devrait retourner la somme correcte");
+        }
+
+        function test_sub_data(){
+            return [
+                {tag: "2 - 2 = 0", a: 2, b: 2, answer: 0},
+                {tag: "3 - 2 = 1", a: 3, b: 2, answer: 1},
+                {tag: "10 - 5 = 5", a: 10, b: 5, answer: 5},
+                {tag: "-5 - 23 = -28", a: -5, b: 23, answer: -28}
+            ]
+        }
+
+        function test_sub(data){
+            var result = calculator.subtract(data.a, data.b)
+            compare(result, data.answer, "La fonction subtract devrait retourner la somme correcte");
+        }
     }
 
-    // Test paramétré utilisant les données fournies
-    function test_add(a, b, expected) {
-        var result = calculator.add(a, b);
-        compare(result, expected, "La fonction add devrait retourner la somme correcte.")
-    }
-
-    // Fournisseur de données pour le test de soustraction
-    function subtract_data() {
-        return [
-            { a: 5, b: 3, expected: 2 },
-            { a: 0, b: 5, expected: -5 },
-            { a: -10, b: -10, expected: 0 },
-            { a: 7, b: 3, expected: 4 }
-        ]
-    }
-
-    // Test paramétré utilisant les données fournies
-    function test_subtract(a, b, expected) {
-        var result = calculator.subtract(a, b);
-        compare(result, expected, "La fonction subtract devrait retourner la différence correcte.")
-    }
 }
 ```
 
