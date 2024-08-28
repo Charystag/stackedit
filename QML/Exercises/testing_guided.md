@@ -479,3 +479,123 @@ function test_interaction_sequence(){
 ## Conclusion
 
 Dans cet exercice, nous avons appris à simuler des interactions utilisateur comme les clics de souris, les événements clavier et les gestes tactiles en utilisant QtQuick Test. Nous avons également exploré comment tester des séquences d'interactions et valider le comportement de l'interface utilisateur sous différentes conditions. Ces compétences vous aideront à créer des tests plus complets et robustes pour vos applications QML.
+
+---
+
+# **Exercice 4 : Implémentation des Tests Pilotés par les Données avec QtQuick Test**
+
+## **Objectif**
+Apprendre à créer des tests pilotés par les données dans QtQuick Test pour tester efficacement plusieurs scénarios.
+
+## **Contenu**
+1. **Introduction aux Tests Pilotés par les Données dans QtQuick Test**
+2. **Configurer les Fournisseurs de Données et Écrire des Tests Paramétrés**
+3. **Analyser les Résultats des Tests Pilotés par les Données**
+
+## **1. Introduction aux Tests Pilotés par les Données dans QtQuick Test**
+
+Les tests pilotés par les données (ou *data-driven tests*) permettent de tester un composant ou une fonction avec différentes données d'entrée sans dupliquer le code de test. QtQuick Test prend en charge cette approche en utilisant des fonctions de fourniture de données (*data providers*) pour fournir des paramètres de test.
+
+### **Exemple de Composant QML à Tester**
+
+Imaginons un composant `SimpleCalculator.qml` qui effectue des opérations de base comme l'addition et la soustraction :
+
+```qml
+// SimpleCalculator.qml
+import QtQuick 2.15
+
+Item {
+    property int result: 0
+
+    function add(a, b) {
+        result = a + b;
+        return result;
+    }
+
+    function subtract(a, b) {
+        result = a - b;
+        return result;
+    }
+}
+```
+
+Ce composant possède deux fonctions, `add` et `subtract`, qui effectuent respectivement l'addition et la soustraction de deux nombres.
+
+## **2. Configurer les Fournisseurs de Données et Écrire des Tests Paramétrés**
+
+### **Configurer un Fournisseur de Données**
+
+Pour effectuer des tests pilotés par les données, nous utilisons une fonction de fournisseur de données dans QtQuick Test. Cette fonction génère différentes combinaisons de données à tester.
+
+#### **Exemple de Fournisseur de Données**
+
+Créons un fichier de test nommé `tst_simpleCalculator.qml` :
+
+```qml
+import QtQuick 2.15
+import QtTest 1.2
+import ".."  // Importer le composant à tester
+
+TestCase {
+    name: "SimpleCalculatorTest"
+
+    SimpleCalculator {
+        id: calculator
+    }
+
+    // Fournisseur de données pour le test d'addition
+    function add_data() {
+        return [
+            { a: 1, b: 1, expected: 2 },
+            { a: -1, b: 1, expected: 0 },
+            { a: 10, b: 5, expected: 15 },
+            { a: -5, b: -5, expected: -10 }
+        ]
+    }
+
+    // Test paramétré utilisant les données fournies
+    function test_add(a, b, expected) {
+        var result = calculator.add(a, b);
+        compare(result, expected, "La fonction add devrait retourner la somme correcte.")
+    }
+
+    // Fournisseur de données pour le test de soustraction
+    function subtract_data() {
+        return [
+            { a: 5, b: 3, expected: 2 },
+            { a: 0, b: 5, expected: -5 },
+            { a: -10, b: -10, expected: 0 },
+            { a: 7, b: 3, expected: 4 }
+        ]
+    }
+
+    // Test paramétré utilisant les données fournies
+    function test_subtract(a, b, expected) {
+        var result = calculator.subtract(a, b);
+        compare(result, expected, "La fonction subtract devrait retourner la différence correcte.")
+    }
+}
+```
+
+### **Explications :**
+- **Fournisseurs de Données (`add_data` et `subtract_data`)** : Ces fonctions retournent des tableaux d'objets contenant les paramètres de test. Chaque objet représente une combinaison d'entrée et de sortie attendue pour le test.
+- **Tests Paramétrés (`test_add` et `test_subtract`)** : Les fonctions de test prennent les paramètres fournis par les fonctions de données et les utilisent pour vérifier le comportement du composant.
+
+## **3. Analyser les Résultats des Tests Pilotés par les Données**
+
+Lorsque vous exécutez des tests pilotés par les données, chaque ensemble de données génère un cas de test distinct. QtQuick Test affiche les résultats pour chaque combinaison de paramètres, vous permettant de voir facilement quelles entrées réussissent ou échouent.
+
+### **Exécution des Tests et Analyse des Résultats**
+
+1. **Ouvrez Qt Creator** et chargez votre projet de test.
+2. Sélectionnez **Exécuter > Exécuter** (ou appuyez sur `Ctrl+R`) pour lancer le projet de test.
+3. **Vérifiez les résultats des tests** dans la sortie de la console Qt Creator pour voir les résultats détaillés de chaque cas de test généré par les fournisseurs de données.
+
+### **Liens vers la Documentation**
+
+- [Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
+- [Data-Driven Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html#data-driven-testing)
+
+## **Conclusion**
+
+Dans cet exercice, nous avons appris à implémenter des tests pilotés par les données en utilisant QtQuick Test. Cette méthode permet de tester efficacement plusieurs scénarios en minimisant la duplication de code de test. Vous pouvez maintenant appliquer ces concepts pour tester divers composants et fonctions dans vos projets QML avec plus d'efficacité et de couverture.
