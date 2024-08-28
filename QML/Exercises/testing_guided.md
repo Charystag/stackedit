@@ -200,7 +200,7 @@ Lors de la création de tests pour les composants QML, il est important de teste
 Supposons que nous ayons un composant QML simple dans un fichier `Button.qml` :
 
 ```qml
-// src/Button.qml
+// Button.qml
 import QtQuick 2.15
 
 Rectangle {
@@ -228,6 +228,30 @@ Rectangle {
 }
 ```
 
+## Structure du projet
+
+Vous pouvez initialiser le projet de test dans votre projet de base pour garder 
+les tests proches du code.
+
+```
+MyProject
+├── Button.qml
+├── CMakeLists.txt
+├── Main.qml
+├── tests
+│   ├── CMakeLists.txt
+│   ├── build
+│   ├── main.cpp
+│   └── tst_button.qml
+├── build
+└── main.cpp
+```
+
+### Structure des fichiers de build
+
+Vous pouvez aller dans la documentation de [TestCase](https://doc.qt.io/qt-6/qml-qttest-testcase.html#separating-tests-from-application-logic) pour 
+un exemple plus concret de comment organiser vos fichiers sources et vos fichiers de tests
+
 ## Écrire des Tests pour le Composant `Button`
 
 Créez un fichier de test nommé `tst_button.qml` dans le répertoire de tests :
@@ -235,12 +259,12 @@ Créez un fichier de test nommé `tst_button.qml` dans le répertoire de tests :
 ```qml
 import QtQuick 2.15
 import QtTest 1.2
-import "../src/Button.qml" as ButtonComponent // Importer le composant à tester
+import ".." // Importer le composant à tester
 
 TestCase {
     name: "ButtonTest"
 
-    ButtonComponent.Rectangle {
+    Button{
         id: button
         text: "Test"
 
@@ -265,7 +289,7 @@ TestCase {
 ```
 
 **Commentaires :**
-- **`import "../src/Button.qml" as ButtonComponent`** : Importe le composant `Button.qml` pour pouvoir le tester.
+- **`import ".."`** : Importe le composant `Button.qml` pour pouvoir le tester.
 - **`compare`** : Utilisé pour vérifier que les propriétés initiales du composant sont définies correctement.
 - **`mouseClick` et `wait`** : Utilitaires pour simuler une interaction utilisateur et attendre qu'une condition soit remplie.
 - **`verify`** : Utilisé pour vérifier si un signal a été émis.
