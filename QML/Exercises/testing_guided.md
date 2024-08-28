@@ -732,4 +732,155 @@ Dans cet exercice, nous avons appris à configurer un pipeline CI pour automatis
 
 ---
 
-This exercise provides a comprehensive guide on how to integrate QtQuick Tests with CI systems, specifically using GitHub Actions as an example. It includes step-by-step instructions and an example YAML configuration for setting up a CI pipeline.
+# **Exercice 6 : Tester les Transitions d'États dans les Composants QML**
+
+## **Objectif**
+Apprendre à tester les transitions d'états dans les composants QML pour s'assurer qu'ils se comportent correctement sous diverses conditions et réagissent de manière appropriée aux différentes entrées utilisateur ou événements.
+
+## **Contenu**
+1. **Introduction aux Transitions d'États dans QML**
+2. **Configurer des Tests pour les Transitions d'États**
+3. **Vérifier les Changements d'État Corrects Basés sur les Événements**
+
+## **Liens vers la Documentation**:
+- [États en QML](https://doc.qt.io/qt-6/qml-qtquick-state.html)
+- [Framework de Test QtQuick](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
+
+## **1. Introduction aux Transitions d'États dans QML**
+
+Dans QML, les états sont utilisés pour représenter différentes configurations d'un composant. Un état peut changer les valeurs des propriétés, l'apparence d'un composant, ou même la structure du composant lui-même. Les états sont souvent utilisés pour définir différents modes (par exemple, "édition" vs. "visualisation") ou pour gérer des interactions complexes de l'interface utilisateur.
+
+### **Exemple de Transitions d'États dans QML**
+
+Créons un composant simple `ToggleButton.qml` qui possède deux états : "on" et "off". Le bouton bascule entre ces états lorsqu'il est cliqué, changeant sa couleur et son texte.
+
+```qml
+// ToggleButton.qml
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+
+Rectangle {
+    id: toggleButton
+    width: 100; height: 50
+    color: "lightgray"
+
+    signal toggled(bool checked)
+
+    states: [
+        State {
+            name: "on"
+            PropertyChanges { target: toggleButton
+                color: "green" }
+            PropertyChanges { target: label
+                text: "ON" }
+        },
+        State {
+            name: "off"
+            PropertyChanges { target: toggleButton
+                 color: "red" }
+            PropertyChanges { target: label
+                 text: "OFF" }
+        }
+    ]
+
+    Rectangle {
+        id: label
+        anchors.centerIn: parent
+        color: "transparent"
+        width: parent.width
+        height: parent.height
+        property string text: label_text.text
+        Text {
+            id: label_text
+            anchors.centerIn: parent
+            text: "OFF"
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            toggleButton.state = toggleButton.state === "on" ? "off" : "on"
+            toggled(toggleButton.state === "on")
+        }
+    }
+
+    state: "off"  // Etat initial
+}
+```
+
+## **2. Configurer des Tests pour les Transitions d'États**
+
+Pour tester les transitions d'états dans `ToggleButton.qml`, nous devons simuler des interactions utilisateur (comme cliquer sur le bouton) et vérifier que le composant passe correctement entre ses états "on" et "off".
+
+### **Exemple de Fichier de Test pour les Transitions d'États**
+
+```qml
+import QtQuick 2.15
+import QtTest 1.2
+import ".."
+
+Item {
+    ToggleButton {
+        id: toggleButton
+        width: 100
+        height: 50
+    }
+
+    SignalSpy {
+        id: mouseSpy
+        target: toggleButton
+        signalName: "toggled"
+    }
+
+    TestCase {
+        name: "ToggleButtonStateTest"
+
+        function test_initialState() {
+            compare(toggleButton.state, "off", true, "L'état initial devrait être 'off'")
+            compare(Qt.colorEqual("red", toggleButton.color), true, "La couleur devrait être rouge en état 'off'")
+        }
+
+        //Les tests se lancent dans l'ordre alphabétique. Le itoggleToOnState set à s'assurer que le test d'allumage
+        //Se lance avant le test d'extinction
+        function test_itoggleToOnState() {
+            mouseSpy.clear()
+            compare(mouseSpy.count, 0, "Pas de click reçu")
+            mouseClick(toggleButton)
+            compare(mouseSpy.count, 1, "Un seul click reçu")
+            compare(toggleButton.state, "on", "L'état devrait passer à 'on' après un clic")
+            compare(Qt.colorEqual(toggleButton.color, "green"), true, "La couleur devrait être verte en état 'on'")
+        }
+
+        function test_toggleToOffState() {
+            mouseSpy.clear()
+            compare(mouseSpy.count, 0, "Pas de click reçu")
+            mouseClick(toggleButton)
+            compare(mouseSpy.count, 1, "Un seul click reçu")
+            compare(toggleButton.state, "off", "L'état devrait revenir à 'off' après un clic")
+            compare(Qt.colorEqual("red", toggleButton.color), true, "La couleur devrait être rouge en état 'off'")
+        }
+    }
+}
+```
+
+### **Commentaires sur le Test**
+
+- **`clicked()`** : Simule un événement de clic de l'utilisateur sur la `MouseArea`.
+- **`compare()`** : Vérifie que l'état actuel et la couleur correspondent aux valeurs attendues.
+
+## **3. Vérifier les Changements d'État Corrects Basés sur les Événements**
+
+Les tests ci-dessus couvrent les scénarios suivants :
+
+1. **État Initial** : S'assure que le composant `ToggleButton` commence dans l'état "off" avec la couleur correcte.
+2. **Basculer vers l'État On** : Simule un clic pour changer l'état de "off" à "on" et vérifie le changement d'état et la mise à jour de la couleur.
+3. **Basculer de Nouveau à l'État Off** : Simule un autre clic pour revenir de "on" à "off" et vérifie le changement d'état et la mise à jour de la couleur.
+
+### **Liens vers la Documentation**
+
+- [Framework de Test QtQuick](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
+
+## **Conclusion**
+
+En implémentant ces tests, vous pouvez vous assurer que les transitions d'états dans vos composants QML fonctionnent correctement et que le composant se comporte comme prévu dans différents états.
