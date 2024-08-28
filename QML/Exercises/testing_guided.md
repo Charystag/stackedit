@@ -133,3 +133,163 @@ Cela permet aux tests d'importer directement les fichiers et composants QML de v
 Cet exercice vous a montré comment créer un projet de test QtQuick, organiser vos fichiers de test et configurer les dépendances du projet. En suivant ces étapes, vous pouvez rapidement configurer une suite de tests efficace pour vos applications QML.
 
 Vous pouvez maintenant tester votre configuration en exécutant votre projet de test dans Qt Creator et en vérifiant que les tests passent avec succès.
+
+---
+
+# Exercice 2 : Écrire des Tests de Base pour les Composants QML avec QtQuick Test
+
+## Objectif
+Apprendre à écrire et exécuter des tests de base pour les composants QML en utilisant QtQuick Test.
+
+## Contenu
+1. **Structure d'un cas de test basique dans QtQuick Test**
+2. **Écrire des tests pour les propriétés et les signaux QML**
+3. **Utilisation des utilitaires de test comme `wait` et `verify` dans QtQuick Test**
+
+
+## 1. Structure d'un Cas de Test Basique dans QtQuick Test
+
+---
+
+Un cas de test QtQuick Test est généralement défini dans un fichier QML et utilise l'élément `TestCase`. Un cas de test de base comporte plusieurs sections pour initialiser, exécuter des tests et nettoyer après les tests.
+
+## Exemple de Fichier de Test Basique
+
+Créons un fichier de test appelé `tst_basic.qml` :
+
+```qml
+import QtQuick 2.15
+import QtTest 1.2
+
+TestCase {
+    name: "BasicTest"
+
+    // Fonction d'initialisation du test
+    function initTestCase() {
+        console.log("Initialisation du test")
+    }
+
+    // Fonction de test pour vérifier une condition simple
+    function test_example() {
+        var a = 2
+        var b = 3
+        compare(a + b, 5, "La somme de 2 et 3 devrait être 5")
+    }
+
+    // Fonction de nettoyage après le test
+    function cleanupTestCase() {
+        console.log("Nettoyage après les tests")
+    }
+}
+```
+
+**Commentaires :**
+- **`TestCase`** : Élément utilisé pour définir une suite de tests.
+- **`initTestCase`** : Fonction appelée avant l'exécution de tous les tests pour initialiser l'état du test.
+- **`test_example`** : Exemple de test de base qui utilise l'utilitaire `compare` pour vérifier que l'addition fonctionne correctement.
+- **`cleanupTestCase`** : Fonction appelée après l'exécution de tous les tests pour nettoyer l'environnement de test.
+
+## 2. Écrire des Tests pour les Propriétés et les Signaux QML
+
+---
+
+Lors de la création de tests pour les composants QML, il est important de tester non seulement les propriétés des composants, mais aussi les signaux qu'ils émettent.
+
+## Exemple de Composant QML à Tester
+
+Supposons que nous ayons un composant QML simple dans un fichier `Button.qml` :
+
+```qml
+// src/Button.qml
+import QtQuick 2.15
+
+Rectangle {
+    id: button
+    width: 100; height: 50
+    color: "blue"
+
+    property alias text: textElement.text
+
+    signal clicked
+
+    Text {
+        id: textElement
+        anchors.centerIn: parent
+        text: "Click Me"
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        onClicked: {
+            button.clicked()
+        }
+    }
+}
+```
+
+## Écrire des Tests pour le Composant `Button`
+
+Créez un fichier de test nommé `tst_button.qml` dans le répertoire de tests :
+
+```qml
+import QtQuick 2.15
+import QtTest 1.2
+import "../src/Button.qml" as ButtonComponent // Importer le composant à tester
+
+TestCase {
+    name: "ButtonTest"
+
+    ButtonComponent.Rectangle {
+        id: button
+        text: "Test"
+
+        onClicked: {
+            console.log("Signal clicked émis")
+        }
+    }
+
+    function test_initialProperties() {
+        compare(button.width, 100, "La largeur initiale du bouton devrait être 100")
+        compare(button.height, 50, "La hauteur initiale du bouton devrait être 50")
+        compare(button.text, "Test", "Le texte initial devrait être 'Test'")
+    }
+
+    function test_signalEmission() {
+        // Simuler un clic
+        mouseClick(button)
+        wait(200)  // Attendre que le signal soit potentiellement émis
+        verify(button.clicked, "Le signal 'clicked' aurait dû être émis")
+    }
+}
+```
+
+**Commentaires :**
+- **`import "../src/Button.qml" as ButtonComponent`** : Importe le composant `Button.qml` pour pouvoir le tester.
+- **`compare`** : Utilisé pour vérifier que les propriétés initiales du composant sont définies correctement.
+- **`mouseClick` et `wait`** : Utilitaires pour simuler une interaction utilisateur et attendre qu'une condition soit remplie.
+- **`verify`** : Utilisé pour vérifier si un signal a été émis.
+
+## 3. Utilisation des Utilitaires de Test comme `wait` et `verify` dans QtQuick Test
+
+---
+
+- **`wait(millis)`** : Attend pendant le nombre de millisecondes spécifié avant de continuer. Utile pour les tests nécessitant un délai (par exemple, attendre une animation ou une action utilisateur simulée).
+
+- **`verify(expression, message)`** : Vérifie que l'expression est vraie. Si ce n'est pas le cas, le test échoue avec le message fourni.
+
+- **`mouseClick(item)`** : Simule un clic de souris sur l'élément spécifié.
+
+## Exécuter les Tests
+
+1. Ouvrez Qt Creator et chargez votre projet de test.
+2. Exécutez le projet de test en sélectionnant **Exécuter > Exécuter** (ou en appuyant sur `Ctrl+R`).
+3. Vérifiez les résultats des tests dans la sortie de la console Qt Creator.
+
+## Liens vers la Documentation
+
+- [TestCase dans QtQuick](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
+
+## Conclusion
+
+Dans cet exercice, nous avons appris à écrire des tests de base pour les composants QML en utilisant QtQuick Test. Nous avons couvert la structure des cas de test, la manière de tester les propriétés et les signaux des composants, ainsi que l'utilisation d'utilitaires de test tels que `wait` et `verify`. Vous êtes maintenant prêt à appliquer ces concepts à vos propres composants QML pour assurer leur bon fonctionnement et leur qualité.
