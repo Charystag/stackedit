@@ -722,6 +722,7 @@ Une fois le pipeline CI configuré, les tests QtQuick sont exécutés automatiqu
 - [Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
 - [Github Actions Documentation](https://docs.github.com/en/actions)
 - [Qt Platform Abstraction](https://doc.qt.io/qt-6/qpa.html)
+- [Platform Name Property QGuiApplication](https://doc.qt.io/qt-6/qguiapplication.html#platformName-prop)
 
 ---
 
