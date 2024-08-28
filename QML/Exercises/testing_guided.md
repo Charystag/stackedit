@@ -356,17 +356,17 @@ Rectangle {
         id: mouseArea
         anchors.fill: parent
         onClicked: {
+            console.log("Bonjour")
             interactiveRect.color = "green"
             interactiveRect.rectangleClicked()
         }
     }
 
-    focus: true
-    Keys.onPressed: {
-        interactiveRect.keyPressed(event.text)
-        if (event.text === "r") {
+    Keys.onPressed: (event) => {
+    interactiveRect.keyPressed(event.key)
+        if (event.key === Qt.Key_R) {
             interactiveRect.color = "red"
-        } else if (event.text === "b") {
+        } else if (event.key === Qt.Key_B) {
             interactiveRect.color = "blue"
         }
     }
@@ -381,37 +381,56 @@ Nous allons créer un fichier de test `tst_interactiveRectangle.qml` pour tester
 
 ```qml
 import QtQuick 2.15
-import QtTest 1.2
+import QtTest
 import ".." // Importer le composant à tester
 
-TestCase {
-    name: "InteractiveRectangleTest"
-
+Item {
     InteractiveRectangle {
         id: rect
+        focus: true;
     }
 
-    function test_initialState() {
-        compare(rect.color, "red", "La couleur initiale doit être rouge")
+    SignalSpy {
+        id: clickspy;
+        target: rect
+        signalName: "keyPressed"
     }
 
-    function test_mouseClick() {
-        mouseClick(rect)
-        wait(200)  // Attendre que le clic soit traité
-        compare(rect.color, "green", "La couleur doit être verte après un clic")
-        verify(rect.rectangleClicked, "Le signal 'rectangleClicked' devrait être émis après un clic")
+    SignalSpy {
+        id: mouseSpy;
+        target: rect;
+        signalName: "rectangleClicked"
+
     }
 
-    function test_keyPress() {
-        keyPress(rect, Qt.Key_B)
-        wait(200)
-        compare(rect.color, "blue", "La couleur doit être bleue après avoir appuyé sur la touche 'b'")
+        TestCase {
+        id: testCase
+        name: "InteractiveRectangleTest"
+        when: windowShown;
 
-        keyPress(rect, Qt.Key_R)
-        wait(200)
-        compare(rect.color, "red", "La couleur doit revenir à rouge après avoir appuyé sur la touche 'r'")
 
-        verify(rect.keyPressed, "Le signal 'keyPressed' devrait être émis après une pression de touche")
+        function test_initialState() {
+            compare(Qt.colorEqual(rect.color, "red"), true, "La couleur initiale doit être rouge")
+        }
+
+        function test_mouseClick() {
+            mouseSpy.clear();
+            compare(mouseSpy.count, 0, "Le mouseSpy ne doit pas voir reçu le signal avant le click");
+            mouseClick(rect)
+            compare(mouseSpy.count, 1, "Le signal 'rectangleClicked' devrait être émis après un clic")
+            compare(Qt.colorEqual(rect.color, "green"), true, "La couleur doit être verte après un clic")
+        }
+
+        function test_keyClick() {
+            clickspy.clear();
+            compare(clickspy.count, 0, "Auncun click n'a été émis")
+            keyClick(Qt.Key_B)
+            compare(Qt.colorEqual(rect.color, "blue"), true, "La couleur doit être bleue après avoir appuyé sur la touche 'b'")
+            compare(clickspy.count, 1, "Un seul click a été reçu")
+            keyClick(Qt.Key_R)
+            compare(Qt.colorEqual(rect.color, "red"), true, "La couleur doit revenir à rouge après avoir appuyé sur la touche 'r'")
+            compare(clickspy.count, 2, "Les deux clicks ont été reçu")
+        }
     }
 }
 ```
@@ -431,22 +450,20 @@ Pour tester des scénarios plus complexes, nous pouvons simuler une séquence d'
 Supposons que nous voulions tester une séquence où l'utilisateur clique sur le rectangle, puis appuie sur une touche :
 
 ```qml
-function test_interactionSequence() {
-    mouseClick(rect)
-    wait(200)
-    compare(rect.color, "green", "Après un clic, la couleur doit être verte")
-
-    keyPress(rect, Qt.Key_B)
-    wait(200)
-    compare(rect.color, "blue", "Après avoir appuyé sur la touche 'b', la couleur doit être bleue")
-
-    keyPress(rect, Qt.Key_R)
-    wait(200)
-    compare(rect.color, "red", "Après avoir appuyé sur la touche 'r', la couleur doit être rouge")
-
-    verify(rect.rectangleClicked, "Le signal 'rectangleClicked' devrait être émis après le clic")
-    verify(rect.keyPressed, "Le signal 'keyPressed' devrait être émis après chaque pression de touche")
-}
+function test_interaction_sequence(){
+        clickspy.clear();
+        mouseSpy.clear();
+        compare(clickspy.count, 0, "Aucun click n'a été reçu sur le clavier");
+        compare(mouseSpy.count, 0, "Aucun click n'a été reçu sur la souris");
+        mouseClick(rect);
+        compare(Qt.colorEqual(rect.color, "green"), true, "La couleur doit être verte après un clic")
+        keyClick(Qt.Key_B);
+        compare(Qt.colorEqual(rect.color, "blue"), true, "La couleur doit être bleue après avoir appuyé sur la touche 'b'")
+        keyClick(Qt.Key_R)
+        compare(Qt.colorEqual(rect.color, "red"), true, "La couleur doit revenir à rouge après avoir appuyé sur la touche 'r'")
+        compare(clickspy.count, 2, "Deux clics doivent avoir été enregistrés");
+        compare(mouseSpy.count, 1, "Un seul click sur la souris");
+    }
 ```
 
 ## Exécuter les Tests
