@@ -594,7 +594,7 @@ Lorsque vous exécutez des tests pilotés par les données, chaque ensemble de d
 ### **Liens vers la Documentation**
 
 - [Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
-- [Data-Driven Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html#data-driven-testing)
+- [Data-Driven Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html#data-driven-tests)
 
 ## **Conclusion**
 
