@@ -317,3 +317,148 @@ TestCase {
 ## Conclusion
 
 Dans cet exercice, nous avons appris à écrire des tests de base pour les composants QML en utilisant QtQuick Test. Nous avons couvert la structure des cas de test, la manière de tester les propriétés et les signaux des composants, ainsi que l'utilisation d'utilitaires de test tels que `wait` et `verify`. Vous êtes maintenant prêt à appliquer ces concepts à vos propres composants QML pour assurer leur bon fonctionnement et leur qualité.
+
+---
+
+# Exercice 3 : Simulation des Interactions Utilisateur dans les Tests QML
+
+## Objectif
+Comprendre comment simuler et tester les interactions utilisateur (par exemple, clics, événements clavier, gestes) en QML en utilisant QtQuick Test.
+
+## Contenu
+1. **Techniques pour simuler les clics de souris, les événements clavier et les gestes tactiles**
+2. **Tester les séquences d'interactions utilisateur et les changements d'état**
+3. **Valider le comportement de l'interface utilisateur dans différentes conditions**
+
+---
+
+## 1. Techniques pour Simuler les Clics de Souris, les Événements Clavier et les Gestes Tactiles
+
+QtQuick Test fournit des utilitaires pour simuler différentes interactions utilisateur telles que les clics de souris, les événements clavier, et les gestes tactiles. Nous allons voir comment les utiliser pour tester les composants QML.
+
+### Exemple de Composant QML à Tester
+
+Imaginons un composant `InteractiveRectangle.qml` qui réagit aux clics et aux événements clavier :
+
+```qml
+// InteractiveRectangle.qml
+import QtQuick 2.15
+
+Rectangle {
+    id: interactiveRect
+    width: 100; height: 100
+    color: "red"
+
+    signal rectangleClicked
+    signal keyPressed(string key)
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        onClicked: {
+            interactiveRect.color = "green"
+            interactiveRect.rectangleClicked()
+        }
+    }
+
+    focus: true
+    Keys.onPressed: {
+        interactiveRect.keyPressed(event.text)
+        if (event.text === "r") {
+            interactiveRect.color = "red"
+        } else if (event.text === "b") {
+            interactiveRect.color = "blue"
+        }
+    }
+}
+```
+
+## 2. Tester les Séquences d'Interactions Utilisateur et les Changements d'État
+
+Nous allons créer un fichier de test `tst_interactiveRectangle.qml` pour tester les interactions avec `InteractiveRectangle.qml`.
+
+## Exemple de Fichier de Test
+
+```qml
+import QtQuick 2.15
+import QtTest 1.2
+import ".." // Importer le composant à tester
+
+TestCase {
+    name: "InteractiveRectangleTest"
+
+    InteractiveRectangle {
+        id: rect
+    }
+
+    function test_initialState() {
+        compare(rect.color, "red", "La couleur initiale doit être rouge")
+    }
+
+    function test_mouseClick() {
+        mouseClick(rect)
+        wait(200)  // Attendre que le clic soit traité
+        compare(rect.color, "green", "La couleur doit être verte après un clic")
+        verify(rect.rectangleClicked, "Le signal 'rectangleClicked' devrait être émis après un clic")
+    }
+
+    function test_keyPress() {
+        keyPress(rect, Qt.Key_B)
+        wait(200)
+        compare(rect.color, "blue", "La couleur doit être bleue après avoir appuyé sur la touche 'b'")
+
+        keyPress(rect, Qt.Key_R)
+        wait(200)
+        compare(rect.color, "red", "La couleur doit revenir à rouge après avoir appuyé sur la touche 'r'")
+
+        verify(rect.keyPressed, "Le signal 'keyPressed' devrait être émis après une pression de touche")
+    }
+}
+```
+
+**Commentaires :**
+- **`mouseClick(item)`** : Simule un clic de souris sur l'élément spécifié.
+- **`keyPress(item, key)`** : Simule une pression de touche clavier sur l'élément spécifié.
+- **`wait(millis)`** : Met en pause l'exécution pendant le nombre de millisecondes spécifié, utile pour attendre le traitement d'événements asynchrones.
+- **`verify(signal, message)`** : Vérifie si un signal a été émis.
+
+## 3. Valider le Comportement de l'Interface Utilisateur sous Différentes Conditions
+
+Pour tester des scénarios plus complexes, nous pouvons simuler une séquence d'interactions utilisateur et vérifier que le composant réagit correctement à chaque étape.
+
+## Exemple de Séquence d'Interactions Utilisateur
+
+Supposons que nous voulions tester une séquence où l'utilisateur clique sur le rectangle, puis appuie sur une touche :
+
+```qml
+function test_interactionSequence() {
+    mouseClick(rect)
+    wait(200)
+    compare(rect.color, "green", "Après un clic, la couleur doit être verte")
+
+    keyPress(rect, Qt.Key_B)
+    wait(200)
+    compare(rect.color, "blue", "Après avoir appuyé sur la touche 'b', la couleur doit être bleue")
+
+    keyPress(rect, Qt.Key_R)
+    wait(200)
+    compare(rect.color, "red", "Après avoir appuyé sur la touche 'r', la couleur doit être rouge")
+
+    verify(rect.rectangleClicked, "Le signal 'rectangleClicked' devrait être émis après le clic")
+    verify(rect.keyPressed, "Le signal 'keyPressed' devrait être émis après chaque pression de touche")
+}
+```
+
+## Exécuter les Tests
+
+1. **Ouvrez Qt Creator** et chargez votre projet de test.
+2. Sélectionnez **Exécuter > Exécuter** (ou appuyez sur `Ctrl+R`) pour lancer le projet de test.
+3. **Vérifiez les résultats des tests** dans la sortie de la console Qt Creator pour s'assurer que tous les tests sont passés avec succès.
+
+## Liens vers la Documentation
+
+- [Testing User Interactions in QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html#user-interaction-testing)
+
+## Conclusion
+
+Dans cet exercice, nous avons appris à simuler des interactions utilisateur comme les clics de souris, les événements clavier et les gestes tactiles en utilisant QtQuick Test. Nous avons également exploré comment tester des séquences d'interactions et valider le comportement de l'interface utilisateur sous différentes conditions. Ces compétences vous aideront à créer des tests plus complets et robustes pour vos applications QML.
