@@ -721,6 +721,7 @@ Une fois le pipeline CI configuré, les tests QtQuick sont exécutés automatiqu
 - [GitHub Actions pour les projets Qt](https://github.com/jurplel/install-qt-action)
 - [Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
 - [Github Actions Documentation](https://docs.github.com/en/actions)
+- [Qt Platform Abstraction](https://doc.qt.io/qt-6/qpa.html)
 
 ---
 
