@@ -482,7 +482,7 @@ Dans cet exercice, nous avons appris à simuler des interactions utilisateur com
 
 ---
 
-# **Exercice 4 : Implémentation des Tests Pilotés par les Données avec QtQuick Test**
+# Exercice 4 : Implémentation des Tests Pilotés par les Données avec QtQuick Test
 
 ## **Objectif**
 Apprendre à créer des tests pilotés par les données dans QtQuick Test pour tester efficacement plusieurs scénarios.
@@ -603,3 +603,131 @@ Lorsque vous exécutez des tests pilotés par les données, chaque ensemble de d
 ## **Conclusion**
 
 Dans cet exercice, nous avons appris à implémenter des tests pilotés par les données en utilisant QtQuick Test. Cette méthode permet de tester efficacement plusieurs scénarios en minimisant la duplication de code de test. Vous pouvez maintenant appliquer ces concepts pour tester divers composants et fonctions dans vos projets QML avec plus d'efficacité et de couverture.
+
+---
+
+Let's create the exercise in French to guide users on integrating QtQuick Tests with continuous integration systems like GitHub Actions or GitLab CI.
+
+---
+
+# **Exercice 5 : Intégration des Tests QtQuick avec des Systèmes d'Intégration Continue (CI)**
+
+## **Objectif**
+Apprendre à automatiser les tests QtQuick à l'aide d'un pipeline d'intégration continue (CI).
+
+## **Contenu**
+1. **Vue d'ensemble de CI/CD et de ses avantages pour les applications QML**
+2. **Mise en place d'un pipeline CI pour exécuter des tests QtQuick (par exemple, GitHub Actions, GitLab CI)**
+3. **Automatisation de l'exécution des tests et analyse des résultats**
+
+## **1. Vue d'ensemble de CI/CD et de ses avantages pour les applications QML**
+
+L'intégration continue (CI) et le déploiement continu (CD) sont des pratiques de développement logiciel qui permettent aux équipes de développer, tester et déployer des applications de manière plus rapide et plus fiable. Pour les applications QML, CI/CD garantit que tous les changements de code sont testés automatiquement, réduisant ainsi les risques de régression.
+
+### **Avantages de l'intégration continue pour les applications QML**
+
+- **Automatisation des Tests** : Les tests QtQuick peuvent être exécutés automatiquement à chaque modification du code, garantissant que les nouvelles fonctionnalités n'introduisent pas de bugs.
+- **Feedback Rapide** : Les développeurs reçoivent rapidement des notifications sur l'état des tests, permettant de corriger les erreurs rapidement.
+- **Qualité Améliorée** : La détection précoce des erreurs et des régressions améliore la qualité globale du code.
+
+## **2. Mise en Place d'un Pipeline CI pour Exécuter des Tests QtQuick**
+
+Pour configurer un pipeline CI pour les tests QtQuick, nous utiliserons GitHub Actions comme exemple. Cependant, les étapes peuvent être adaptées pour d'autres systèmes CI/CD comme GitLab CI, Jenkins, etc.
+
+### **Étapes pour Configurer un Pipeline CI avec GitHub Actions**
+
+1. **Créer un fichier de configuration GitHub Actions** :
+   Créez un fichier nommé `.github/workflows/ci.yml` dans votre dépôt GitHub.
+
+2. **Configurer les Jobs pour Exécuter les Tests QtQuick** :
+   Le fichier YAML définit des jobs pour configurer l'environnement, installer les dépendances et exécuter les tests.
+
+#### **Exemple de Configuration YAML pour GitHub Actions**
+
+```yaml
+name: CI
+
+env:
+    QT_QPA_PLATFORM: "offscreen"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.5.1'
+        host: 'linux'
+        target: 'desktop'
+        setup-python: 'false'
+
+    - name: Install Dependencies
+      run: |
+        sudo apt install libxcb-xinerama0 libxkbcommon-x11-0
+        sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+
+    - name: Build Project
+      run: |
+        cmake -B build -S .
+        cmake --build build
+
+    - name: Run QtQuick Tests
+      run: |
+        cd tests
+        cmake -B build -S .
+        cmake --build build
+        ctest --output-on-failure --test-dir build
+```
+
+### **Explications :**
+
+- **`runs-on: ubuntu-latest`** : Spécifie l'image de machine virtuelle sur laquelle le job CI s'exécute.
+- **`actions/checkout@v2`** : Action GitHub officielle pour vérifier le code source du dépôt.
+- **`install-qt-action@v2`** : Action personnalisée pour installer Qt sur l'environnement CI.
+- **`cmake` et `ctest`** : Utilisés pour construire le projet et exécuter les tests QtQuick.
+
+---
+
+## **3. Automatisation de l'Exécution des Tests et Analyse des Résultats**
+
+Une fois le pipeline CI configuré, les tests QtQuick sont exécutés automatiquement à chaque modification de code dans le dépôt. Voici comment analyser les résultats et prendre des mesures appropriées :
+
+### **Étapes pour Analyser les Résultats des Tests CI**
+
+1. **Accéder aux Logs de Build et de Test** :
+   Après chaque exécution de pipeline, GitHub Actions génère des logs de build et de test accessibles via l'onglet "Actions" du dépôt.
+
+2. **Analyser les Résultats des Tests** :
+   Les résultats des tests sont affichés dans les logs, montrant les tests réussis et ceux qui ont échoué. En cas d'échec, les logs contiennent des détails pour déboguer.
+
+3. **Intégration avec des Outils de Notification** :
+   Configurez des notifications (par exemple, via email ou Slack) pour informer l'équipe des résultats des tests.
+
+### **Liens vers la Documentation**
+
+- [GitHub Actions pour les projets Qt](https://github.com/jurplel/install-qt-action)
+- [Testing with QtQuick Test](https://doc.qt.io/qt-6/qml-qttest-testcase.html)
+- [Github Actions Documentation](https://docs.github.com/en/actions)
+
+---
+
+## **Conclusion**
+
+Dans cet exercice, nous avons appris à configurer un pipeline CI pour automatiser les tests QtQuick en utilisant GitHub Actions. Cette configuration garantit que tous les changements de code sont testés automatiquement, améliorant ainsi la qualité du code et réduisant les risques de régression. Vous pouvez maintenant adapter ces étapes pour d'autres systèmes CI/CD pour vos projets QML.
+
+---
+
+This exercise provides a comprehensive guide on how to integrate QtQuick Tests with CI systems, specifically using GitHub Actions as an example. It includes step-by-step instructions and an example YAML configuration for setting up a CI pipeline.
