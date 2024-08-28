@@ -37,7 +37,7 @@ Créer une application complète qui permet aux utilisateurs de suivre leurs tra
 
 3. **Interaction utilisateur et gestion des états :**
    - **Objectif :** Gérer les entrées utilisateur pour ajouter de nouvelles transactions et gérer les états de l'application.
-   - **Composants à utiliser :** `TextInput`, `Button`, `ComboBox`, `DatePicker`, `State`.
+   - **Composants à utiliser :** `TextInput`, `Button`, `ComboBox`, `Calendar`, `State`.
    - **Détails :**
      - La **Page d'ajout de transaction** doit comporter des composants `TextInput` pour le montant, `ComboBox` pour choisir la catégorie, et `DatePicker` pour sélectionner la date.
      - Utilisez les signaux `onEditingFinished` pour valider les entrées utilisateur (par exemple, vérifier que le montant est un nombre positif).
@@ -45,6 +45,7 @@ Créer une application complète qui permet aux utilisateurs de suivre leurs tra
    - **Liens utiles :**
      - [Guidelines sur les Controls en QML](https://doc.qt.io/qt-6/qtquickcontrols-guidelines.html)
      - [Gestion des États dans QML](https://doc.qt.io/qt-6/qml-qtquick-state.html)
+	 - [Calendar QML](https://doc.qt.io/qt-5/qml-qtquick-controls-calendar.html)
 
 4. **Filtrage et tri avancés des transactions :**
    - **Objectif :** Ajouter des fonctionnalités de filtrage et de tri pour permettre à l'utilisateur de trier les transactions par date, montant, ou catégorie.
@@ -59,7 +60,7 @@ Créer une application complète qui permet aux utilisateurs de suivre leurs tra
 
 5. **Support multi-utilisateur et authentification :**
    - **Objectif :** Ajouter la prise en charge de plusieurs utilisateurs avec une authentification sécurisée.
-   - **Composants à utiliser :** `TextInput`, `PasswordField`, `Button`, `State`.
+   - **Composants à utiliser :** `TextField`, `Button`, `State`.
    - **Détails :**
      - Créez un formulaire de connexion avec des champs `TextInput` pour le nom d'utilisateur et `PasswordField` pour le mot de passe.
      - Implémentez des méthodes C++ pour gérer l'authentification (vérification du mot de passe, gestion des sessions utilisateur).
