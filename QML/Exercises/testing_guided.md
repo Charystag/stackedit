@@ -438,7 +438,6 @@ Item {
 **Commentaires :**
 - **`mouseClick(item)`** : Simule un clic de souris sur l'élément spécifié.
 - **`keyPress(item, key)`** : Simule une pression de touche clavier sur l'élément spécifié.
-- **`wait(millis)`** : Met en pause l'exécution pendant le nombre de millisecondes spécifié, utile pour attendre le traitement d'événements asynchrones.
 - **`verify(signal, message)`** : Vérifie si un signal a été émis.
 
 ## 3. Valider le Comportement de l'Interface Utilisateur sous Différentes Conditions
