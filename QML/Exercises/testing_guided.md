@@ -606,10 +606,6 @@ Dans cet exercice, nous avons appris à implémenter des tests pilotés par les 
 
 ---
 
-Let's create the exercise in French to guide users on integrating QtQuick Tests with continuous integration systems like GitHub Actions or GitLab CI.
-
----
-
 # **Exercice 5 : Intégration des Tests QtQuick avec des Systèmes d'Intégration Continue (CI)**
 
 ## **Objectif**
