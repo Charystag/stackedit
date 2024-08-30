@@ -30,16 +30,19 @@
      - **Changer la taille de police** : Option pour ajuster la taille du texte de l'application.
      - **Retirer les tâches complétées** : Option pour supprimer toutes les tâches marquées comme complétées.
      - **Limiter le nombre maximum de tâches** : Permettre de définir un nombre maximum de tâches affichées ou gérées dans chaque catégorie.
+   - Cliquer sur chaque paramètre doit permettre à l'utilisateur de naviguer sur une page dédiée dans laquelle il peut controller le setting pointé par le paramètre
 
 5. **Ajout et Gestion des Tâches** :
+   - Un bandeau permettant d'ajouter une nouvelle tâche en lui spécifiant seulement un nom doit permettre d'ajouter une tâche au jour même.
    - Un **bouton d'ajout de tâche** doit être présent sur l'interface principale pour permettre la création de nouvelles tâches.
    - Chaque tâche doit comporter une **checkbox** pour marquer la tâche comme complétée. Une fois cochée, la tâche doit être visuellement distinguée (par exemple, grisée ou barrée).
+   - Cliquer sur une tâche existante doit amener l'utilisateur sur l'interface d'édition des tâches 
 
 6. **Détails de l'Ajout de Tâche** :
    - Lors de l'ajout d'une tâche, l'utilisateur doit pouvoir :
      - **Ajouter un nom** à la tâche.
-     - **Sélectionner une date** à l'aide d'un composant spécialisé (ex. : calendrier).
-     - **Sélectionner une heure** avec un composant spécialisé (ex. : horloge ou time picker).
+     - **Sélectionner une date** à l'aide d'un composant spécialisé 
+     - **Sélectionner une heure** avec un composant spécialisé 
      - **Ajouter des précisions** sur la tâche dans un champ de texte multi-ligne.
      - Le champ de texte pour les précisions doit comporter un bouton "**finished editing**" qui, lorsqu'il est cliqué, enlève le focus du champ de texte.
 
@@ -52,7 +55,6 @@
 - **Performance** : L'application doit rester fluide et réactive même avec plusieurs tâches créées et des options de personnalisation activées.
 - **Compatibilité** : L'application doit être compatible avec les principales plateformes de bureau (Windows, macOS, Linux).
 - **Accessibilité** : Les options de personnalisation (comme le changement de taille de police) doivent améliorer l'accessibilité pour différents utilisateurs.
-- **Sécurité** : Les données des utilisateurs doivent être manipulées de manière sécurisée et ne doivent pas être perdues ou corrompues.
 
 ## 4. **Considérations Techniques**
 
