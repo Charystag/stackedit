@@ -62,6 +62,31 @@ Le but de ce projet est de concevoir et de développer une application "To-Do Li
    - Ne produisez pas de diagrammes de séquence, d'objets, ou de déploiement pour ce projet, car ils ne sont pas nécessaires pour répondre aux exigences actuelles.
    - Limitez-vous à des diagrammes de cas d'utilisation et de classes simples, qui montrent clairement les fonctionnalités principales et leur organisation.
 
+### Présentation Finale
+
+1. **Structure de la Présentation :**
+   - La présentation PowerPoint doit être organisée de manière à inclure à la fois une partie commune et des présentations individuelles :
+     - **Partie Commune** : Présentation globale du projet, expliquant le contexte, les objectifs, et la répartition des tâches. Chaque groupe doit être bref mais compréhensible, afin d'éviter que le client ne subisse plusieurs fois la même présentation. Cette partie doit couvrir :
+       - Une vue d'ensemble du projet.
+       - Qui a fait quoi ? (Répartition des tâches entre les membres de l'équipe).
+     - **Partie Individuelle** : Chaque membre de l'équipe doit présenter sa contribution spécifique au projet. Cela inclut une explication détaillée de la partie sur laquelle ils ont travaillé, les défis rencontrés, et comment ils ont été résolus.
+
+2. **Durée et Organisation :**
+   - La présentation doit être planifiée pour ne pas dépasser **10 minutes par personne**.
+   - Il est important d'annoncer dès le départ qui va présenter quelle partie du projet, afin de maintenir une structure claire et cohérente tout au long de la présentation.
+
+3. **Interdiction de Copier/Coller du Code :**
+   - Il est strictement interdit d'utiliser des captures d'écran ou des copier-coller de code dans la présentation PowerPoint. Les slides doivent se concentrer sur des explications claires, des diagrammes pertinents, et des résultats visuels (par exemple, captures d'écran de l'application en cours d'exécution).
+
+4. **Préparation aux Questions :**
+   - Chaque membre de l'équipe doit être préparé à répondre à **3 questions** de la part des membres du jury, portant sur leur partie spécifique du projet ou sur des aspects généraux du projet.
+   - Il est essentiel de prévoir une soutenance de code où tous les fichiers et outils de développement sont prêts à être consultés, au cas où des questions techniques nécessitent une démonstration en direct.
+
+5. **Planification et Répétition :**
+   - Faites un planning détaillé de la présentation pour vous assurer que chaque partie est couverte de manière adéquate sans dépassement de temps.
+   - Répétez la présentation pour affiner votre discours, renforcer votre confiance et assurer une transition fluide entre les différents orateurs.
+   - Rappelez-vous de ne pas faire une présentation trop technique mais de présenter les fonctionnalités de l'applications et de justifier vos choix d'impléentation puis, si on vous le demande, de donner tous les détails technique.
+
 ## Critères d'Évaluation
 
 - **Qualité de l'application (25%) :** Fonctionnalités implémentées, performance, et design de l'interface utilisateur.
