@@ -9,7 +9,10 @@
 ## 2. **Exigences Fonctionnelles**
 
 1. **Fenêtre de l'Application** :
+   - L'application doit ouvrir **une seule fenêtre**
    - L'application doit avoir une **taille de fenêtre minimum** prédéfinie pour garantir une bonne lisibilité et une utilisation confortable.
+   - L'application doit avoir un mode plein écran que l'utilisateur doit ensuite pouvoir quitter.
+   - L'utilisateur doit pouvoir voyager de la fenêtre des tâches à la fenêtre des paramètres sans encombre.
 
 2. **Gestion des Tâches** :
    - Les tâches doivent être **organisées en trois catégories** : 
