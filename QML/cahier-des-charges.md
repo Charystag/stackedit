@@ -2,7 +2,7 @@
 
 ## 1. **Caractéristiques Générales de l'Application**
 
-- **Type d'application** : Application de bureau multiplateforme utilisant Qt et QML.
+- **Type d'application** : Application de bureau utilisant Qt et QML.
 - **Public cible** : Utilisateurs cherchant à gérer leurs tâches quotidiennes de manière simple et intuitive.
 - **Design UX/UI** : L'application doit être pensée pour l'utilisateur, avec une interface intuitive et un design cohérent entre les modes clair et sombre.
 
