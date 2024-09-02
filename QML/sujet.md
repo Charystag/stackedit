@@ -16,8 +16,7 @@ Le but de ce projet est de concevoir et de développer une application "To-Do Li
 	 persistance des données dans un fichier txt ou une Database SQL.
 
 2. **Diagramme UML :**
-   - Réaliser un diagramme UML pour représenter l'architecture de l'application. Vous devez 
-   réaliser un diagramme de 
+   - Vous devez réaliser un diagramme UML pour représenter l'architecture de l'application.
    - Inclure des diagrammes de cas d'utilisation et des diagrammes de classes pour décrire les différentes fonctionnalités et leur interaction.
 
 3. **Documentation Technique :**
